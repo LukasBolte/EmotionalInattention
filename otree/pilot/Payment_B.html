@@ -1,0 +1,45 @@
+{% extends "global/Page.html" %}
+{% load otree %}
+
+{% block title %}
+Payment details
+{% endblock %}
+
+{% block content %}
+
+{{ if session.config.dev_mode }}
+<button class="btn btn-danger otree-btn-next" style="float: right;">Skip</button>
+{{ endif }}
+
+<p>
+    This study consists of one main task which determines your payment as follows. You start with a payment of ${{ C.MIN_PAY }}. But you will have the opportunity to open a series of boxes to increase your payment. Each box contains an unknown amount between ${{ C.MIN_PAY }} and ${{ C.MAX_PAY }}.
+</p>
+
+<p>
+    There are {{ C.NUM_BOXES }} boxes overall. The following figure shows you how many of these boxes contain each amount between ${{ C.MIN_PAY }} and ${{ C.MAX_PAY  }}.
+</p>
+
+<p>
+    Figure of Boxes. 
+    A simple distribution could be uniform with 1ct increments. Or with a fait right tail.]  
+</p>
+
+<p>
+    You will see these {{ C.NUM_BOXES }} boxes in random order. Each time you see a new box, you will decide whether you want to open it or end the task.
+</p>
+ 
+<p>
+    If you open the box, the amount inside will be revealed after a delay of {{ C.DELAY }} seconds. 
+</p>
+
+<p>
+    If you end the task, your payment will correspond to the largest amount among all the boxes you have opened.
+</p>
+
+<p>
+    When you are ready, click "Next" to answer some a few understanding questions to make sure everything is clear to you.
+</p>
+
+<button style="float: right" class="btn btn-primary btn-large">Next</button>
+
+{% endblock %}

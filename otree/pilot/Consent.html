@@ -1,0 +1,72 @@
+{% extends "global/Page.html" %}
+{% load otree %}
+
+{{ block title }}
+Consent form
+{{ endblock }}
+
+{{ block content }}
+
+{{ if session.config.dev_mode }}
+<button class="btn btn-danger otree-btn-next" style="float: right;">Skip</button>
+{{ endif }}
+
+<ul>
+    <li>
+        You are asked to take part in a research study.
+    </li>
+    <li>
+        If you choose to be in the study, you will answer questions that will help us learn more about what factors influence individual decisions and behavior. 
+    </li>
+      <li>
+        Most participants complete this study in {{ C.MIN_TIME }} to {{ C.MAX_TIME }} minutes.
+    </li>
+    <li>
+        All payments and procedures will be implemented in exactly the manner they are described in the study instructions and on the Prolific platform. If you complete the study, you will receive a payment between ${{ C.MIN_PAY }} and ${{ C.MAX_PAY }}. 
+    </li>
+    <li>
+        You may stop the study at any time, but you will only get paid the full amount if you successfully complete the study.
+    </li>
+    <li>
+        The study is de-identified, and no one will be able to link your answers back to you.
+    </li>
+    <li>
+        This is a minimal risk study. We cannot and do not promise or guarantee that you will receive any benefits from participating in this study.
+    </li>
+    <li>
+        Questions, Concerns, or Complaints: If you have any questions, concerns or complaints about this research study, its procedures, risks and benefits, contact Lukas Bolte, <a href="mailto:lbolte@andrew.cmu.edu" target="_top">glbolte@andrew.cmu.edu</a>.
+    </li>
+    <li>
+        This study runs under IRB protocol 44866.
+    </li>
+    <li>
+        If you have questions about your rights as a research participant or are not satisfied with how this research is being conducted, you may contact the Stanford University IRB at <a href="mailto:irb2-manager@lists.stanford.edu" target="_top">irb2-manager@lists.stanford.edu</a> to speak to someone independent of the research team.
+    </li>
+</ul>
+<p>
+    Being in this study is voluntary. Please exit the webpage if you do not want to participate.
+</p>
+
+<p>
+    If you agree to participate in this study, please click "Yes, I agree" and "Next."
+</p>
+
+<button type="button" class="btn btn-primary" onclick="proceed()">Yes, I Agree</button>
+<button style="float: right" class="btn btn-secondary" disabled id="id_next_button">Next</button>
+
+{% endblock %}
+
+{% block styles %}
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+    function proceed(){
+        y = document.getElementById("id_next_button")
+        y.removeAttribute("disabled");
+        y.classList.remove("btn-secondary")
+        y.classList.add("btn-primary")
+    }
+</script>
+{% endblock %}

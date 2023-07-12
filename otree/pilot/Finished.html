@@ -1,0 +1,36 @@
+{% extends "global/Page.html" %}
+{% load otree %}
+
+{{ block title }}
+The study is now finished
+{{ endblock }}
+
+{{ block content }}
+
+{{ if session.config.dev_mode }}
+<button class="btn btn-danger otree-btn-next" style="float: right;">Skip</button>
+{{ endif }}
+
+<p>
+    {{ payment_message }}
+</p>
+
+<p>
+    Thank you for participating. Your total payment will soon be transferred to your account. 
+</p>
+
+<p class="text-danger h4">
+    Your completion code is XYZYZYZYZY. Please enter this code on the Prolific site. 
+</p>
+
+<p>
+    You may close this browser window now. 
+</p>
+
+<p>
+    Have a nice day! 
+</p>
+
+
+
+{% endblock %}

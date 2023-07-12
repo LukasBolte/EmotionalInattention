@@ -1,0 +1,24 @@
+{% extends "global/Page.html" %}
+{% load otree %}
+
+{{ block title }}
+Introduction
+{{ endblock }}
+
+{{ block content }}
+
+{{ if session.config.dev_mode }}
+<button class="btn btn-danger otree-btn-next" style="float: right;">Skip</button>
+{{ endif }}
+
+<p>
+    You are invited to participate in a study run by the Department of Social and Decision Sciences at Carnegie Mellon University and the Department of Economics at Stanford University. We will start with some brief instructions. Please read the instructions carefully. We will ask you a few understanding questions at the end of the instructions to make sure everything is clear to you.
+</p>
+
+<p>
+    When you are ready, click “Next” to start the study.
+</p>
+
+<button style="float: right" class="btn btn-primary btn-large">Next</button>
+
+{% endblock %}
