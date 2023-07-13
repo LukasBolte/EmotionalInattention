@@ -12,11 +12,11 @@ Payment details
 {{ endif }}
 
 <p>
-    This study consists of one main task which determines your payment as follows. You start with a payment of ${{ C.MIN_PAY }}. But you will have the opportunity to open a series of boxes to increase your payment. Each box contains an unknown amount between ${{ C.MIN_PAY }} and ${{ C.MAX_PAY }}.
+    This study consists of one main task which determines your payment as follows. You start with a payment of ${{ C.MIN_PAY }}. And you can increase the payment by opening boxes. Each box contains an unknown dollar amount between ${{ C.MIN_PAY }} and ${{ C.MAX_PAY }}.
 </p>
 
 <p>
-    There are {{ C.NUM_BOXES }} boxes overall. The following figure shows you how many of these boxes contain each amount between ${{ C.MIN_PAY }} and ${{ C.MAX_PAY  }}.
+    There are {{ C.NUM_BOXES }} boxes overall. Don't worry, you do not have to open all of them! The following figure shows you how many of these boxes contain each dollar amount between ${{ C.MIN_PAY }} and ${{ C.MAX_PAY }}.
 </p>
 
 <p>
@@ -29,11 +29,11 @@ Payment details
 </p>
  
 <p>
-    If you open the box, the amount inside will be revealed after a delay of {{ C.DELAY }} seconds. 
+    If you open the box, the dollar amount inside will be revealed after a delay of {{ C.DELAY }} seconds. 
 </p>
 
 <p>
-    If you end the task, your payment will correspond to the largest amount among all the boxes you have opened.
+    Most importantly, if you end the task, your payment will correspond to the largest dollar amount in any of the boxes you have opened.
 </p>
 
 <p>

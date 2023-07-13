@@ -54,7 +54,7 @@ function task(parameters){
         table.appendChild(tbody);
 
         var tr=document.createElement("tr")
-        tr.style.height = '300px'
+        tr.style.height = '222px'
         tbody.appendChild(tr);
 
         var td=document.createElement("td")
@@ -93,7 +93,7 @@ function task(parameters){
         output.num_draws=this.num_draws;
         output.open_page=this.open_page;
         localStorage.setItem(keyName,JSON.stringify(output));
-        document.getElementById(this.varname).value=JSON.stringify(output);
+        document.getElementById(this.varname).value=JSON.stringify(this.num_draws);
     }
 
     this.clearContainer=function(){
@@ -130,7 +130,7 @@ function task(parameters){
 
         var amount
         if (this.treatment=="bonus"){
-            p.innerHTML="Your bonus if you end the task now:"
+            p.innerHTML="Your payment if you end the task now:"
             amount = bonus
         } else if (this.treatment=="penalty"){
             p.innerHTML="Your penalty if you end the task now:"
@@ -144,7 +144,7 @@ function task(parameters){
 
 
         var p=document.createElement('p');
-        p.className="h4 mt-5";
+        p.className="h3 mt-5";
         p.innerHTML="$"+ amount.toString();
 
         td1.appendChild(p);
@@ -158,12 +158,12 @@ function task(parameters){
         
 
         var p=document.createElement('p');
-        p.innerHTML="Next Box:"
+        p.innerHTML="Next box:"
         td2.appendChild(p);
         var img=document.createElement('img');
         img.setAttribute("src",this.closed_box_src)
         img.className="img-fluid mb-3";
-        img.style.height="70px";
+        img.style.height="100px";
         td2.appendChild(img);
 
 
@@ -190,12 +190,13 @@ function task(parameters){
         tr.appendChild(td0)
         var td1=document.createElement("td");
         td1.style.width="25%";
+        td1.className="no-padding";
 
         var openBoxButton=document.createElement("button")
         openBoxButton.setAttribute("type","button");
         openBoxButton.setAttribute("id","openBoxButton_id")
         openBoxButton.className="btn btn-primary";
-        openBoxButton.innerHTML="Open Box ("+this.delay+"s)";
+        openBoxButton.innerHTML="Open box ("+this.delay+"s)";
         openBoxButton.addEventListener('click', () => {
             this.startOpening();
           });
@@ -205,11 +206,12 @@ function task(parameters){
 
         var td2=document.createElement("td");
         td2.style.width="25%";
+        td2.className="no-padding";
 
         var endTaskButton=document.createElement("button")
         endTaskButton.setAttribute("type","button");
         endTaskButton.className="btn btn-secondary";
-        endTaskButton.innerHTML="End Task";
+        endTaskButton.innerHTML="End task";
         endTaskButton.addEventListener('click', () => {
             this.draw3();
           });
@@ -275,10 +277,10 @@ function task(parameters){
 
         var p=document.createElement('p');
         if (this.treatment=="bonus"){
-            p.innerHTML="The box contains a bonus amount of $"+last_num.toString()
+            p.innerHTML="The box contains a dollar amount of $"+last_num.toString()
         } else if (this.treatment=="penalty"){
             var penalty = this.min_pay+this.max_pay-last_num
-            p.innerHTML="The box contains a penalty charge of $"+penalty.toString()
+            p.innerHTML="The box contains dollar amount of $"+penalty.toString()
         }
 
         
@@ -288,7 +290,7 @@ function task(parameters){
         var bonus=Math.max(...this.sequence.slice(0,this.num_draws))
    
         if (this.treatment=="bonus"){
-            p.innerHTML="So your bonus if you end the task now is $"+ bonus.toString()
+            p.innerHTML="So your payment if you end the task now is $"+ bonus.toString()
         } else if (this.treatment=="penalty"){
             var penalty = this.min_pay+this.max_pay-bonus
             p.innerHTML="So your penalty if you end the task now is $"+ penalty.toString()
@@ -334,10 +336,10 @@ function task(parameters){
 
        
         if (this.treatment=="bonus"){
-            p.innerHTML="Your final bonus payment is $"+ bonus.toString()
+            p.innerHTML="Your final payment is $"+ bonus.toString()
         } else if (this.treatment=="penalty"){
-            penalty = this.min_pay+this.max_pay-bonus
-            p.innerHTML="Your final charge is $"+penalty.toString()
+            var penalty = this.min_pay+this.max_pay-bonus
+            p.innerHTML="Your final penalty is $"+penalty.toString()
         }
 
             

@@ -12,11 +12,11 @@ Payment details
 {{ endif }}
 
 <p>
-    This study consists of one main task which determines your payment as follows. You will receive a base payment of ${{ base_payment }} minus a penalty charge. You start with a penalty charge of ${{ C.MAX_PAY }}. But you will have the opportunity to open a series of boxes to reduce your penalty charge. Each box contains an unknown penalty charge between ${{ C.MIN_PAY  }} and ${{ C.MAX_PAY  }}.
+    This study consists of one main task which determines your payment as follows. You will receive a base payment of ${{ base_payment }} but we will subtract a penalty. You start with a penalty of ${{ C.MAX_PAY }}. But you can reduce the penalty by opening boxes. Each box contains an unknown dollar amount between ${{ C.MIN_PAY  }} and ${{ C.MAX_PAY  }}.
 </p>
 
 <p>
-    There are {{ C.NUM_BOXES }} boxes overall. The following figure shows you how many of these boxes contain each penalty charge between ${{ C.MIN_PAY }} and ${{ C.MAX_PAY }}.
+    There are {{ C.NUM_BOXES }} boxes overall. Don't worry, you do not have to open all of them! The following figure shows you how many of these boxes contain each dollar amount between ${{ C.MIN_PAY }} and ${{ C.MAX_PAY }}.
 </p>
 
 <p>
@@ -29,11 +29,11 @@ Payment details
 </p>
  
 <p>
-    If you open the box, the penalty charge inside will be revealed after a delay of {{ C.DELAY }} seconds. 
+    If you open the box, the dollar amount inside will be revealed after a delay of {{ C.DELAY }} seconds. 
 </p>
 
 <p>
-    If you end the task, your penalty charge will correspond to the smallest penalty charge among all the boxes you have opened.
+    Most importantly, if you end the task, your penalty will correspond to the smallest dollar amount in any of the boxes you have opened.
 </p>
 
 <p>

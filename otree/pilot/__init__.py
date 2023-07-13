@@ -21,7 +21,7 @@ class C(BaseConstants):
     MAX_TIME = 10
     NUM_BOXES = 10000
     NUM_DRAWS = 300
-    DELAY = 5
+    DELAY = 10
 
     INITIAL_LIST=[2,2,2,2,2,3,3,3,5,10]
     MIN_PAY = min(INITIAL_LIST)
@@ -48,34 +48,25 @@ class Group(BaseGroup):
     pass
 
 class Player(BasePlayer):
-    # treatment = models.StringField()
-    # feedback = models.LongStringField(label=None, blank=True)
-    # sequence = models.StringField()
-    # min_pay = models.IntegerField()
-    # max_pay = models.IntegerField()
-
 
     num_draws = models.StringField()
      
     payment_B = models.IntegerField(
         blank=True,
         choices=[
-            [1, 'It is the payment from opening the boxes'],
-            [2, 'It is the payment from opening the boxes minus penalty charge and plus a bonus']
+            [1, 'It is the payment from opening the boxes.'],
+            [2, 'It is the payment from opening the boxes minus penalty charge and plus a bonus.']
         ],
         widget=widgets.RadioSelect,
         label='What is the total payment you get for completing this study?'
     )
 
-    
-
-
     bonus = models.IntegerField(
         blank=True,
         choices=[
-            [1, 'It corresponds to the largest amount among all the boxes you have opened'],
-            [2, 'It is the sum of the amounts among all the boxes you have opened'],
-            [3, 'It is the amount of the last box you have opened']
+            [1, 'It corresponds to the largest amount in any of the boxes you have opened.'],
+            [2, 'It is the sum of the amounts in the boxes you have opened.'],
+            [3, 'It is the amount of the last box you have opened.']
         ],
         widget=widgets.RadioSelect,
         label='How is your payment determined?'
@@ -83,19 +74,19 @@ class Player(BasePlayer):
     
     increase_bonus = models.BooleanField(
         blank=True,
-        label='It increases',
+        label='It increases.',
         widget=widgets.CheckboxInput
     )
 
     same_bonus = models.BooleanField(
         blank=True,
-        label='It stays the same',
+        label='It stays the same.',
         widget=widgets.CheckboxInput
     )
 
     decrease_bonus = models.BooleanField(
         blank=True,
-        label='It decreases',
+        label='It decreases.',
         widget=widgets.CheckboxInput
     )
 
@@ -103,8 +94,8 @@ class Player(BasePlayer):
     payment_P = models.IntegerField(
         blank=True,
         choices=[
-            [1, f'It is the base payment of ${C.MIN_PAY + C.MAX_PAY} minus a penalty charge'],
-            [2, 'It is the base payment plus a bonus payment minus a penalty charge']
+            [1, f'It is the base payment of ${C.MIN_PAY + C.MAX_PAY} minus a penalty.'],
+            [2, 'It is the base payment plus a bonus payment minus a penalty.']
         ],
         widget=widgets.RadioSelect,
         label='What is the total payment you get for completing this study?'
@@ -113,29 +104,29 @@ class Player(BasePlayer):
     penalty = models.IntegerField(
         blank=True,
         choices=[
-            [1, 'It corresponds to the smallest penalty among all the boxes you have opened'],
-            [2, 'It is the sum of the penalty charges among all the boxes you have opened'],
-            [3, 'It is the penalty charge of the last box you have opened']
+            [1, 'It corresponds to the smallest amount in any of the boxes you have opened.'],
+            [2, 'It is the sum of the amounts in the boxes you have opened.'],
+            [3, 'It is the amount of the last box you have opened.']
         ],
         widget=widgets.RadioSelect,
-        label='How is your penalty charge determined?'
+        label='How is your penalty determined?'
     )
     
     increase_penalty = models.BooleanField(
         blank=True,
-        label='It increases',
+        label='It increases.',
         widget=widgets.CheckboxInput
     )
 
     same_penalty = models.BooleanField(
         blank=True,
-        label='It stays the same',
+        label='It stays the same.',
         widget=widgets.CheckboxInput
     )
 
     decrease_penalty = models.BooleanField(
         blank=True,
-        label='It decreases',
+        label='It decreases.',
         widget=widgets.CheckboxInput
     )
     
@@ -203,12 +194,11 @@ class UnderstandingQuestions_P(Page):
                              'decrease_penalty':True
             }
             hints = {
-                'payment_P':f"Your answer is incorrect. Your total payment for completing this study consists of the base payment of ${C.MIN_PAY + C.MAX_PAY} minus a penalty charge, and no bonus payment",
-                'penalty':'You answer is incorrect. Your penalty charge corresponds to the smallest penalty among all the boxes you have opened',
-                'decrease_penalty':'You answer is incorrect. When you open another box, two things can happen. When the penalty charge in the new box is more than or equal to the largest penalty charge so far, your penalty stays the same. When the penalty charge is less, then your penalty charge decreases (to the amount in the last box)'
+                'payment_P':f"Your answer is incorrect. Your total payment for completing this study consists of the base payment of ${C.MIN_PAY + C.MAX_PAY} minus a penalty, and no bonus payment.",
+                'penalty':'You answer is incorrect. Your penalty corresponds to the smallest amount in any of the boxes you have opened.',
+                'decrease_penalty':'You answer is incorrect. When you open another box, two things can happen. When the amount in the new box is more than or equal to the largest amount so far, your potential penalty stays the same. When the amount is less, then your penalty decreases (to the amount in the last box).'
             }
             if 'mistakes' not in player.participant.vars.keys():
-
                 player.participant.mistakes={
                     'payment_P':0,
                     'penalty':0,
@@ -218,14 +208,14 @@ class UnderstandingQuestions_P(Page):
             error_messages = {}
             for field_name in ['payment_P','penalty']:
                 if values[field_name] is None:
-                    error_messages[field_name] = 'Please answer the question'
+                    error_messages[field_name] = 'Please answer the question.'
                 elif values[field_name] != solutions[field_name]:
                     error_messages[field_name] = hints[field_name]
                     player.participant.mistakes[field_name]+=1            
             penalty=['increase_penalty','same_penalty','decrease_penalty']
 
             if all([values[field_name]==False for field_name in penalty]):
-                error_messages['decrease_penalty']='Please select at least one to answer the question'
+                error_messages['decrease_penalty']='Please select at least one to answer the question.'
             elif any([values[field_name]!=solutions[field_name] for field_name in ['increase_penalty','same_penalty','decrease_penalty']]):
                 error_messages['decrease_penalty']=hints['decrease_penalty']
                 player.participant.mistakes['penalty_change']+=1
@@ -244,16 +234,17 @@ class UnderstandingQuestions_B(Page):
     def error_message(player, values):
         if not player.session.config['dev_mode']:
             
-            solutions = {'payment_B':1 ,
-                             'bonus':1,
-                             'increase_bonus':True,
-                             'same_bonus':True,
-                             'decrease_bonus':False
+            solutions = {
+                'payment_B':1 ,
+                'bonus':1,
+                'increase_bonus':True,
+                'same_bonus':True,
+                'decrease_bonus':False
             }
             hints = {
-                'payment_B':f"Your answer is incorrect. Your total payment for completing this study consists of the payment from opening the boxes, and there is no penalty charge or base payment",
-                'bonus':'You answer is incorrect. Your payment corresponds to the largest amount among all the boxes you have opened',
-                'decrease_bonus':'You answer is incorrect. When you open another box, two things can happen. When the amount in the new box is less than or equal to the largest amount so far, your payment stays the same. When the amount is more, then your payment increases (to the amount in the last box)'
+                'payment_B':f"Your answer is incorrect. Your total payment for completing this study consists of the payment from opening the boxes, and there is no penalty charge or base payment.",
+                'bonus':'You answer is incorrect. Your payment corresponds to the largest amount in any of the boxes you have opened.',
+                'decrease_bonus':'You answer is incorrect. When you open another box, two things can happen. When the amount in the new box is less than or equal to the largest amount so far, your potential payment stays the same. When the amount is more, then your payment increases (to the amount in the last box).'
             }
             if 'mistakes' not in player.participant.vars.keys():
 
@@ -266,14 +257,14 @@ class UnderstandingQuestions_B(Page):
             error_messages = {}
             for field_name in ['payment_B','bonus']:
                 if values[field_name] is None:
-                    error_messages[field_name] = 'Please answer the question'
+                    error_messages[field_name] = 'Please answer the question.'
                 elif values[field_name] != solutions[field_name]:
                     error_messages[field_name] = hints[field_name]
                     player.participant.mistakes[field_name]+=1            
             bonus=['increase_bonus','same_bonus','decrease_bonus']
 
             if all([values[field_name]==False for field_name in bonus]):
-                error_messages['decrease_bonus']='Please select at least one to answer the question'
+                error_messages['decrease_bonus']='Please select at least one to answer the question.'
             elif any([values[field_name]!=solutions[field_name] for field_name in ['increase_bonus','same_bonus','decrease_bonus']]):
                 error_messages['decrease_bonus']=hints['decrease_bonus']
                 player.participant.mistakes['bonus_change']+=1
@@ -296,6 +287,14 @@ class Task(Page):
          }
     
 
+    def before_next_page(player, timeout_happened):
+
+        payoff = json.loads(player.num_draws)
+        if payoff==0:
+            player.payoff=C.MIN_PAY
+        else:
+            player.payoff = max(player.participant.sequence[:payoff])
+
     def is_displayed(player: Player):
         return player.participant.experiment_sequence[player.round_number - 1] == 'Task'
     
@@ -314,10 +313,10 @@ class Finished(Page):
     @staticmethod
     def vars_for_template(player):
 
-        part1 = F"You will receive your total payment of {player.participant.payoff_plus_participation_fee()}" 
+        part1 = F"You will receive your payment of {player.participant.payoff_plus_participation_fee()}" 
         part2 = ""
         if player.participant.treatment=="penalty":
-            part2 = F" consisting of the ${C.MIN_PAY + C.MAX_PAY} base payment minus the penalty charge of {C.MIN_PAY + C.MAX_PAY - player.participant.payoff_plus_participation_fee()}"
+            part2 = F" consisting of the ${C.MIN_PAY + C.MAX_PAY} base payment minus the penalty of {C.MIN_PAY + C.MAX_PAY - player.participant.payoff_plus_participation_fee()}"
         part3 = " shortly."
         return {'payment_message': part1 + part2 + part3}
 
