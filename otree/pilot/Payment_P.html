@@ -19,10 +19,12 @@ Payment details
     There are {{ C.NUM_BOXES }} boxes overall. Don't worry, you do not have to open all of them! The following figure shows you how many of these boxes contain each dollar amount between ${{ C.MIN_PAY }} and ${{ C.MAX_PAY }}.
 </p>
 
-<p>
-    Figure of Boxes. 
-    A simple distribution could be uniform with 1ct increments. Or with a fait right tail.]  
-</p>
+<div class="chart-container">
+    <div class="chart"></div>
+    <div class="chart-overlay">
+        <p class="overlay-text" id="myOverlay">Move your mouse over the figure</p>
+    </div>
+</div>
 
 <p>
     You will see these {{ C.NUM_BOXES }} boxes in random order. Each time you see a new box, you will decide whether you want to open it or end the task.
@@ -42,4 +44,193 @@ Payment details
 
 <button style="float: right" class="btn btn-primary btn-large">Next</button>
 
+<script>
+    const chart = document.querySelector('.chart');
+
+    const spacerElement = document.createElement('div');
+    spacerElement.style.width = '50px';
+    spacerElement.style.display = "inline-block";
+    spacerElement.className = "text";
+    spacerElement.innerHTML = "No. of boxes for each amount";
+
+    chart.appendChild(spacerElement);
+
+    function createIncrementedArray(start, end, increment, callback) {
+        const array = [];
+        for (let i = start; i <= end; i += increment) {
+            array.push(callback(i));
+        }
+        return array;
+    }
+
+    const numBox = 10000;
+    const heightConstant = 50000;
+
+    const startValue = 2;
+    const endValue = 10;
+    const incrementValue = 0.01;
+
+    const labels = createIncrementedArray(startValue, endValue, incrementValue, i => i);
+    var barHeights = createIncrementedArray(startValue, endValue, incrementValue, i => 1000 * Math.exp(-0.5 * i));
+
+    barHeights.reverse()
+    
+    function roundNumberToTwoDecimals(number) {
+        const roundedNumber = Math.round(number * 100) / 100;
+        return Number.isInteger(roundedNumber) ? roundedNumber : roundedNumber.toFixed(2);
+    }
+
+    function changeText(num) {
+        var overlay = document.getElementById("myOverlay");
+        const height = dividedBarHeights[num];
+        const contain = height === 1 ? 'box contains' : 'boxes contain';
+        overlay.innerHTML = Math.round(height) + ' ' + contain + ' $' + roundNumberToTwoDecimals(labels[num]);
+    }
+
+    function changeTextBack() {
+        var overlay = document.getElementById("myOverlay");
+        overlay.innerHTML = "Move your mouse over the figure";
+    }
+
+    function calculateSumOfArray(arr) {
+        const sum = arr.reduce((accumulator, currentValue) => accumulator + currentValue, 0);
+        return sum;
+    }
+
+    function divideArrayByNumber(arr, divisor) {
+        const dividedArray = arr.map(number => Math.round(number / divisor));
+        return dividedArray;
+    }
+
+    const sumOfBarHeights = calculateSumOfArray(barHeights);
+    const dividedBarHeights = divideArrayByNumber(barHeights, sumOfBarHeights / numBox);
+
+    const divList = document.createElement('div');
+
+    for (let i = 0; i < dividedBarHeights.length; i++) {
+        const height = dividedBarHeights[i];
+
+        const bar = document.createElement('div');
+        bar.className = 'bar';
+        bar.style.height = (height / numBox) * heightConstant + 'px';
+
+        bar.setAttribute("data-toggle", "tooltip");
+        bar.setAttribute("data-placement", "bottom");
+        const contain = height === 1 ? 'box contains' : 'boxes contain';
+        bar.setAttribute("title", Math.round(height) + ' ' + contain + ' $' + roundNumberToTwoDecimals(labels[i]));
+
+        bar.setAttribute("num", i);
+
+        // Add event listeners to each bar
+        bar.addEventListener('mouseenter', function () {
+            const num = parseInt(this.getAttribute("num"));
+            changeText(num); // Call your function with the "num" attribute as input
+        });
+
+        bar.addEventListener('mouseleave', function () {
+            changeTextBack(); // Call your function to reset the text
+        });
+
+        chart.appendChild(bar);
+
+        if (i % 100 === 0) {
+            const labelBox = document.createElement('div');
+            labelBox.className = 'label-boxes';
+            labelBox.innerHTML = '$' + roundNumberToTwoDecimals(labels[i]);
+            divList.appendChild(labelBox);
+        }
+    }
+
+    const br = document.createElement('br');
+    chart.appendChild(br);
+    chart.appendChild(divList);
+
+</script>
+{% endblock %}
+
+{% block styles %}
+<style>
+    .chart {
+        position: relative;
+    }
+
+    .bar {
+        display: inline-block;
+        width: 1px;
+        margin: 0;
+        background-color: #d9912c;
+        transition: height 0.3s;
+    }
+
+    .label-boxes {
+        display: inline-block;
+        width: 100px;
+        margin: 0;
+        height: 45px;
+        text-align: center;
+    }
+
+    .bar:hover {
+        background-color: #2E8B57;
+    }
+
+    .tooltip {
+        visibility: hidden;
+        background-color: #000 !important;
+        color: #fff !important;
+        text-align: center;
+        border-radius: 6px;
+        padding: 5px;
+        position: absolute;
+        z-index: 1;
+    }
+
+    .bar:hover .tooltip {
+        visibility: visible;
+    }
+
+    .bar:hover .label {
+        visibility: visible;
+    }
+
+    .chart-container {
+        position: relative;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .chart-overlay {
+        position: absolute;
+        top: -50px;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .overlay-text {
+        font-size: 18px;
+        color: rgb(0, 0, 0);
+    }
+
+    .rotated-text {
+        display: inline-block;
+        transform: rotate(-90deg);
+    }
+
+    .text {
+        display: inline-block;
+        white-space: nowrap;
+        transform: rotate(270deg);
+        transform-origin: left top;
+    }
+
+</style>
+{% endblock %}
+
+{% block scripts %}
 {% endblock %}

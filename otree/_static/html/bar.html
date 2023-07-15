@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    .chart {
+      height: 300px;
+      position: relative;
+    }
+
+    .bar {
+      display: inline-block;
+      width: 1px;
+      margin: 0;
+      background-color: #d9912c;
+      transition: height 0.3s;
+    }
+
+    .label-boxes {
+      display: inline-block;
+      width: 100px;
+      margin: 0;
+      height: 45px;
+      text-align: center;
+    }
+
+    .bar:hover {
+      background-color: #2E8B57;
+    }
+
+    .tooltip {
+      visibility: hidden;
+      background-color: #000;
+      color: #fff;
+      text-align: center;
+      border-radius: 6px;
+      padding: 5px;
+      position: absolute;
+      z-index: 1;
+    }
+
+    .bar:hover .tooltip {
+      visibility: visible;
+    }
+
+    .bar:hover .label {
+      visibility: visible;
+    }
+  </style>
+</head>
+<body>
+  <div class="chart"></div>
+
+  <script>
+    const chart = document.querySelector('.chart');
+
+    const spacerElement = document.createElement('div');
+    spacerElement.style.width = '50px';
+    spacerElement.style.display = "inline-block";
+    chart.appendChild(spacerElement);
+
+    function createIncrementedArray(start, end, increment, callback) {
+      const array = [];
+      for (let i = start; i <= end; i += increment) {
+        array.push(callback(i));
+      }
+      return array;
+    }
+
+    const numBox = 10000;
+    const heightConstant = 100000;
+
+    const startValue = 2;
+    const endValue = 10;
+    const incrementValue = 0.01;
+
+    const labels = createIncrementedArray(startValue, endValue, incrementValue, i => i);
+    const barHeights = createIncrementedArray(startValue, endValue, incrementValue, i => 1000 * Math.exp(-0.5 * i));
+
+    function roundNumberToTwoDecimals(number) {
+      const roundedNumber = Math.round(number * 100) / 100;
+      return Number.isInteger(roundedNumber) ? roundedNumber : roundedNumber.toFixed(2);
+    }
+
+    function calculateSumOfArray(arr) {
+      const sum = arr.reduce((accumulator, currentValue) => accumulator + currentValue, 0);
+      return sum;
+    }
+
+    function divideArrayByNumber(arr, divisor) {
+      const dividedArray = arr.map(number => Math.round(number / divisor));
+      return dividedArray;
+    }
+
+    const sumOfBarHeights = calculateSumOfArray(barHeights);
+    const dividedBarHeights = divideArrayByNumber(barHeights, sumOfBarHeights / numBox);
+
+    const divList = document.createElement('div');
+
+    for (let i = 0; i < dividedBarHeights.length; i++) {
+      const height = dividedBarHeights[i];
+
+      const bar = document.createElement('div');
+      bar.className = 'bar';
+      bar.style.height = (height / numBox) * heightConstant + 'px';
+
+      const tooltip = document.createElement('span');
+      tooltip.className = 'tooltip';
+      const contain = height === 1 ? 'box contains' : 'boxes contain';
+      tooltip.innerHTML = Math.round(height) + ' ' + contain + ' $' + roundNumberToTwoDecimals(labels[i]);
+      bar.appendChild(tooltip);
+
+      chart.appendChild(bar);
+
+      if (i % 100 === 0) {
+        const labelBox = document.createElement('div');
+        labelBox.className = 'label-boxes';
+        labelBox.innerHTML = '$' + roundNumberToTwoDecimals(labels[i]);
+        divList.appendChild(labelBox);
+      }
+    }
+
+    const br = document.createElement('br');
+    chart.appendChild(br);
+    chart.appendChild(divList);
+  </script>
+</body>
+</html>
