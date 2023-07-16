@@ -16,7 +16,7 @@ Payment details
 </p>
 
 <p>
-    There are {{ C.NUM_BOXES }} boxes overall. Don't worry, you do not have to open all of them! The following figure shows you how many of these boxes contain each dollar amount between ${{ C.MIN_PAY }} and ${{ C.MAX_PAY }}.
+    There are <span class='class_num_box'></span> boxes overall. Don't worry, you do not have to open all of them! The following figure shows you how many of these boxes contain each dollar amount between ${{ C.MIN_PAY }} and ${{ C.MAX_PAY }}.
 </p>
 
 <div class="chart-container">
@@ -27,7 +27,7 @@ Payment details
 </div>
 
 <p>
-    You will see these {{ C.NUM_BOXES }} boxes in random order. Each time you see a new box, you will decide whether you want to open it or end the task.
+    You will see these <span class='class_num_box'></span> boxes in random order. Each time you see a new box, you will decide whether you want to open it or end the task.
 </p>
  
 <p>
@@ -45,6 +45,44 @@ Payment details
 <button style="float: right" class="btn btn-primary btn-large">Next</button>
 
 <script>
+    function formatNumberWithCommas(number) {
+    // Convert the number to a string
+    var numString = number.toString();
+
+    // Split the string into an array of characters
+    var numArray = numString.split('');
+
+    // Initialize variables
+    var formattedNumber = '';
+    var count = 0;
+
+    // Iterate through the characters in reverse order
+    for (var i = numArray.length - 1; i >= 0; i--) {
+        // Add the current character to the formatted number
+        formattedNumber = numArray[i] + formattedNumber;
+
+        // Increment the count
+        count++;
+
+        // Add a comma after every three digits
+        if (count % 3 === 0 && i !== 0) {
+        formattedNumber = ',' + formattedNumber;
+        }
+    }
+
+    return formattedNumber;
+    }
+
+    // Select all span elements with the class "num_box"
+    var numBoxes = document.querySelectorAll('span.class_num_box');
+
+    // Iterate through the selected elements and set their innerHTML to the formatted number
+    numBoxes.forEach(function(numBox) {
+      var formattedNumber = formatNumberWithCommas({{ C.NUM_BOXES }});
+      numBox.innerHTML = formattedNumber;
+    });
+
+
     const chart = document.querySelector('.chart');
 
     const spacerElement = document.createElement('div');
@@ -63,7 +101,7 @@ Payment details
         return array;
     }
 
-    const numBox = 10000;
+    const numBox = {{ C.NUM_BOXES }};
     const heightConstant = 50000;
 
     const startValue = 2;
