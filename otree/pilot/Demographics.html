@@ -1,0 +1,40 @@
+{% extends "global/Page.html" %}
+{% load otree %}
+
+{% block title %}
+Demographic questions
+{% endblock %}
+
+{% block content %}
+
+{{ if session.config.dev_mode }}
+<button class="btn btn-danger otree-btn-next" style="float: right;">Skip</button>
+{{ endif }}
+<p>
+    Please answer some questions about yourself to complete this study.
+</p>
+
+{% formfield 'gender' %}
+
+{% formfield 'ethnic' %}
+
+{% formfield 'age' %}
+
+{% formfield 'education' %}
+
+{% formfield 'marital' %}
+
+{% formfield 'income' %}
+
+{% formfield 'percentProlific' %}
+
+{% formfield 'state' %}
+
+<p>
+    After you answer the questions, click "Next."
+</p>
+
+
+<button style="float: right" class="btn btn-primary btn-large">Next</button>
+
+{% endblock %}

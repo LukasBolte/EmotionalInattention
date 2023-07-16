@@ -11,11 +11,11 @@ Payment details
 {% endif %}
 
 <p>
-    This study consists of one main task which determines your payment as follows. You start with a payment of ${{ C.MIN_PAY }}. And you can increase the payment by opening boxes. Each box contains an unknown dollar amount between ${{ C.MIN_PAY }} and ${{ C.MAX_PAY }}.
+    This study consists of one main task which determines your payment as follows. You start with a payment of ${{ C.START_VALUE }}. And you can increase the payment by opening boxes. Each box contains an unknown dollar amount between ${{ C.START_VALUE }} and ${{ C.END_VALUE }}.
 </p>
 
 <p>
-    There are <span class='class_num_box'></span> boxes overall. Don't worry, you do not have to open all of them! The following figure shows you how many of these boxes contain each dollar amount between ${{ C.MIN_PAY }} and ${{ C.MAX_PAY }}.
+    There are <span class='class_num_box'></span> boxes overall. Don't worry, you do not have to open all of them! The following figure shows you how many of these boxes contain each dollar amount between ${{ C.START_VALUE }} and ${{ C.END_VALUE }}.
 </p>
 
 <div class="chart-container">
@@ -81,9 +81,6 @@ Payment details
       numBox.innerHTML = formattedNumber;
     });
 
-
-    
-
     const chart = document.querySelector('.chart');
 
     const spacerElement = document.createElement('div');
@@ -94,23 +91,9 @@ Payment details
 
     chart.appendChild(spacerElement);
 
-    function createIncrementedArray(start, end, increment, callback) {
-        const array = [];
-        for (let i = start; i <= end; i += increment) {
-            array.push(callback(i));
-        }
-        return array;
-    }
-
     const numBox = {{ C.NUM_BOXES }};
     const heightConstant = 50000;
-
-    const startValue = 2;
-    const endValue = 10;
-    const incrementValue = 0.01;
-
-    const labels = createIncrementedArray(startValue, endValue, incrementValue, i => i);
-    const barHeights = createIncrementedArray(startValue, endValue, incrementValue, i => 1000 * Math.exp(-0.5 * i));
+    
 
     function roundNumberToTwoDecimals(number) {
         const roundedNumber = Math.round(number * 100) / 100;
@@ -129,20 +112,10 @@ Payment details
         overlay.innerHTML = "Move your mouse over the figure";
     }
 
-    function calculateSumOfArray(arr) {
-        const sum = arr.reduce((accumulator, currentValue) => accumulator + currentValue, 0);
-        return sum;
-    }
-
-    function divideArrayByNumber(arr, divisor) {
-        const dividedArray = arr.map(number => Math.round(number / divisor));
-        return dividedArray;
-    }
-
-    const sumOfBarHeights = calculateSumOfArray(barHeights);
-    const dividedBarHeights = divideArrayByNumber(barHeights, sumOfBarHeights / numBox);
-
     const divList = document.createElement('div');
+
+    dividedBarHeights = {{ dividedBarHeights|safe }}
+    labels = {{ labels|safe }}
 
     for (let i = 0; i < dividedBarHeights.length; i++) {
         const height = dividedBarHeights[i];

@@ -1,6 +1,7 @@
 import random
 import json
 import itertools
+import math
 
 from collections import Counter
 
@@ -16,16 +17,20 @@ Vlasta Rasocha
 class C(BaseConstants):
     NAME_IN_URL = 'study'
     PLAYERS_PER_GROUP = None
-    NUM_ROUNDS = 8
+    NUM_ROUNDS = 9
     MIN_TIME = 5
     MAX_TIME = 10
     NUM_BOXES = 10000
     NUM_DRAWS = 300
     DELAY = 10
 
-    INITIAL_LIST=[2,2,2,2,2,3,3,3,5,10]
-    MIN_PAY = min(INITIAL_LIST)
-    MAX_PAY = max(INITIAL_LIST)
+    height_constant = 50000
+
+    START_VALUE = 2
+    END_VALUE = 10
+    INCREMENT_VALUE = 0.01
+
+# create a function 
 
 class Subsession(BaseSubsession):
     pass
@@ -39,9 +44,22 @@ def creating_session(subsession: Subsession):
             for player in subsession.get_players():
                 participant = player.participant
                 participant.treatment = next(treatments)
-                participant.experiment_sequence = ['Welcome','Consent','Introduction',f"Payment_{participant.treatment}",f"UnderstandingQuestions_{participant.treatment}","Task",'Feedback','Finished']
-                new_list = create_list_with_frequency(C.INITIAL_LIST, int(C.NUM_BOXES/len(C.INITIAL_LIST)))
+                participant.experiment_sequence = ['Welcome','Consent','Introduction',f"Payment_{participant.treatment}",f"UnderstandingQuestions_{participant.treatment}","Task","Demographics",'Feedback','Finished']
+
+                # I have two lists: A and B. They have the same length. I want to create a third list that has element A[i] repeated B[i] times.
+                # 
+
+                A = labels(player.subsession)
+                B = bar_heights(player.subsession)
+
+                new_list = [a for a, b in zip(A, B) for _ in range(b)]
                 participant.sequence = json.dumps(random.sample(new_list, C.NUM_DRAWS))
+
+                print(participant.sequence)
+
+                
+
+
                 
 
 class Group(BaseGroup):
@@ -94,7 +112,7 @@ class Player(BasePlayer):
     payment_P = models.IntegerField(
         blank=True,
         choices=[
-            [1, f'It is the base payment of ${C.MIN_PAY + C.MAX_PAY} minus a penalty.'],
+            [1, f'It is the base payment of ${C.START_VALUE + C.END_VALUE} minus a penalty.'],
             [2, 'It is the base payment plus a bonus payment minus a penalty.']
         ],
         widget=widgets.RadioSelect,
@@ -130,15 +148,164 @@ class Player(BasePlayer):
         widget=widgets.CheckboxInput
     )
     
+
+    gender = models.PositiveIntegerField(
+        blank=True,
+        label='Gender: Which gender identity do you most identify with?',
+                                         choices=[[0, 'Female'],
+                                                  [1, 'Male'],
+                                                  [2, 'Transgender female'],
+                                                  [3, 'Transgender male'],
+                                                  [4, 'Gender variant/Non-conforming'],
+                                                  [5, 'Not listed'],
+                                                  [6, 'Prefer not to answer']],
+                                         widget=widgets.RadioSelect)
+    ethnic = models.PositiveIntegerField(
+        blank=True,
+        label='Race: Which race do you most identify with?',
+                                         choices=[[0, 'White or Caucasian'],
+                                                  [1, 'Black or African American'],
+                                                  [2, 'Hispanic or Latino'],
+                                                  [3, 'Asian or Asian American'],
+                                                  [4, 'American Indian or Alaska Native'],
+                                                  [5, 'Native Hawaiian or Pacific Islander'],
+                                                  [6, 'Other'],
+                                                  [7, 'Prefer not to answer']],
+                                         widget=widgets.RadioSelect)
+    age = models.PositiveIntegerField(
+        blank=True,
+        label='Age: What is your age?',
+        choices=[[0, '18-25 years old'],
+                [1, '26-35 years old'],
+                [2, '36-45 years old'],
+                [3, '46-55 years old'],
+                [4, '56-65 years old'],
+                [5, 'Above 65 years old'],
+                [6, 'Prefer not to answer']],
+        widget=widgets.RadioSelect)
+    education = models.PositiveIntegerField(
+        blank=True,
+        label='Education: What is the highest level of school you have completed or the highest degree you have received?',
+        choices=[[1, 'Some high school'],
+                    [2, 'High school diploma (or equivalent, including GED)'],
+                    [3, "Some college"],
+                    [4, "Associate's degree in 2-year college"],
+                    [5, "Bachelor's degree in 4-year college"],
+                    [6, "Master's degree"],
+                    [7, "Doctoral degree (PhD)"],
+                    [8, "Professional doctorate (JD, MD)"],
+                    [9, "Prefer not to answer"]],
+        widget=widgets.RadioSelect)
+    marital = models.PositiveIntegerField(
+        blank=True,
+        label='What is your marital status?',
+        choices=[
+            [0, 'Single, never married'],
+            [1, 'Married or domestic partnership'],
+            [2, 'Widowed'],
+            [3, 'Divorced'],
+            [4, 'Separated'],
+            [5, 'Prefer not to answer']],
+    widget=widgets.RadioSelect)
+    income = models.PositiveIntegerField(
+        blank=True,
+        label='What is the annual income of your household? This includes money from jobs, net income from business, farm or rent, pensions, dividends, interest, social security payments and any other monetary income.',
+        choices=[[0, 'Less than $10,000'],
+                [1, '$10,000 to $29,999'],
+                [2, '$30,000 to $49,999'],
+                [3, '$50,000 to $69,999'],
+                [4, '$70,000 to $99,999'],
+                [5, '$100,000 to $149,999'],
+                [6, '$150,000 to $199,999'],
+                [7, 'More than $200,000'],
+                [8, 'Prefer not to answer']],
+        widget=widgets.RadioSelect)
+    percentProlific = models.PositiveIntegerField(
+        blank=True,
+        label='How much of your total personal income comes from work on Prolific?',
+        choices=[[0, 'A little bit'],
+                [1, 'A substantial share but less than half'],
+                [2, 'Most of my income'],
+                [3, 'All of my income'],
+                [4, 'Prefer not to answer']],
+        widget=widgets.RadioSelect)
+    
+    state = models.PositiveIntegerField(
+        blank=True,
+        choices=[[0, 'Not USA'], [1, 'Alabama'], [2, 'Alaska'], [3, 'Arizona'], [4, 'Arkansas'], [5, 'California'],
+                 [6, 'Colorado'], [7, 'Connecticut'], [8, 'Delaware'], [9, 'Florida'], [10, 'Georgia'], [11, 'Hawaii'],
+                 [12, 'Idaho'], [13, 'Illinois'], [14, 'Indiana'], [15, 'Iowa'], [16, 'Kansas'], [17, 'Kentucky'],
+                 [18, 'Louisiana'], [19, 'Maine'], [20, 'Maryland'], [21, 'Massachusetts'], [22, 'Michigan'],
+                 [23, 'Minnesota'], [24, 'Mississippi'], [25, 'Missouri'], [26, 'Montana'], [27, 'Nebraska'],
+                 [28, 'Nevada'], [29, 'New Hampshire'], [30, 'New Jersey'], [31, 'New Mexico'], [32, 'New York'],
+                 [33, 'North Carolina'], [34, 'North Dakota'], [35, 'Ohio'], [36, 'Oklahoma'], [37, 'Oregon'],
+                 [38, 'Pennsylvania'], [39, 'Rhode Island'], [40, 'South Carolina'], [41, 'South Dakota'],
+                 [42, 'Tennessee'], [43, 'Texas'], [44, 'Utah'], [45, 'Vermont'], [46, 'Virginia'], [47, 'Washington'],
+                 [48, 'West Virginia'], [49, 'Wisconsin'], [50, 'Wyoming']], label='Which state do you live in?')
+
     feedback = models.LongStringField(blank=True)
     
     
 # FUNCTIONS 
-# def set_payoffs(group):
-#     player1 = group.get_player_by_id(1)
-#     player2 = group.get_player_by_id(2)
-#     player1.payoff = group.kept
-#     player2.payoff = C.ENDOWMENT - group.kept
+
+def create_incremented_array(start, end, increment, callback):
+    array = []
+    i = start
+    while i <= end:
+        array.append(callback(i))
+        i += increment
+    return array
+
+def labels(subsession):
+    first_array =  create_incremented_array(C.START_VALUE, C.END_VALUE, C.INCREMENT_VALUE, lambda i: i)
+    return ["{:.2f}".format(num) for num in first_array]
+
+def bar_heights(subsession):
+    first_array= create_incremented_array(C.START_VALUE, C.END_VALUE, C.INCREMENT_VALUE, lambda i: 1000 * math.exp(-0.5 * i))
+    return manipulate_array(first_array,C.NUM_BOXES)
+
+
+# INITIAL_LIST=[2,2,2,2,2,3,3,3,5,10]
+# MIN_PAY = min(INITIAL_LIST)
+# MAX_PAY = max(INITIAL_LIST)
+
+
+def manipulate_array(array, total_sum):
+    # Step 1: Calculate the sum of all elements
+    sum_value = sum(array)
+
+    # Step 2: Calculate the ratio
+    ratio = total_sum / sum_value
+
+    # Step 3: Multiply each element by the ratio
+    multiplied_array = [value * ratio for value in array]
+
+    # Step 4: Round each element to the nearest integer
+    rounded_array = [round(value) for value in multiplied_array]
+
+    # Step 5: Adjust rounding errors
+    rounded_sum = sum(rounded_array)
+    difference = total_sum - rounded_sum
+
+    if difference > 0:
+        # Rounded sum is too small, find elements where rounded number is the most smaller than the actual number
+        rounding_errors = [value - rounded_array[index] if value > rounded_array[index] else 0 for index, value in enumerate(multiplied_array)]
+        adjustment = 1
+    elif difference < 0:
+        # Rounded sum is too large, find elements where rounded number is the most larger than the actual number
+        rounding_errors = [rounded_array[index] - value if value < rounded_array[index] else 0 for index, value in enumerate(multiplied_array)]
+        adjustment = -1
+    else:
+        # Rounded sum is already equal to total_sum, no adjustment needed
+        return rounded_array
+
+    # Sort rounding errors in descending order and find the indices of the largest ones
+    largest_rounding_error_indices = sorted(range(len(rounding_errors)), key=lambda i: rounding_errors[i], reverse=True)[:abs(difference)]
+
+    # Split the difference equally among the elements with the largest rounding errors
+    adjusted_array = [value + (adjustment if index in largest_rounding_error_indices else 0) for index, value in enumerate(rounded_array)]
+
+    return adjusted_array
 
 
 # PAGES
@@ -162,6 +329,14 @@ class Introduction(Page):
 
 class Payment_B(Page):
     @staticmethod
+
+    def vars_for_template(player):
+        myLabels = json.dumps(labels(player.subsession))
+        myHeights = json.dumps(bar_heights(player.subsession))
+        return {
+            'labels':myLabels,
+            'dividedBarHeights': myHeights            
+        }
     def is_displayed(player: Player):
         return player.participant.experiment_sequence[player.round_number - 1] == 'Payment_bonus'
 
@@ -169,8 +344,12 @@ class Payment_B(Page):
 class Payment_P(Page):
     @staticmethod
     def vars_for_template(player):
-         return {
-             'base_payment':  C.MIN_PAY + C.MAX_PAY
+        myLabels = json.dumps(labels(player.subsession))
+        myHeights = json.dumps(bar_heights(player.subsession))
+        return {
+            'labels':myLabels,
+            'dividedBarHeights': myHeights,
+            'base_payment':  C.START_VALUE + C.END_VALUE
          }
     
     def is_displayed(player: Player):
@@ -194,7 +373,7 @@ class UnderstandingQuestions_P(Page):
                              'decrease_penalty':True
             }
             hints = {
-                'payment_P':f"Your answer is incorrect. Your total payment for completing this study consists of the base payment of ${C.MIN_PAY + C.MAX_PAY} minus a penalty, and no bonus payment.",
+                'payment_P':f"Your answer is incorrect. Your total payment for completing this study consists of the base payment of ${C.START_VALUE + C.END_VALUE} minus a penalty, and no bonus payment.",
                 'penalty':'You answer is incorrect. Your penalty corresponds to the smallest amount in any of the boxes you have opened.',
                 'decrease_penalty':'You answer is incorrect. When you open another box, two things can happen. When the amount in the new box is more than or equal to the largest amount so far, your potential penalty stays the same. When the amount is less, then your penalty decreases (to the amount in the last box).'
             }
@@ -282,18 +461,19 @@ class Task(Page):
 
     @staticmethod
     def vars_for_template(player):
-         return {
-             'sequence':  json.dumps(player.participant.sequence)
-         }
+        print(json.dumps(player.participant.sequence))
+        return {
+            'sequence':  json.dumps(player.participant.sequence)
+        }
     
-
     def before_next_page(player, timeout_happened):
 
         payoff = json.loads(player.num_draws)
         if payoff==0:
-            player.payoff=C.MIN_PAY
+            player.payoff=C.START_VALUE
         else:
-            player.payoff = max(player.participant.sequence[:payoff])
+
+            player.payoff = max(json.loads(player.participant.sequence)[:payoff])
 
     def is_displayed(player: Player):
         return player.participant.experiment_sequence[player.round_number - 1] == 'Task'
@@ -316,13 +496,29 @@ class Finished(Page):
         part1 = F"You will receive your payment of {player.participant.payoff_plus_participation_fee()}" 
         part2 = ""
         if player.participant.treatment=="penalty":
-            part2 = F" consisting of the ${C.MIN_PAY + C.MAX_PAY} base payment minus the penalty of {C.MIN_PAY + C.MAX_PAY - player.participant.payoff_plus_participation_fee()}"
+            part2 = F" consisting of the ${C.START_VALUE + C.END_VALUE} base payment minus the penalty of {C.START_VALUE + C.END_VALUE - player.participant.payoff_plus_participation_fee()}"
         part3 = " shortly."
         return {'payment_message': part1 + part2 + part3}
 
     def is_displayed(player: Player):
         return player.participant.experiment_sequence[player.round_number - 1] == 'Finished'
 
+class Demographics(Page):
+    form_model = 'player'
+    form_fields = ['gender', 'ethnic', 'age','education', 'marital', 'income', 'percentProlific','state']
+
+    def error_message(player, values):
+        if not player.session.config['dev_mode']:
+            
+            error_messages = {}
+            for field_name in ['gender', 'ethnic', 'age','education', 'marital', 'income', 'percentProlific','state']:
+                if values[field_name] is None:
+                    error_messages[field_name] = 'Please answer the question.'
+                      
+            return error_messages
+        
+    def is_displayed(player: Player):
+        return player.participant.experiment_sequence[player.round_number - 1] == 'Demographics'
 
 class Offer(Page):
     form_model = 'group'
@@ -353,6 +549,7 @@ page_sequence = [
     UnderstandingQuestions_B,
     UnderstandingQuestions_P,
     Task,
+    Demographics,
     Feedback,
     Finished
 ]

@@ -145,7 +145,7 @@ function task(parameters){
 
         var p=document.createElement('p');
         p.className="h3 mt-5";
-        p.innerHTML="$"+ amount.toString();
+        p.innerHTML="$"+ amount.toFixed(2);
 
         td1.appendChild(p);
         tr.appendChild(td1)
@@ -277,10 +277,10 @@ function task(parameters){
 
         var p=document.createElement('p');
         if (this.treatment=="bonus"){
-            p.innerHTML="The box contains a dollar amount of $"+last_num.toString()
+            p.innerHTML="The box contains a dollar amount of $"+last_num.toFixed(2)
         } else if (this.treatment=="penalty"){
             var penalty = this.min_pay+this.max_pay-last_num
-            p.innerHTML="The box contains dollar amount of $"+penalty.toString()
+            p.innerHTML="The box contains dollar amount of $"+penalty.toFixed(2)
         }
 
         
@@ -290,10 +290,10 @@ function task(parameters){
         var bonus=Math.max(...this.sequence.slice(0,this.num_draws))
    
         if (this.treatment=="bonus"){
-            p.innerHTML="So your payment if you end the task now is $"+ bonus.toString()
+            p.innerHTML="So your payment if you end the task now is $"+ bonus.toFixed(2)
         } else if (this.treatment=="penalty"){
             var penalty = this.min_pay+this.max_pay-bonus
-            p.innerHTML="So your penalty if you end the task now is $"+ penalty.toString()
+            p.innerHTML="So your penalty if you end the task now is $"+ penalty.toFixed(2)
         }
 
         
@@ -336,10 +336,10 @@ function task(parameters){
 
        
         if (this.treatment=="bonus"){
-            p.innerHTML="Your final payment is $"+ bonus.toString()
+            p.innerHTML="Your final payment is $"+ bonus.toFixed(2)
         } else if (this.treatment=="penalty"){
             var penalty = this.min_pay+this.max_pay-bonus
-            p.innerHTML="Your final penalty is $"+penalty.toString()
+            p.innerHTML="Your final penalty is $"+penalty.toFixed(2)
         }
 
             
