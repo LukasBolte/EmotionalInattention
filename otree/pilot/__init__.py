@@ -2,6 +2,7 @@ import random
 import json
 import itertools
 import math
+import re 
 
 from collections import Counter
 
@@ -17,7 +18,7 @@ Vlasta Rasocha
 class C(BaseConstants):
     NAME_IN_URL = 'study'
     PLAYERS_PER_GROUP = None
-    NUM_ROUNDS = 9
+    NUM_ROUNDS = 10
     MIN_TIME = 5
     MAX_TIME = 10
     NUM_BOXES = 10000
@@ -44,7 +45,7 @@ def creating_session(subsession: Subsession):
             for player in subsession.get_players():
                 participant = player.participant
                 participant.treatment = next(treatments)
-                participant.experiment_sequence = ['Welcome','Consent','Introduction',f"Payment_{participant.treatment}",f"UnderstandingQuestions_{participant.treatment}","Task","Demographics",'Feedback','Finished']
+                participant.experiment_sequence = ['Welcome','Consent','Introduction',f"Payment_{participant.treatment}",f"UnderstandingQuestions_{participant.treatment}","Task","Diagnostic","Demographics",'Feedback','Finished']
 
                 # I have two lists: A and B. They have the same length. I want to create a third list that has element A[i] repeated B[i] times.
                 # 
@@ -66,6 +67,10 @@ class Group(BaseGroup):
     pass
 
 class Player(BasePlayer):
+
+    expected_bonus = models.StringField(
+        blank=True
+    )
 
     num_draws = models.StringField()
      
@@ -478,6 +483,41 @@ class Task(Page):
     def is_displayed(player: Player):
         return player.participant.experiment_sequence[player.round_number - 1] == 'Task'
     
+class Diagnostic(Page):
+    form_model = 'player'
+    form_fields = ['expected_bonus']
+
+
+    @staticmethod
+    
+
+    def error_message(player, values):
+        if not player.session.config['dev_mode']:
+        
+            def is_valid_number_range(string, x, y):
+                try:
+                    number = float(string)
+                    if x <= number <= y:
+                        decimal_count = len(string.split('.')[-1])
+                        return decimal_count <= 2
+                except ValueError:
+                    return False
+
+                return False
+
+   
+            if values['expected_bonus'] is None:
+                return {'expected_bonus':'Please answer the question.'}
+            else:
+                if is_valid_number_range(values['expected_bonus'], C.START_VALUE, C.END_VALUE):
+                    return {}
+                else:
+                    return {'expected_bonus':f'Please enter a dollar amount  between ${C.START_VALUE} and ${C.END_VALUE} with at most two decimals points.'}
+                
+    @staticmethod
+    def is_displayed(player: Player):
+        return player.participant.experiment_sequence[player.round_number - 1] == 'Diagnostic'
+
 
 
 class Feedback(Page):
@@ -549,6 +589,7 @@ page_sequence = [
     UnderstandingQuestions_B,
     UnderstandingQuestions_P,
     Task,
+    Diagnostic,
     Demographics,
     Feedback,
     Finished

@@ -1,0 +1,85 @@
+{% extends "global/Page.html" %}
+{% load otree %}
+
+{{ block title }}
+How much does do you think opening boxes helps?
+{{ endblock }}
+
+{{ block content }}
+
+{{ if session.config.dev_mode }}
+<button class="btn btn-danger otree-btn-next" style="float: right;">Skip</button>
+{{ endif }}
+
+{% if participant.treatment == "bonus" %}
+<p>
+    Recall that you started the task with a payment of $2 before opening any boxes. What did you approximately expect your payment to be if you opened 10 boxes?
+</p>
+
+
+<table class="table w-auto  table-no-borders mb-0">
+    <tbody>
+      <tr>
+        <td>I expect a payment of around: $</td>
+        <td>{{ form.expected_bonus }}</td>
+      </tr>
+    </tbody>
+</table>
+
+{{ formfield_errors 'expected_bonus' }}
+
+{{ else }}
+
+<p>
+    Recall that you started the task with a penalty of $10 before opening any boxes. What did you approximately expect your penalty to be if you opened 10 boxes?
+</p>
+
+<table class="table w-auto  table-no-borders mb-0">
+    <tbody>
+      <tr>
+        <td>I expect a penalty of around: $</td>
+        <td>{{ form.expected_bonus }}</td>
+      </tr>
+    </tbody>
+</table>
+
+{{ formfield_errors 'expected_bonus' }}
+
+{{ endif }}
+
+<p class="mt-3">
+    After you finished giving your guess, click "Next."
+</p>
+
+<button style="float: right" class="btn btn-primary btn-large">Next</button>
+
+{% endblock %}
+
+{% block styles %}
+
+<style>
+    ._formfield {
+      padding-top: 0 !important;
+  
+    }
+  
+  
+  tr td{
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+    padding-left: 0 !important;
+  
+  
+    margin: 0 !important;
+  }
+  
+    .table-no-borders,
+    .table-no-borders th,
+    .table-no-borders td {
+        border: none;
+    }
+  
+  
+  </style>
+
+{% endblock %}
