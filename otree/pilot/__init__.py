@@ -477,12 +477,12 @@ class Task(Page):
         if payoff==0:
             player.payoff=C.START_VALUE
         else:
-
             player.payoff = max(json.loads(player.participant.sequence)[:payoff])
 
     def is_displayed(player: Player):
         return player.participant.experiment_sequence[player.round_number - 1] == 'Task'
     
+
 class Diagnostic(Page):
     form_model = 'player'
     form_fields = ['expected_bonus']
