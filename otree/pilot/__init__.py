@@ -266,13 +266,14 @@ def labels(subsession):
     return ["{:.2f}".format(num) for num in first_array]
 
 def bar_heights(subsession):
-    first_array= create_incremented_array(C.START_VALUE, C.END_VALUE, C.INCREMENT_VALUE, lambda i: 1000 * math.exp(-0.5 * i))
+    first_array= create_incremented_array(C.START_VALUE, C.END_VALUE, C.INCREMENT_VALUE, lambda i: math.exp(-1 * i))
+    sum_value = sum(first_array)
+    target_mass = 1-len(first_array)/C.NUM_BOXES
+    ratio = target_mass / sum_value
+    first_array = [value * ratio for value in first_array]
+    added_mass = 1/C.NUM_BOXES
+    first_array = [value +added_mass for value in first_array]
     return manipulate_array(first_array,C.NUM_BOXES)
-
-
-# INITIAL_LIST=[2,2,2,2,2,3,3,3,5,10]
-# MIN_PAY = min(INITIAL_LIST)
-# MAX_PAY = max(INITIAL_LIST)
 
 
 def manipulate_array(array, total_sum):
