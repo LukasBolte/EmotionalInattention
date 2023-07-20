@@ -92,7 +92,7 @@ Payment details
     chart.appendChild(spacerElement);
 
     const numBox = {{ C.NUM_BOXES }};
-    const heightConstant = 30000;
+    
     
 
     function roundNumberToTwoDecimals(number) {
@@ -116,6 +116,9 @@ Payment details
 
     dividedBarHeights = {{ dividedBarHeights|safe }}
     labels = {{ labels|safe }}
+
+    const max_height = Math.max(...dividedBarHeights)
+    const heightConstant = 280 / (max_height / numBox)
 
     for (let i = 0; i < dividedBarHeights.length; i++) {
         const height = dividedBarHeights[i];

@@ -118,8 +118,6 @@ function task(parameters){
         var td1=document.createElement("td");
         td1.style.width="50%";
 
-
-
         var p=document.createElement('p');
         var bonus
         if (this.num_draws==0){
@@ -217,21 +215,30 @@ function task(parameters){
           });
         td2.appendChild(endTaskButton);
 
-        tr.appendChild(td2)
-
-
-
-
-   
+        tr.appendChild(td2)  
     }
+
+    this.formatNumberOrString=function(last_num) {
+        if (typeof last_num === 'number' || !isNaN(last_num)) {
+          // If last_num is a number or can be converted to a number, treat it as a number
+          return parseFloat(last_num).toFixed(2);
+        } else {
+          // Otherwise, treat it as an initial string and try to convert it to a number
+          const parsedNum = parseFloat(last_num);
+          if (!isNaN(parsedNum)) {
+            // If parsedNum is a valid number, convert it to a fixed format
+            return parsedNum.toFixed(2);
+          } else {
+            // If parsedNum is NaN (Not-a-Number), return the original string as is
+            return last_num;
+          }
+        }
+      }
 
     this.startOpening=function(){
         console.log(this.delay)
         let seconds =this.delay-1;
         document.getElementById("openBoxButton_id").innerHTML="Open Box ("+seconds.toString()+"s)"
-        console.log('printing seconds')
-        console.log(seconds)
-        console.log(this, 'my this element')
         // Update the timer every second
         const timerInterval = setInterval(() => {
             // Decrease the seconds by 1
@@ -274,13 +281,14 @@ function task(parameters){
         console.log(this.sequence, this.num_draws-1)
         var last_num= this.sequence[this.num_draws-1]
    
-
+        console.log(last_num, 'last number')
+        console.log(typeof(last_num), 'last number type')
         var p=document.createElement('p');
         if (this.treatment=="bonus"){
-            p.innerHTML="The box contains a dollar amount of $"+last_num.toFixed(2)
+            p.innerHTML="The box contains a dollar amount of $"+this.formatNumberOrString(last_num)
         } else if (this.treatment=="penalty"){
             var penalty = this.min_pay+this.max_pay-last_num
-            p.innerHTML="The box contains dollar amount of $"+penalty.toFixed(2)
+            p.innerHTML="The box contains a dollar amount of $"+this.formatNumberOrString(penalty)
         }
 
         
@@ -290,10 +298,10 @@ function task(parameters){
         var bonus=Math.max(...this.sequence.slice(0,this.num_draws))
    
         if (this.treatment=="bonus"){
-            p.innerHTML="So your payment if you end the task now is $"+ bonus.toFixed(2)
+            p.innerHTML="So your payment if you end the task now is $"+ this.formatNumberOrString(bonus)
         } else if (this.treatment=="penalty"){
             var penalty = this.min_pay+this.max_pay-bonus
-            p.innerHTML="So your penalty if you end the task now is $"+ penalty.toFixed(2)
+            p.innerHTML="So your penalty if you end the task now is $"+ this.formatNumberOrString(penalty)
         }
 
         
@@ -336,10 +344,10 @@ function task(parameters){
 
        
         if (this.treatment=="bonus"){
-            p.innerHTML="Your final payment is $"+ bonus.toFixed(2)
+            p.innerHTML="Your final payment is $"+ this.formatNumberOrString(bonus)
         } else if (this.treatment=="penalty"){
             var penalty = this.min_pay+this.max_pay-bonus
-            p.innerHTML="Your final penalty is $"+penalty.toFixed(2)
+            p.innerHTML="Your final penalty is $"+this.formatNumberOrString(penalty)
         }
 
             
@@ -374,302 +382,6 @@ function task(parameters){
             this.draw3();
             break;
         }
-
-
-    //     this.questionHook.innerHTML="";
-    //     var table=document.createElement("table");
-    //     table.className="table table-hover";
-    //     this.questionHook.appendChild(table);
-    //     var tbody=document.createElement("tbody");
-    //     table.appendChild(tbody);
-    //     //make ordered list for questions
-    //     var order=["overall","sure1","sure2","unsure"];
-    //     for(var i=0;i<order.length;i++){
-    //         var q=order[i];
-    //         if (q=="sure1"){
-    //             this.part2Div=document.createElement("div");
-    //             this.questionHook.appendChild(this.part2Div);
-    //             var table2=document.createElement("table");
-    //             table2.className="table";
-    //             this.part2Div.appendChild(table2);
-    //             var tbody2=document.createElement("tbody");
-    //             table2.appendChild(tbody2);
-    //             var tr =document.createElement("tr");
-    //             tbody2.appendChild(tr);
-    //             this.part2DivInstructions=document.createElement("td");
-    //             this.part2DivInstructions.setAttribute("colspan",2);
-    //             tr.appendChild(this.part2DivInstructions);
-    //             if (this.sliderDetails["overall"]==undefined || this.sliderDetails["overall"].sliderValue==undefined){
-    //                 this.part2Div.style.visibility="hidden";
-    //             }
-    //             else{
-    //                 this.part2DivInstructions.innerHTML=this.subQuestionInstructions.replace("TOTAL",this.sliderDetails["overall"]["sliderValue"]);
-    //                 this.part2Div.style.visibility="visible";        
-    //             }
-    //         }
-    //         if (this.sliderDetails[q]==undefined){
-    //             this.sliderDetails[q]={};
-    //         }    
-    //         if (this.part2Div==undefined){
-    //             this.drawSingleQuestionSlider(tbody,q);    
-    //         }
-    //         else{
-    //             this.drawSingleQuestionSlider(tbody2,q);    
-    //         }
-    //     }
-    //     //now draw error message
-    //     var table=document.createElement("table");
-    //     table.className="table";
-    //     this.questionHook.appendChild(table);
-    //     var tbody=document.createElement("tbody");
-    //     table.appendChild(tbody);
-    //     var tr =document.createElement("tr");
-    //     tbody.appendChild(tr);
-    //     this.errorMessage=document.createElement("td");
-    //     tr.appendChild(this.errorMessage);
-    //     this.errorMessage.style.visibility="hidden";
-    //     this.errorMessage.className="text-warning";
-    // }
-
-    // this.drawSingleQuestionSlider = function(tbody,q){
-    //     var tr =document.createElement("tr");
-    //     tbody.appendChild(tr);
-    //     var td=document.createElement("td");
-    //     tr.appendChild(td);
-    //     td.className="float-right";
-    //     td.innerHTML=this.questions[q].text;
-    //     //now append slider
-    //     td=document.createElement("td");
-    //     tr.appendChild(td);
-    //     td.className="w-50";
-    //     var input=document.createElement("input");
-    //     input.id=this.questions[q]["variable"]+"_slider";
-    //     td.appendChild(input);
-    //     td.innerHTML+="<br/>";
-
-    //     this.sliderDetails[q]["note"]=document.createElement("span");
-    //     td.appendChild(this.sliderDetails[q]["note"]);
-    //     this.sliderDetails[q]["note"].className="font-italic";
-    //     this.sliderDetails[q]["note"].innerHTML="Please make a selection";
-    //     this.sliderDetails[q]["message"]=document.createElement("span");
-    //     td.appendChild(this.sliderDetails[q]["message"]);
-    //     this.sliderDetails[q]["message"].className="font-weight-bold";
-    //     var initValue=0;
-    //     if (this.sliderDetails[q]["sliderValue"]!=undefined){
-    //         initValue=this.sliderDetails[q]["sliderValue"];
-    //     }
-    //     this.sliderDetails[q]["slider"] = new Slider("#"+input.id, {
-    //         id: input.id,
-    //         dataSliderId: input.id,
-    //         min: 0,
-    //         max: 8,
-    //         step: 1,
-    //         value: initValue});        
-    //     var context={"context":this,"question":q}
-    //     this.sliderDetails[q]["slider"].on("slideStop", function(sliderValue) {
-    //         this["context"].sliderDetails[this["question"]]["sliderValue"]=sliderValue;
-    //         this["context"].change(this["question"]);
-    //         this["context"].save();
-    //     }.bind(context));
-    //     if (this.sliderDetails[q]["sliderValue"]!=undefined){
-    //         this.change(q);
-    //     }
-    // }
-
-    // this.change=function(q){
-    //     this.sliderDetails[q]["note"].style.display="none";
-    //     this.sliderDetails[q]["message"].innerHTML = this.sliderDetails[q]["sliderValue"]+" "+this.questions[q]["answerSuffix"];
-    //     if (q=="overall" && this.part2Div!=undefined){
-    //         this.part2DivInstructions.innerHTML=this.subQuestionInstructions.replace("TOTAL",this.sliderDetails[q]["sliderValue"]);
-    //         this.part2Div.style.visibility="visible";
-    //     }
-    //     if (this.errorMessage!=undefined){
-    //         this.errorMessage.style.visibility="hidden";
-    //     }
-    // }
-
-    // this.sliderConfirmModal=null;
-    // this.checkCompleteness=function(e){
-    //     var order=["overall","sure1","sure2","unsure"];
-    //     var total=0;
-    //     var sum=0;
-    //     for(var i=0;i<order.length;i++){
-    //         var q=order[i];
-    //         if (this.sliderDetails[q]["sliderValue"]==undefined){
-    //             this.errorMessage.innerHTML=this.questions[q].missingError;
-    //             this.errorMessage.style.visibility="visible";
-    //             if (e!=undefined){
-    //                 e.stopPropagation();
-    //             }
-    //             this.failedAttempts.push(this.codeFailedAttempt());
-    //             this.save();
-    //             return;
-    //         }
-    //         else{
-    //             if (q=="overall"){
-    //                 total=parseInt(this.sliderDetails[q]["sliderValue"]);
-    //             }
-    //             else{
-    //                 sum=sum+parseInt(this.sliderDetails[q]["sliderValue"]);
-    //             }
-    //         }
-    //     }
-    //     if (total!=sum){
-    //         this.errorMessage.innerHTML=this.subQuestionSummationError.replace("TOTAL",total);
-    //         this.errorMessage.style.visibility="visible";
-    //         if (e!=undefined){
-    //             e.stopPropagation();
-    //         }
-    //         //save failed attempt
-    //         this.failedAttempts.push(this.codeFailedAttempt());
-    //         this.save();
-    //         return;         
-    //     }
-    //     //now open modal
-    //     this.sliderConfirmModal = new bootstrap.Modal(document.getElementById("sliderConfirmModal"), {
-    //         keyboard: false
-    //     });    
-    //     document.getElementById("sliderConfirmModalClose1").addEventListener("click",function(evt){
-    //         this.sliderConfirmModal.hide();
-    //     }.bind(this));
-    //     document.getElementById("sliderConfirmModalClose2").addEventListener("click",function(evt){
-    //         this.sliderConfirmModal.hide();
-    //     }.bind(this));
-    //     document.getElementById("sliderConfirmModalNext").addEventListener("click",function(evt){
-    //         document.dispatchEvent(new CustomEvent(["finishedslider"], {
-    //             bubbles: true,
-    //             detail: this.retrieve()
-    //         }));        
-    //         this.sliderConfirmModal.hide();
-    //         }.bind(this));
-    //     this.sliderConfirmModal.show();
-    // }
-
-    // this.codeFailedAttempt = function(){
-    //     var output={};
-    //     for(var q in this.questions){
-    //         if (this.sliderDetails[q]==undefined || this.sliderDetails[q]["sliderValue"]==undefined){
-    //             output[this.questions[q]["variable"]]="missing";
-    //         }
-    //         else{
-    //             output[this.questions[q]["variable"]]=this.sliderDetails[q]["sliderValue"];
-    //         }
-    //     }
-    //     //console.log(output);
-    //     return output;
-    // }
-
-    // //storage functions
-    // this.save=function(){
-    //     var keyName=this.playerID+":"+this.rootName;
-    //     var output={};
-    //     output.failedAttempts=this.failedAttempts;
-    //     var allDefined=true;
-    //     for(var q in this.questions){
-    //         if (this.sliderDetails[q]==undefined || this.sliderDetails[q]["sliderValue"]==undefined){
-    //             allDefined=false;
-    //         }
-    //         else{
-    //             output[this.questions[q]["variable"]]=this.sliderDetails[q]["sliderValue"];
-    //         }
-    //     }
-    //     localStorage.setItem(keyName,JSON.stringify(output));
-    //     document.getElementById(this.hiddenField).value=JSON.stringify(output);
-    // }   
-
-    
-    // this.load=function(){
-    //     var keyName=this.playerID+":"+this.rootName;
-    //     var savedValue=localStorage.getItem(keyName); 
-    //     //console.log(savedValue);
-    //     if (savedValue!=undefined){
-    //         var output=JSON.parse(savedValue);
-    //         for(var q in this.questions){
-    //             if (output[this.questions[q]["variable"]]!=undefined){
-    //                 if (this.sliderDetails[q]==undefined){
-    //                     this.sliderDetails[q]={};
-    //                 }
-    //                 this.sliderDetails[q]["sliderValue"]=output[this.questions[q]["variable"]];
-    //             }
-    //         }
-    //         if (output.failedAttempts!=undefined){
-    //             this.failedAttempts=output.failedAttempts;
-    //         }
-    //         document.getElementById(this.hiddenField).value=savedValue;
-    //     }
-    // }
-
-    // this.retrieve=function(){
-    //     var output={};
-    //     output.failedAttempts=this.failedAttempts;
-    //     var allDefined=true;
-    //     for(var q in this.questions){
-    //         if (this.sliderDetails[q]==undefined || this.sliderDetails[q]["sliderValue"]==undefined){
-    //             allDefined=false;
-    //         }
-    //         else{
-    //             output[this.questions[q]["variable"]]=this.sliderDetails[q]["sliderValue"];
-    //         }
-    //     }
-    //     return output;
-    // }
-
-    // this.reset=function(){
-    //     for(var q in this.questions){
-    //         this.sliderDetails[q]["sliderValue"]=undefined;
-    //         this.sliderDetails[q]["slider"].setValue(0);
-    //         this.sliderDetails[q]["message"].innerHTML="";
-    //         this.sliderDetails[q]["note"].style.display="";
-    //     }
-    //     this.failedAttempts=[];
-    //     this.part2Div.style.visibility="hidden";
-    //     this.save();
-    //     this.errorMessage.style.visibility="hidden";
-    // }
-
-    // //create styles
-    // for (var q in this.questions){
-    //     var style = document.createElement('style');
-    //     style.innerHTML = "#"+this.questions[q]["variable"]+"_slider"+" .slider-selection {background: #AAAAAA;}";
-    //     document.getElementsByTagName('head')[0].appendChild(style);    
-    // }
-    // //attach hidden field
-    // var hidden=document.createElement("input");
-    // hidden.setAttribute("type","hidden");
-    // hidden.setAttribute("id",this.hiddenField);
-    // hidden.setAttribute("name",this.hiddenField);
-    // this.questionRoot.appendChild(hidden);
-    // //atach modal warning
-    // var modal=`
-    // <div id="sliderConfirmModal" class="modal" tabindex="-1" role="dialog">
-    // <div class="modal-dialog" role="document">
-    //   <div class="modal-content">
-    //     <div class="modal-header">
-    //       <h5 class="modal-title">Before you continue</h5>
-    //       <button type="button" class="close" data-dismiss="modal" aria-label="Close" id="sliderConfirmModalClose1">
-    //         <span aria-hidden="true">&times;</span>
-    //       </button>
-    //     </div>
-    //     <div class="modal-body">
-    //       <p>Are you sure about your answers? If you are, click "Next" to continue.</p>
-    //     </div>
-    //     <div class="modal-footer">
-    //       <button type="button" class="btn btn-secondary" data-dismiss="modal" id="sliderConfirmModalClose2">Close</button>
-    //       <button type="button" class="btn btn-primary" style="float:right" id="sliderConfirmModalNext">
-    //         Next</button>
-    //     </div>
-    //   </div>
-    // </div>
-    // </div>`;
-    // this.questionRoot.innerHTML+=modal;
-
-    // //attach hook for question
-    // this.questionHook=document.createElement("div");
-    // this.questionRoot.appendChild(this.questionHook);
-
-    // this.load();
-    // this.draw();
-    // this.save();
 
 }
 

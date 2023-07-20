@@ -56,8 +56,6 @@ def creating_session(subsession: Subsession):
                 new_list = [a for a, b in zip(A, B) for _ in range(b)]
                 participant.sequence = json.dumps(random.sample(new_list, C.NUM_DRAWS))
 
-                print(participant.sequence)
-
                 
 
 
@@ -467,7 +465,6 @@ class Task(Page):
 
     @staticmethod
     def vars_for_template(player):
-        print(json.dumps(player.participant.sequence))
         return {
             'sequence':  json.dumps(player.participant.sequence)
         }
