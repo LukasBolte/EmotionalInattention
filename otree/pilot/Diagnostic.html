@@ -2,7 +2,7 @@
 {% load otree %}
 
 {{ block title }}
-How much does do you think opening boxes helps?
+How much do you think opening boxes helps?
 {{ endblock }}
 
 {{ block content }}
@@ -13,14 +13,14 @@ How much does do you think opening boxes helps?
 
 {% if participant.treatment == "bonus" %}
 <p>
-    Recall that you started the task with a payment of $2 before opening any boxes. What did you approximately expect your payment to be if you opened 10 boxes?
+    Recall that you started the task with a payment of $2 before opening any boxes. What would you expect your payment to be if you opened 10 boxes?
 </p>
 
 
 <table class="table w-auto  table-no-borders mb-0">
     <tbody>
       <tr>
-        <td>I expect a payment of around: $</td>
+        <td>I would expect expect a payment of around: $</td>
         <td>{{ form.expected_bonus }}</td>
       </tr>
     </tbody>
@@ -31,13 +31,13 @@ How much does do you think opening boxes helps?
 {{ else }}
 
 <p>
-    Recall that you started the task with a penalty of $10 before opening any boxes. What did you approximately expect your penalty to be if you opened 10 boxes?
+    Recall that you started the task with a penalty of $10 before opening any boxes. What would you expect your penalty to be if you opened 10 boxes?
 </p>
 
 <table class="table w-auto  table-no-borders mb-0">
     <tbody>
       <tr>
-        <td>I expect a penalty of around: $</td>
+        <td>I would expect a penalty of around: $</td>
         <td>{{ form.expected_bonus }}</td>
       </tr>
     </tbody>
