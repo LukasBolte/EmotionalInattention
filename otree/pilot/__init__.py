@@ -412,7 +412,7 @@ class UnderstandingQuestions_P(Page):
             return error_messages
         
     def before_next_page(player, timeout_happened):
-        player.participant['times']['start_task'] = time.time()
+        player.participant.times['start_task'] = time.time()
         pass 
 
     def is_displayed(player: Player):
@@ -465,7 +465,7 @@ class UnderstandingQuestions_B(Page):
             return error_messages
         
     def before_next_page(player, timeout_happened):
-        player.participant['times']['start_task'] = time.time()
+        player.participant.times['start_task'] = time.time()
         pass 
     def is_displayed(player: Player):
         return player.participant.experiment_sequence[player.round_number - 1] == 'UnderstandingQuestions_bonus'
@@ -489,7 +489,7 @@ class Task(Page):
             player.payoff=C.START_VALUE
         else:
             player.payoff = max(json.loads(player.participant.sequence)[:payoff])
-        player.participant['times']['end_task'] = time.time()
+        player.participant.times['end_task'] = time.time()
         pass 
 
     def is_displayed(player: Player):
@@ -543,7 +543,7 @@ class Finished(Page):
 
     @staticmethod
     def vars_for_template(player):
-        player.participant['times']['finished'] = time.time()
+        player.participant.times['finished'] = time.time()
 
         part1 = F"You will receive your payment of {player.participant.payoff_plus_participation_fee()}" 
         part2 = ""
