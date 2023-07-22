@@ -28,6 +28,32 @@ function task(parameters){
         hidden.setAttribute("id",this.varname);
         hidden.setAttribute("name",this.varname);
         this.root.appendChild(hidden);
+
+        
+        var modal_div=document.createElement("div");
+        modal_div.innerHTML=`
+        <div class="modal fade" id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="confirmModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                <div class="modal-body">
+                    <p class="pb-0 mb-0">Are you sure you want to end the task? You will not be able to return to it.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" data-bs-dismiss="modal" class="btn btn-primary">Back to task</button>
+                    <button id="id_button_end_task" style="float: right" class="btn btn-secondary btn-large">End task</button>
+                </div>
+                </div>
+            </div>
+        </div>`
+
+
+        
+        this.root.appendChild(modal_div);
+        document.getElementById("id_button_end_task").addEventListener('click', () => {
+            this.draw3();
+            });
+
+
         //attach container that can easily be reset
         var container=document.createElement("div");
 
@@ -210,9 +236,11 @@ function task(parameters){
         endTaskButton.setAttribute("type","button");
         endTaskButton.className="btn btn-secondary";
         endTaskButton.innerHTML="End task";
-        endTaskButton.addEventListener('click', () => {
-            this.draw3();
-          });
+
+        endTaskButton.setAttribute("data-bs-toggle","modal");
+        endTaskButton.setAttribute("data-bs-target","#confirmModal");
+        
+        
         td2.appendChild(endTaskButton);
 
         tr.appendChild(td2)  

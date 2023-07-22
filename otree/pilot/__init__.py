@@ -592,16 +592,3 @@ page_sequence = [
     Feedback,
     Finished
 ]
-
-
-
-def create_list_with_frequency(lst, x):
-    counter = Counter(lst)  # Count the frequency of elements in the initial list
-    max_frequency = max(counter.values())  # Find the maximum frequency
-
-    result = []
-    for element, frequency in counter.items():
-        num_repeats = x * frequency  # Determine the number of repeats for each element
-        result.extend([element] * num_repeats)  # Add the element to the result list
-
-    return result
