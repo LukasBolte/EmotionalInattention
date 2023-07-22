@@ -316,8 +316,8 @@ def manipulate_array(array, total_sum):
 class Welcome(Page):
     @staticmethod
     def vars_for_template(player):
-        player.participant['times'] = {}
-        player.participant['times']['start'] = time.time()
+        player.participant.times = {}
+        player.participant.times['start'] = time.time()
         pass 
 
     @staticmethod
@@ -544,7 +544,7 @@ class Finished(Page):
     @staticmethod
     def vars_for_template(player):
         player.participant['times']['finished'] = time.time()
-        
+
         part1 = F"You will receive your payment of {player.participant.payoff_plus_participation_fee()}" 
         part2 = ""
         if player.participant.treatment=="penalty":
