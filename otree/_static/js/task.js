@@ -222,6 +222,7 @@ function task(parameters){
         openBoxButton.className="btn btn-primary";
         openBoxButton.innerHTML="Open box ("+this.delay+"s)";
         openBoxButton.addEventListener('click', () => {
+            document.getElementById("openBoxButton_id").disabled = true;
             this.startOpening();
           });
         td1.appendChild(openBoxButton);
@@ -266,13 +267,13 @@ function task(parameters){
     this.startOpening=function(){
         console.log(this.delay)
         let seconds =this.delay-1;
-        document.getElementById("openBoxButton_id").innerHTML="Open Box ("+seconds.toString()+"s)"
+        document.getElementById("openBoxButton_id").innerHTML="Open box ("+seconds.toString()+"s)"
         // Update the timer every second
         const timerInterval = setInterval(() => {
             // Decrease the seconds by 1
           seconds--;
           console.log(seconds);
-          document.getElementById("openBoxButton_id").innerHTML="Open Box ("+seconds.toString()+"s)"
+          document.getElementById("openBoxButton_id").innerHTML="Open box ("+seconds.toString()+"s)"
   
           
   
@@ -293,6 +294,7 @@ function task(parameters){
     
     this.draw2=function(){
         this.clearContainer();
+        // clearInterval(timerInterval)
         console.log("draw2 is executed")
         this.drawBox();
         var td=document.getElementById("row1_id");
