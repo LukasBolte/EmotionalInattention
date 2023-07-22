@@ -3,7 +3,7 @@ import json
 import itertools
 import math
 import re 
-
+import time
 from collections import Counter
 
 from otree.api import *
@@ -315,6 +315,12 @@ def manipulate_array(array, total_sum):
 # PAGES
 class Welcome(Page):
     @staticmethod
+    def vars_for_template(player):
+        player.participant['times'] = {}
+        player.participant['times']['start'] = time.time()
+        pass 
+
+    @staticmethod
     def is_displayed(player: Player):
         return player.participant.experiment_sequence[player.round_number - 1] == 'Welcome'
 
@@ -405,6 +411,10 @@ class UnderstandingQuestions_P(Page):
 
             return error_messages
         
+    def before_next_page(player, timeout_happened):
+        player.participant['times']['start_task'] = time.time()
+        pass 
+
     def is_displayed(player: Player):
         return player.participant.experiment_sequence[player.round_number - 1] == 'UnderstandingQuestions_penalty'
     
@@ -454,6 +464,9 @@ class UnderstandingQuestions_B(Page):
 
             return error_messages
         
+    def before_next_page(player, timeout_happened):
+        player.participant['times']['start_task'] = time.time()
+        pass 
     def is_displayed(player: Player):
         return player.participant.experiment_sequence[player.round_number - 1] == 'UnderstandingQuestions_bonus'
     
@@ -476,6 +489,8 @@ class Task(Page):
             player.payoff=C.START_VALUE
         else:
             player.payoff = max(json.loads(player.participant.sequence)[:payoff])
+        player.participant['times']['end_task'] = time.time()
+        pass 
 
     def is_displayed(player: Player):
         return player.participant.experiment_sequence[player.round_number - 1] == 'Task'
@@ -487,8 +502,6 @@ class Diagnostic(Page):
 
 
     @staticmethod
-    
-
     def error_message(player, values):
         if not player.session.config['dev_mode']:
         
@@ -530,7 +543,8 @@ class Finished(Page):
 
     @staticmethod
     def vars_for_template(player):
-
+        player.participant['times']['finished'] = time.time()
+        
         part1 = F"You will receive your payment of {player.participant.payoff_plus_participation_fee()}" 
         part2 = ""
         if player.participant.treatment=="penalty":
