@@ -36,7 +36,7 @@ function task(parameters){
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                 <div class="modal-body">
-                    <p class="pb-0 mb-0">Are you sure you want to end the task? You will not be able to return to it.</p>
+                    <p class="pb-0 mb-0">Are you sure you want to end the task? You will not be able to return and open more boxes.</p>
                 </div>
                 <div class="modal-footer">
                     <button type="button" data-bs-dismiss="modal" class="btn btn-primary">Back to task</button>
