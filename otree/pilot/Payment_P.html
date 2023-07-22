@@ -12,11 +12,11 @@ Payment details
 {{ endif }}
 
 <p>
-    This study consists of one main task which determines your payment as follows. You will receive a base payment of ${{ base_payment }} but we will subtract a penalty. You start with a penalty of ${{ C.END_VALUE }}. You can reduce the penalty by opening boxes. Each box contains an unknown dollar amount between ${{ C.START_VALUE  }} and ${{ C.END_VALUE  }}.
+    This study consists of one main task which determines your payment as follows. You will receive a base payment of ${{ base_payment }} but we will subtract a penalty. You start with a penalty of ${{ C.END_VALUE }}. You can reduce the penalty by opening boxes. Each box contains an unknown penalty amount between ${{ C.START_VALUE  }} and ${{ C.END_VALUE  }} that could replace your original penalty.
 </p>
 
 <p>
-    There are <span class='class_num_box'></span> boxes overall. Don't worry, you do not have to open all of them! The following figure shows you how many of these boxes contain each dollar amount between ${{ C.START_VALUE }} and ${{ C.END_VALUE }}.
+    There are <span class='class_num_box'></span> boxes overall. Don't worry, you do not have to open all of them! The following figure shows you how many of these boxes contain each penalty amount between ${{ C.START_VALUE }} and ${{ C.END_VALUE }}.
 </p>
 
 <div class="chart-container">
@@ -31,11 +31,11 @@ Payment details
 </p>
  
 <p>
-    If you open the box, the dollar amount inside will be revealed after a delay of {{ C.DELAY }} seconds. 
+    If you open the box, the penalty amount inside will be revealed after a delay of {{ C.DELAY }} seconds. 
 </p>
 
 <p>
-    Most importantly, if you end the task, your penalty will correspond to the smallest dollar amount in any of the boxes you have opened.
+    Most importantly, if you end the task, your penalty will correspond to the smallest penalty amount in any of the boxes you have opened.
 </p>
 
 <p>

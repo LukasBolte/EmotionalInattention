@@ -11,11 +11,11 @@ Payment details
 {% endif %}
 
 <p>
-    This study consists of one main task which determines your payment as follows. You start with a payment of ${{ C.START_VALUE }}. You can increase the payment by opening boxes. Each box contains an unknown dollar amount between ${{ C.START_VALUE }} and ${{ C.END_VALUE }}.
+    This study consists of one main task which determines your payment as follows. You start with a payment of ${{ C.START_VALUE }}. You can increase the payment by opening boxes. Each box contains an unknown payment amount between ${{ C.START_VALUE }} and ${{ C.END_VALUE }} that could replace your original payment.
 </p>
 
 <p>
-    There are <span class='class_num_box'></span> boxes overall. Don't worry, you do not have to open all of them! The following figure shows you how many of these boxes contain each dollar amount between ${{ C.START_VALUE }} and ${{ C.END_VALUE }}.
+    There are <span class='class_num_box'></span> boxes overall. Don't worry, you do not have to open all of them! The following figure shows you how many of these boxes contain each payment amount between ${{ C.START_VALUE }} and ${{ C.END_VALUE }}.
 </p>
 
 <div class="chart-container">
@@ -30,11 +30,11 @@ Payment details
 </p>
 
 <p>
-    If you open the box, the dollar amount inside will be revealed after a delay of {{ C.DELAY }} seconds.
+    If you open the box, the payment amount inside will be revealed after a delay of {{ C.DELAY }} seconds.
 </p>
 
 <p>
-    Most importantly, if you end the task, your payment will correspond to the largest dollar amount in any of the boxes you have opened.
+    Most importantly, if you end the task, your payment will correspond to the largest payment amount in any of the boxes you have opened.
 </p>
 
 <p>

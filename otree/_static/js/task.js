@@ -315,10 +315,10 @@ function task(parameters){
         console.log(typeof(last_num), 'last number type')
         var p=document.createElement('p');
         if (this.treatment=="bonus"){
-            p.innerHTML="The box contains a dollar amount of $"+this.formatNumberOrString(last_num)
+            p.innerHTML="The box contains a payment amount of $"+this.formatNumberOrString(last_num)
         } else if (this.treatment=="penalty"){
             var penalty = this.min_pay+this.max_pay-last_num
-            p.innerHTML="The box contains a dollar amount of $"+this.formatNumberOrString(penalty)
+            p.innerHTML="The box contains a penalty amount of $"+this.formatNumberOrString(penalty)
         }
 
         
