@@ -87,7 +87,7 @@ class Player(BasePlayer):
         choices=[
             [1, 'It corresponds to the largest amount in any of the boxes you have opened.'],
             [2, 'It is the sum of the amounts in the boxes you have opened.'],
-            [3, 'It is the amount of the last box you have opened.']
+            [3, 'It is the amount inside the last box you have opened.']
         ],
         widget=widgets.RadioSelect,
         label='How is your payment determined?'
@@ -127,7 +127,7 @@ class Player(BasePlayer):
         choices=[
             [1, 'It corresponds to the smallest amount in any of the boxes you have opened.'],
             [2, 'It is the sum of the amounts in the boxes you have opened.'],
-            [3, 'It is the amount of the last box you have opened.']
+            [3, 'It is the amount inside the last box you have opened.']
         ],
         widget=widgets.RadioSelect,
         label='How is your penalty determined?'
@@ -435,7 +435,7 @@ class UnderstandingQuestions_B(Page):
                 'decrease_bonus':False
             }
             hints = {
-                'payment_B':f"Your answer is incorrect. Your total payment for completing this study consists of the payment from opening the boxes, and there is no penalty charge or base payment.",
+                'payment_B':f"Your answer is incorrect. Your total payment for completing this study consists of the payment from opening the boxes, and there is no penalty charge or bonus payment.",
                 'bonus':'You answer is incorrect. Your payment corresponds to the largest amount in any of the boxes you have opened.',
                 'decrease_bonus':'You answer is incorrect. When you open another box, two things can happen. When the amount in the new box is less than or equal to the largest amount so far, your potential payment stays the same. When the amount is more, then your payment increases (to the amount in the last box).'
             }
