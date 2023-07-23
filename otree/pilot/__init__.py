@@ -490,6 +490,7 @@ class Task(Page):
         else:
             player.payoff = max(json.loads(player.participant.sequence)[:payoff])
         player.participant.times['end_task'] = time.time()
+        player.participant.num_draws = player.num_draws
         pass 
 
     def is_displayed(player: Player):
@@ -524,7 +525,12 @@ class Diagnostic(Page):
                     return {}
                 else:
                     return {'expected_bonus':f'Please enter a dollar amount  between ${C.START_VALUE} and ${C.END_VALUE} with at most two decimals points.'}
-                
+    
+    @staticmethod
+    def before_next_page(player, timeout_happened):
+        player.participant.expected_bonus = player.expected_bonus
+        pass
+
     @staticmethod
     def is_displayed(player: Player):
         return player.participant.experiment_sequence[player.round_number - 1] == 'Diagnostic'
@@ -534,6 +540,11 @@ class Diagnostic(Page):
 class Feedback(Page):
     form_model = 'player'
     form_fields = [ 'feedback']   
+
+    @staticmethod
+    def before_next_page(player, timeout_happened):
+        player.participant.feedback = player.feedback
+        pass
 
     @staticmethod
     def is_displayed(player: Player):
@@ -552,6 +563,9 @@ class Finished(Page):
         part3 = " shortly."
         return {'payment_message': part1 + part2 + part3}
 
+  
+
+    @staticmethod
     def is_displayed(player: Player):
         return player.participant.experiment_sequence[player.round_number - 1] == 'Finished'
 
@@ -559,6 +573,7 @@ class Demographics(Page):
     form_model = 'player'
     form_fields = ['gender', 'ethnic', 'age','education', 'marital', 'income', 'percentProlific','state']
 
+    @staticmethod
     def error_message(player, values):
         if not player.session.config['dev_mode']:
             
@@ -568,7 +583,14 @@ class Demographics(Page):
                     error_messages[field_name] = 'Please answer the question.'
                       
             return error_messages
-        
+    
+    @staticmethod
+    def before_next_page(player, timeout_happened):
+        player.participant.demographics = {}
+        for el in ['gender', 'ethnic', 'age','education', 'marital', 'income', 'percentProlific','state']:
+            player.participant.demographics[el] = player.__dict__[el]
+            
+    @staticmethod
     def is_displayed(player: Player):
         return player.participant.experiment_sequence[player.round_number - 1] == 'Demographics'
 

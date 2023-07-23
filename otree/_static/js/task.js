@@ -393,7 +393,7 @@ function task(parameters){
         td.appendChild(nextButton);
 
         // <button style="float: right" class="btn btn-primary btn-large">Next</button>
-
+        this.save();
     }
 
 
