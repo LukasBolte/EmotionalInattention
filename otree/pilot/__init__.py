@@ -27,8 +27,8 @@ class C(BaseConstants):
 
     height_constant = 50000
 
-    START_VALUE = 2
-    END_VALUE = 10
+    START_VALUE = 1
+    END_VALUE = 9
     INCREMENT_VALUE = 0.01
 
 # create a function 
@@ -55,9 +55,6 @@ def creating_session(subsession: Subsession):
 
                 new_list = [a for a, b in zip(A, B) for _ in range(b)]
                 participant.sequence = json.dumps(random.sample(new_list, C.NUM_DRAWS))
-
-                
-
 
                 
 
@@ -251,6 +248,7 @@ class Player(BasePlayer):
     
 # FUNCTIONS 
 
+
 def create_incremented_array(start, end, increment, callback):
     array = []
     i = start
@@ -264,13 +262,15 @@ def labels(subsession):
     return ["{:.2f}".format(num) for num in first_array]
 
 def bar_heights(subsession):
-    first_array= create_incremented_array(C.START_VALUE, C.END_VALUE, C.INCREMENT_VALUE, lambda i: math.exp(-1 * i))
+    first_array= create_incremented_array(C.START_VALUE, C.END_VALUE, C.INCREMENT_VALUE, lambda i: math.exp(-1.75 * i))
     sum_value = sum(first_array)
-    target_mass = 1-len(first_array)/C.NUM_BOXES
-    ratio = target_mass / sum_value
+    ratio = C.NUM_BOXES / sum_value
     first_array = [value * ratio for value in first_array]
-    added_mass = 1/C.NUM_BOXES
-    first_array = [value +added_mass for value in first_array]
+    step = 10
+    for i in range(len(first_array)):
+            if i %  step == 0:
+                first_array[i] = max([1,first_array[i]])
+
     return manipulate_array(first_array,C.NUM_BOXES)
 
 

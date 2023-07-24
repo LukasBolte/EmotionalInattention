@@ -95,9 +95,9 @@ Payment details
 
     const numBox = {{ C.NUM_BOXES }};
 
-    const startValue = 2;
-    const endValue = 10;
-    const incrementValue = 0.01;
+    const startValue = {{ C.START_VALUE }};
+    const endValue = {{ C.END_VALUE }};
+    const incrementValue = {{ C.INCREMENT_VALUE }};
     
     function roundNumberToTwoDecimals(number) {
         const roundedNumber = Math.round(number * 100) / 100;
