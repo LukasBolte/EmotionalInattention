@@ -528,7 +528,10 @@ class Diagnostic(Page):
     
     @staticmethod
     def before_next_page(player, timeout_happened):
-        player.participant.expected_bonus = player.expected_bonus
+        normalized_bonus = player.expected_bonus
+        if player.participant.treatment == 'penalty':
+            normalized_bonus = C.START_VALUE + C.END_VALUE - player.expected_bonus
+        player.participant.expected_bonus = normalized_bonus    
         pass
 
     @staticmethod

@@ -13,9 +13,8 @@ How much do you think opening boxes helps?
 
 {% if participant.treatment == "bonus" %}
 <p>
-    Recall that you started the task with a payment of $2 before opening any boxes. What would you expect your payment to be if you opened 10 boxes?
+    Recall that you started the task with a payment of ${{ C.START_VALUE }} before opening any boxes. What would you expect your payment to be if you opened 10 boxes?
 </p>
-
 
 <table class="table w-auto  table-no-borders mb-0">
     <tbody>
@@ -31,7 +30,7 @@ How much do you think opening boxes helps?
 {{ else }}
 
 <p>
-    Recall that you started the task with a penalty of $10 before opening any boxes. What would you expect your penalty to be if you opened 10 boxes?
+    Recall that you started the task with a penalty of ${{ C.END_VALUE }} before opening any boxes. What would you expect your penalty to be if you opened 10 boxes?
 </p>
 
 <table class="table w-auto  table-no-borders mb-0">
