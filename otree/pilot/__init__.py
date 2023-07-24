@@ -491,6 +491,7 @@ class Task(Page):
             player.payoff = max(json.loads(player.participant.sequence)[:payoff])
         player.participant.times['end_task'] = time.time()
         player.participant.num_draws = player.num_draws
+        player.participant.bonus_payment = player.payoff - C.START_VALUE
         pass 
 
     def is_displayed(player: Player):
