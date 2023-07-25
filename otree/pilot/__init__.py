@@ -22,7 +22,7 @@ class C(BaseConstants):
     MIN_TIME = 5
     MAX_TIME = 10
     NUM_BOXES = 10000
-    NUM_DRAWS = 300
+    NUM_DRAWS = 1000
     DELAY = 10
 
     height_constant = 50000
