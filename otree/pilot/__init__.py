@@ -422,7 +422,7 @@ class UnderstandingQuestions_P(Page):
 class UnderstandingQuestions_B(Page):
     form_model = 'player'
     form_fields = [ 'payment_B','bonus','increase_bonus', 'same_bonus', 'decrease_bonus']   
-
+ 
     @staticmethod
     def error_message(player, values):
         if not player.session.config['dev_mode']:
