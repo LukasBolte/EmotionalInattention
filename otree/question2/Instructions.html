@@ -1,0 +1,38 @@
+{% extends "global/Page.html" %}
+{% load otree %}
+
+{{ block title }}
+Instructions
+{{ endblock }}
+
+{{ block content }}
+
+{{ if session.config.dev_mode }}
+<button class="btn btn-danger otree-btn-next" style="float: right;">Skip</button>
+{{ endif }}
+
+{{ if participant.domain == 'tasks' }}
+
+<p>
+    Instructions for tasks.
+</p>
+
+{{ elif participant.domain == 'states' }}
+ 
+<p>
+    Instructions for states.
+</p>
+{{ elif participant.domain == 'time_periods' }}
+
+<p>
+    Instructions for time periods.
+</p>
+{{ endif }}
+
+<p>
+    When you are ready, click "Next" to continue.
+</p>
+
+<button style="float: right" class="btn btn-primary btn-large">Next</button>
+
+{% endblock %}

@@ -17,6 +17,7 @@ function task(parameters){
     this.delay=parameters.delay;
     this.open_box_src=parameters.open_box_src;
     this.closed_box_src=parameters.closed_box_src;
+    this.practice_boxes=parseInt(parameters.practice_boxes);
 
     console.log(parameters, 'my parameters')
     this.draw=function(){
@@ -209,6 +210,13 @@ function task(parameters){
         tbody.append(tr);
         var td0=document.createElement("td")
         td0.style.width="50%";
+
+        var p=document.createElement('p');
+        // p.className="h3";
+        p.innerHTML="Boxes left to open:  <font size='+2'>" + (this.practice_boxes-this.num_draws).toString() + "</font>";
+        
+        td0.appendChild(p);
+
         tr.appendChild(td0)
         var td1=document.createElement("td");
         td1.style.width="25%";
@@ -338,6 +346,7 @@ function task(parameters){
         console.log('toward the end')
         var td=document.getElementById("row2_id");
 
+        // continue button
         var continueButton=document.createElement("button")
         continueButton.setAttribute("type","button");
         continueButton.setAttribute("id","continueButton_id")
@@ -347,8 +356,23 @@ function task(parameters){
             this.open_page="page1";
             this.save()
             this.draw1();
-          });
-        td.appendChild(continueButton);
+        });
+
+
+        var endPracticeButton=document.createElement("button")
+        endPracticeButton.setAttribute("id","endPracticeButton_id")
+        endPracticeButton.className="btn btn-secondary btn-large";
+        endPracticeButton.innerHTML="End pratice";
+        
+
+        //   <button id="id_button_end_task" style="float: right" class="btn btn-secondary btn-large">End task</button>
+
+        if (this.practice_boxes-this.num_draws==0){
+            td.appendChild(endPracticeButton);
+        } else {
+            td.appendChild(continueButton);
+        }
+
     }
     
 

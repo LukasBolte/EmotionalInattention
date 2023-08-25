@@ -1,0 +1,34 @@
+{% extends "global/Page.html" %}
+{% load otree %}
+
+{% block title %}
+Checking your understanding
+{% endblock %}
+
+{% block content %}
+
+{{ if session.config.dev_mode }}
+<button class="btn btn-danger otree-btn-next" style="float: right;">Skip</button>
+{{ endif }}
+
+<p>
+    It is important for our study that you understand the information from the previous page. We thus have a few simple questions that we would like you to answer before we proceed.
+</p>
+
+{{ formfields }}
+
+<p>
+  After you finish all the questions, click "Next." If any of your answers are incorrect, you will get an error message below each of your incorrect answers. Once you correct all your answers, you can continue by clicking "Next" again.
+</p>
+
+<button style="float: right" class="otree-btn-next btn btn-primary">Next</button>
+
+{% endblock %}
+
+{% block styles %}
+
+{% endblock %}
+
+{% block scripts %}
+
+{% endblock %}

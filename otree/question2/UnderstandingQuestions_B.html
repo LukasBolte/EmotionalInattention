@@ -1,0 +1,83 @@
+{% extends "global/Page.html" %}
+{% load otree %}
+
+{% block title %}
+Checking your understanding
+{% endblock %}
+
+{% block content %}
+
+{{ if session.config.dev_mode }}
+<button class="btn btn-danger otree-btn-next" style="float: right;">Skip</button>
+{{ endif }}
+
+<p>
+    It is important for our study that you understand the information from the previous page. We thus have a few simple questions that we would like you to answer before we proceed.
+</p>
+
+{{ formfield 'payment_B'}}
+
+{{ formfield 'bonus'}}
+
+<p class="mb-2">
+  When you open another box, what can happen to your payment? (Please select at least one.) 
+</p>
+
+<table class="table w-auto  table-no-borders mb-0">
+  <tbody>
+    <tr>
+      <td>{{ form.increase_bonus }}</td>
+      <td>{{ form.increase_bonus.label }}</td>
+    </tr>
+    <tr>
+      <td>{{ form.same_bonus }}</td>
+      <td>{{ form.same_bonus.label }}</td>
+    </tr>
+    <tr>
+      <td>{{ form.decrease_bonus }}</td>
+      <td>{{ form.decrease_bonus.label }}</td>
+    </tr>
+  </tbody>
+</table>
+
+{{ formfield_errors 'decrease_bonus' }}
+
+<p class="mt-3">
+  After you finish all the questions, click "Next" to open boxes and determine your payment. If any of your answers are incorrect, you will get an error message below each of your incorrect answers. Once you correct all your answers, you can continue by clicking "Next" again.
+</p>
+
+<button style="float: right" class="otree-btn-next btn btn-primary">Next</button>
+
+{% endblock %}
+
+{% block styles %}
+
+<style>
+  ._formfield {
+    padding-top: 0 !important;
+
+  }
+
+
+tr td{
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+  padding-left: 0 !important;
+
+
+  margin: 0 !important;
+}
+
+  .table-no-borders,
+  .table-no-borders th,
+  .table-no-borders td {
+      border: none;
+  }
+
+
+</style>
+{% endblock %}
+
+{% block scripts %}
+
+{% endblock %}

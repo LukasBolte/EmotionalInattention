@@ -1,6 +1,18 @@
 from os import environ
 
 SESSION_CONFIGS = [
+        dict(
+        name='question2',
+        app_sequence=['question2'],
+        num_demo_participants=8,
+        dev_mode=False
+    ),
+    dict(
+        name='question2_dev_mod',
+        app_sequence=['question2'],
+        num_demo_participants=8,
+        dev_mode=True
+    ),
     dict(
         name='pilot',
         app_sequence=['pilot'],
@@ -24,7 +36,7 @@ SESSION_CONFIG_DEFAULTS = dict(
     real_world_currency_per_point=1.00, participation_fee=0.00, doc=""
 )
 
-PARTICIPANT_FIELDS = ['treatment','experiment_sequence','sequence','mistakes','times','num_draws','bonus_payment','expected_bonus','feedback','demographics']
+PARTICIPANT_FIELDS = ['treatment','domain','valence','high_payoff','experiment_sequence','sequence','mistakes','times','num_draws','bonus_payment','expected_bonus','feedback','demographics']
 SESSION_FIELDS = []
 
 # ISO-639 code
