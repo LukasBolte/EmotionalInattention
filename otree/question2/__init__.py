@@ -517,6 +517,17 @@ class DemandElicitation(Page):
     pass
 
 
+class TransitionUnincentivized(Page):
+    pass
+
+
+
+class Unincentivized(Page):
+    pass
+
+
+
+
 
 
 class Results(Page):
@@ -609,6 +620,8 @@ page_sequence = [
     Task,
     TransitionDemandElicitation,
     DemandElicitation,
+    TransitionUnincentivized,
+    Unincentivized,
     Results, 
     Feedback,
     Finished
