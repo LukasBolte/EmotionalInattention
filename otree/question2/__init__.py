@@ -573,7 +573,7 @@ class DemandElicitation(Page):
         def custom_format(number):
             number = float(number)
             if number.is_integer():
-                return "{:.0f}".format(number)
+                return "{:.2f}".format(number)
             else:
                 return "{:.2f}".format(number)
         start = 0

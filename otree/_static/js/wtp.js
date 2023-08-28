@@ -60,7 +60,7 @@ function drawWTP(parameters){
         var counter=0;
         for(let i=0;i<leftBonus.length;i++){
             var tr=document.createElement("tr");
-            tr.setAttribute('height',"20px");
+            tr.setAttribute('height',"15px");
             if ((leftBonus[i]=="Get/Pay $0") || (rightBonus[i]=="Get/Pay $0")){
                 tr.className='border-5 border-danger'  
             };
@@ -69,7 +69,7 @@ function drawWTP(parameters){
             tbody.appendChild(tr);
             //left choice
             var td=document.createElement("td");
-            td.className="text-center";
+            td.className="text-center p-0";
             var text=document.createTextNode(leftBonus[i]);
             td.appendChild(text);
             td.setAttribute("cutoff","left:"+i);
@@ -80,7 +80,7 @@ function drawWTP(parameters){
             td.addEventListener("mouseenter", this.highlightSelection.bind(this));
             //middle OR
             var td=document.createElement("td");
-            td.className="text-center";
+            td.className="text-center p-0";
             text=document.createTextNode("OR");
             td.setAttribute("cutoff","middle:"+i);
             td.appendChild(text);
@@ -88,7 +88,7 @@ function drawWTP(parameters){
             td.addEventListener("mouseenter", this.highlightSelection.bind(this));
             //right choice
             var td=document.createElement("td");
-            td.className="text-center";
+            td.className="text-center p-0";
             text=document.createTextNode(rightBonus[i]);
             td.appendChild(text);
             td.setAttribute("cutoff","right:"+i);
@@ -255,8 +255,24 @@ function drawWTP(parameters){
             div.className="text-center p-2";
 
 
+            console.log('my Multiplier',multipler)
+
+            var switch_row = multipler - 2; 
+            console.log('my switch row',switch_row,this.tdList)
+            if ((switch_row >= 0) && (switch_row < this.leftBonus.length-1)) {
+                var text = 'I prefer completing the task over ' + this.rightBonus[switch_row+1] + ' but I prefer ' + this.rightBonus[switch_row] + ' over completing the task';
+            } else if (switch_row < 0) {
+                var text = 'I prefer completing the task over ' + this.rightBonus[0];
+            } else {
+                console.log('I am here',this.rightBonus, this.rightBonus.length-1)
+                var text = 'I prefer ' + this.rightBonus[this.rightBonus.length-1] + ' over completing the task';
+            }
+
+            text = text.replaceAll("Pay", "paying");
+            text = text.replaceAll("Get", "getting");
+
             
-            var text = 'to be made conditional'; 
+            
             // I prefer completing the task over " + this.leftBonus[i] + " but I prefer " + this.rightBonus[i] over completing the task"
             div.innerHTML=text;
             div.style.width=window.getComputedStyle(base).width;
@@ -266,9 +282,14 @@ function drawWTP(parameters){
             var tbody = document.getElementById("id_wtp").getElementsByTagName("tbody")[0];
             var tbody_height=parseFloat(window.getComputedStyle(tbody).height);
             console.log('mycurrent top',div.style.top)
-            div.style.top=-h/2+multipler*tdheight+    "px";
-            console.log('my computed stuff', multipler, tdheight, -h/2+multipler*tdheight+    "px")
-            console.log('I am drawing explainer', h,tbody_height)
+
+            console.log('my Multiplier',multipler)
+
+            var adjusted_offset = -h/2+multipler*tdheight
+            var max_offset = parseFloat(window.getComputedStyle(this.rightDiv).height) - h
+            adjusted_offset = Math.min(adjusted_offset, max_offset)
+            div.style.top=adjusted_offset+    "px";
+            console.log('my multiplier: ',multipler)
         } else {
             var base = this.rightDiv;
             base.innerHTML = '';
@@ -282,9 +303,7 @@ function drawWTP(parameters){
 
             var tbody = document.getElementById("id_wtp").getElementsByTagName("tbody")[0];
             var tbody_height=parseFloat(window.getComputedStyle(tbody).height);
-            console.log('mycurrent top',div.style.top)
             div.style.top=-h/2+tbody_height/2+    "px";
-            console.log('I am drawing explainer', h,tbody_height)
         }       
     }
     this.drawExplainer();
@@ -330,14 +349,14 @@ function drawWTP(parameters){
         context.moveTo(canvas.width/2, .45*canvas.height );
         context.lineTo(canvas.width/2, .2*canvas.height);
         context.lineWidth = 40;
-        context.strokeStyle = "green";
+        context.strokeStyle = "darkgreen";
         context.stroke();
 
         // Arrowhead
         context.moveTo(.3*canvas.width, .2*canvas.height);
         context.lineTo(.5*canvas.width, .1*canvas.height);
         context.lineTo(.7*canvas.width, .2*canvas.height);
-        context.fillStyle = "green";
+        context.fillStyle = "darkgreen";
         context.fill();
 
         // Arrow line
@@ -345,7 +364,7 @@ function drawWTP(parameters){
         context.moveTo(canvas.width/2, .55*canvas.height );
         context.lineTo(canvas.width/2, .8*canvas.height);
         context.lineWidth = 40;
-        context.strokeStyle = "blue";
+        context.strokeStyle = "darkred";
         context.stroke();
 
 
@@ -355,7 +374,7 @@ function drawWTP(parameters){
         context.lineTo(.5*canvas.width, .9*canvas.height);
         context.lineTo(.7*canvas.width, .8*canvas.height);
        
-        context.fillStyle = "blue";
+        context.fillStyle = "darkred";
 
         context.fill();
 
