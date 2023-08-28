@@ -15,7 +15,38 @@ Checking your understanding
     It is important for our study that you understand the information from the previous page. We thus have a few simple questions that we would like you to answer before we proceed.
 </p>
 
+
+<div class="col-md-12 text-center">
+  <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#exampleModal">Review Instructions</button>
+</div>
+
 {{ formfields }}
+
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-xl">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Review Instructions</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+
+      {{ include C.READ_ALL }}
+      {{ include C.TWO_PARTS }}
+      {{ include C.PAYMENT }}
+      {{ include C.COLLABORATIVE_JOB }}
+      {{ include C.TASK_GENERAL }}
+      {{ include C.BONUS }}
+      {{ include C.PENALTY }}
+      {{ include C.SUMMARY }}
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
 
 <p>
   After you finish all the questions, click "Next." If any of your answers are incorrect, you will get an error message below each of your incorrect answers. Once you correct all your answers, you can continue by clicking "Next" again.

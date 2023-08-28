@@ -13,9 +13,69 @@ Instructions
 
 {{ if participant.domain == 'tasks' }}
 
-<p>
-    Instructions for tasks.
-</p>
+<div class="page" id="page1">
+
+    {{ include C.READ_ALL}}
+
+    <button type="button" id="nextBtn1" class="btn btn-primary" style="float: right;">Next</button> 
+</div>
+
+<div class="page" id="page2">
+
+    {{ include C.TWO_PARTS }}
+
+    <button type="button" id="backBtn2" class="btn btn-primary" style="float: left;">Back</button>
+    <button type="button" id="nextBtn2" class="btn btn-primary" style="float: right;">Next</button>  
+</div>
+<div class="page" id="page3">
+
+    {{ include C.PAYMENT }}
+
+    <button type="button" id="backBtn3" class="btn btn-primary" style="float: left;">Back</button>
+    <button type="button" id="nextBtn3" class="btn btn-primary" style="float: right;">Next</button>  
+</div>
+
+<div class="page" id="page4">
+
+    {{ include C.COLLABORATIVE_JOB }}
+
+    <button type="button" id="backBtn4" class="btn btn-primary" style="float: left;">Back</button>
+    <button type="button" id="nextBtn4" class="btn btn-primary" style="float: right;">Next</button>    
+</div>
+
+<div class="page" id="page5">
+
+    {{ include C.TASK_GENERAL }}
+
+    <button type="button" id="backBtn5" class="btn btn-primary" style="float: left;">Back</button>
+    <button type="button" id="nextBtn5" class="btn btn-primary" style="float: right;">Next</button> 
+</div>
+
+<div class="page" id="page6">
+
+    {{ include C.BONUS }}
+    
+    
+    <button type="button" id="backBtn6" class="btn btn-primary" style="float: left;">Back</button>
+    <button type="button" id="nextBtn6" class="btn btn-primary" style="float: right;">Next</button> 
+</div>
+
+<div class="page" id="page7">
+    
+    {{ include C.PENALTY }}
+
+    <button type="button" id="backBtn7" class="btn btn-primary" style="float: left;">Back</button>
+    <button type="button" id="nextBtn7" class="btn btn-primary" style="float: right;">Next</button> 
+</div>
+
+<div class="page" id="page8">
+    
+    {{ include C.SUMMARY }}
+
+    <button type="button" id="backBtn8" class="btn btn-primary" style="float: left;">Back</button>
+    <button id="nextBtn7" class="btn btn-primary" style="float: right;">Next</button> 
+</div>
+
 
 {{ elif participant.domain == 'states' }}
  
@@ -29,10 +89,50 @@ Instructions
 </p>
 {{ endif }}
 
-<p>
-    When you are ready, click "Next" to continue.
-</p>
+{% endblock %}
 
-<button style="float: right" class="btn btn-primary btn-large">Next</button>
+
+
+{% block styles %}
+
+{% endblock %}
+
+{% block scripts %}
+
+<script>
+    const pages = document.querySelectorAll('.page');
+    const nextBtns = document.querySelectorAll('[id^="nextBtn"]');
+    const backBtns = document.querySelectorAll('[id^="backBtn"]');
+  
+    let currentPageIndex = 0;
+  
+    function showPage(index) {
+      pages.forEach(page => page.style.display = 'none');
+      pages[index].style.display = 'block';
+  
+      if (index === 0) {
+        backBtns.forEach(btn => btn.style.display = 'none');
+      } else {
+        backBtns.forEach(btn => btn.style.display = 'inline-block');
+      }
+    }
+  
+    nextBtns.forEach((btn, index) => {
+      btn.addEventListener('click', () => {
+        currentPageIndex = Math.min(currentPageIndex + 1, pages.length - 1);
+        showPage(currentPageIndex);
+      });
+    });
+  
+    backBtns.forEach((btn, index) => {
+      btn.addEventListener('click', () => {
+        currentPageIndex = Math.max(currentPageIndex - 1, 0);
+        showPage(currentPageIndex);
+      });
+    });
+  
+    showPage(currentPageIndex);
+  </script>
+
 
 {% endblock %}

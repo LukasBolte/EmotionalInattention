@@ -11,9 +11,11 @@ Demand elicitation
 <button class="btn btn-danger otree-btn-next" style="float: right;">Skip</button>
 {{ endif }}
 
-<p>
-   Demand elicitation
-</p>
+{{ formfield_errors 'wtp' }}
+
+<div id="wtp"></div>
+<div id="hidden_fields_wtp"></div>
+
 
 <button style="float: right" class="otree-btn-next btn btn-primary">Next</button>
 
@@ -21,8 +23,35 @@ Demand elicitation
 
 {% block styles %}
 
+<style>
+   .orange{
+     background-color: #f7920d !important;
+     }
+   .darkorange{
+     background-color: #f7920d !important;
+     }
+ </style>
+ 
 {% endblock %}
 
 {% block scripts %}
+
+
+<script src="{% static 'js/wtp.js' %}"></script>
+
+<script>
+parameters={
+   playerID : "{{participant.code}}" + "{{ player.round_number }}",
+     leftHeader:"Left Option", 
+     rightHeader:"Left Option", 
+     leftBonus: {{ rightText|safe }},
+     rightBonus: {{ rightText|safe }},
+     varname:"wtp", //variable name on oTree  ES_wtp3', '',
+     root:"wtp",
+     hidden_fields_name:"hidden_fields_wtp",
+   color_switched: true,
+  }
+  wtp_1 =new drawWTP(parameters);
+</script>
 
 {% endblock %}

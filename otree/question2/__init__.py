@@ -4,6 +4,7 @@ import itertools
 import math
 import re 
 import time
+import numpy as np
 from collections import Counter
 
 from otree.api import *
@@ -15,16 +16,99 @@ Vlasta Rasocha
 """
 
 
+
+ 
+# FUNCTIONS 
+
+
+def create_incremented_array(start, end, increment, callback):
+    array = []
+    i = start
+    while i <= end:
+        array.append(callback(i))
+        i += increment
+    return array
+
+def labels(start,end,increment,callback):
+    
+    first_array =  create_incremented_array(start, end, increment, callback)
+
+    return ["{:.2f}".format(num) for num in first_array]
+
+def bar_heights(start, end, increment, num_boxes, callback):
+    first_array= create_incremented_array(start, end, increment, callback)
+    sum_value = sum(first_array)
+    ratio = num_boxes / sum_value
+    first_array = [value * ratio for value in first_array]
+    step = 10
+    for i in range(len(first_array)):
+            if i %  step == 0:
+                first_array[i] = max([1,first_array[i]])
+
+    return manipulate_array(first_array,num_boxes)
+
+
+def manipulate_array(array, total_sum):
+    # Step 1: Calculate the sum of all elements
+    sum_value = sum(array)
+
+    # Step 2: Calculate the ratio
+    ratio = total_sum / sum_value
+
+    # Step 3: Multiply each element by the ratio
+    multiplied_array = [value * ratio for value in array]
+
+    # Step 4: Round each element to the nearest integer
+    rounded_array = [round(value) for value in multiplied_array]
+
+    # Step 5: Adjust rounding errors
+    rounded_sum = sum(rounded_array)
+    difference = total_sum - rounded_sum
+
+    if difference > 0:
+        # Rounded sum is too small, find elements where rounded number is the most smaller than the actual number
+        rounding_errors = [value - rounded_array[index] if value > rounded_array[index] else 0 for index, value in enumerate(multiplied_array)]
+        adjustment = 1
+    elif difference < 0:
+        # Rounded sum is too large, find elements where rounded number is the most larger than the actual number
+        rounding_errors = [rounded_array[index] - value if value < rounded_array[index] else 0 for index, value in enumerate(multiplied_array)]
+        adjustment = -1
+    else:
+        # Rounded sum is already equal to total_sum, no adjustment needed
+        return rounded_array
+
+    # Sort rounding errors in descending order and find the indices of the largest ones
+    largest_rounding_error_indices = sorted(range(len(rounding_errors)), key=lambda i: rounding_errors[i], reverse=True)[:abs(difference)]
+
+    # Split the difference equally among the elements with the largest rounding errors
+    adjusted_array = [value + (adjustment if index in largest_rounding_error_indices else 0) for index, value in enumerate(rounded_array)]
+
+    return adjusted_array
+
+
 class C(BaseConstants):
     NAME_IN_URL = 'question2'
     PLAYERS_PER_GROUP = None
     NUM_ROUNDS = 1
     MIN_TIME = 5
     MAX_TIME = 10
+    MAX_PAY = 20
     NUM_BOXES = 10000
     NUM_DRAWS = 1000
-    NUM_PRACTICE = 4
     DELAY = 10
+    BALANCE = 8
+    PARTICIPATION_FEE = 2
+    NUM_PRACTICE = 5
+
+
+    READ_ALL = 'question2/ReadAll.html'
+    TWO_PARTS = 'question2/TwoParts.html'
+    PAYMENT = 'question2/Payment.html'
+    COLLABORATIVE_JOB = 'question2/CollaborativeJob.html'
+    TASK_GENERAL = 'question2/TaskGeneral.html'
+    BONUS = 'question2/Bonus.html'
+    PENALTY = 'question2/Penalty.html'
+    SUMMARY = 'question2/Summary.html'
 
     height_constant = 50000
 
@@ -35,6 +119,9 @@ class C(BaseConstants):
     CQ_TASKS = ['CQ_tasks_payment', 'CQ_tasks_demand_elicitation']
     CQ_STATES = ['CQ_states_payment', 'CQ_states_demand_elicitation']
     CQ_TIME_PERIODS = ['CQ_time_periods_payment', 'CQ_time_periods_demand_elicitation']
+
+    LAEBELS = labels(START_VALUE, END_VALUE, INCREMENT_VALUE, lambda i: i)
+    BAR_HEIGHTS = bar_heights(START_VALUE, END_VALUE, INCREMENT_VALUE, NUM_BOXES, lambda i: math.exp(-1.75 * i))
 
     CONTROL_QUESTIONS = {
         'CQ_tasks': {
@@ -67,9 +154,10 @@ def creating_session(subsession: Subsession):
 
             # create a list of treatments
             bonus_penalty = ['bonus','penalty']
-            task_treatments = [('tasks',item1, item2) for item1 in bonus_penalty for item2 in ['high','low']]
-            states_treatments = [('states',item1, 'NA') for item1 in bonus_penalty]
-            time_treatments = [('time_periods',item1, 'NA') for item1 in bonus_penalty]
+            level_treatments = ['low'] # ['high','low']
+            task_treatments = [('tasks',item1, item2) for item1 in bonus_penalty for item2 in level_treatments]
+            states_treatments = [] # [('states',item1, 'NA') for item1 in bonus_penalty]
+            time_treatments = [] # [('time_periods',item1, 'NA') for item1 in bonus_penalty]
             treatments = task_treatments + states_treatments + time_treatments
             random.shuffle(task_treatments)
             treatments = itertools.cycle(treatments)
@@ -85,10 +173,13 @@ def creating_session(subsession: Subsession):
                 # I have two lists: A and B. They have the same length. I want to create a third list that has element A[i] repeated B[i] times.
                 # 
 
-                A = labels(player.subsession)
-                B = bar_heights(player.subsession)
+                # A = labels(player.subsession)
+                # B = bar_heights(player.subsession)
 
+                A = C.LAEBELS
+                B = C.BAR_HEIGHTS
                 new_list = [a for a, b in zip(A, B) for _ in range(b)]
+                
                 participant.sequence = json.dumps(random.sample(new_list, C.NUM_DRAWS))
 
                 
@@ -167,79 +258,14 @@ class Player(BasePlayer):
     )
 
 
-
+    wtp = models.StringField(blank=True)
 
 
 
    
     feedback = models.LongStringField(blank=True)
     
-    
-# FUNCTIONS 
-
-
-def create_incremented_array(start, end, increment, callback):
-    array = []
-    i = start
-    while i <= end:
-        array.append(callback(i))
-        i += increment
-    return array
-
-def labels(subsession):
-    first_array =  create_incremented_array(C.START_VALUE, C.END_VALUE, C.INCREMENT_VALUE, lambda i: i)
-    return ["{:.2f}".format(num) for num in first_array]
-
-def bar_heights(subsession):
-    first_array= create_incremented_array(C.START_VALUE, C.END_VALUE, C.INCREMENT_VALUE, lambda i: math.exp(-1.75 * i))
-    sum_value = sum(first_array)
-    ratio = C.NUM_BOXES / sum_value
-    first_array = [value * ratio for value in first_array]
-    step = 10
-    for i in range(len(first_array)):
-            if i %  step == 0:
-                first_array[i] = max([1,first_array[i]])
-
-    return manipulate_array(first_array,C.NUM_BOXES)
-
-
-def manipulate_array(array, total_sum):
-    # Step 1: Calculate the sum of all elements
-    sum_value = sum(array)
-
-    # Step 2: Calculate the ratio
-    ratio = total_sum / sum_value
-
-    # Step 3: Multiply each element by the ratio
-    multiplied_array = [value * ratio for value in array]
-
-    # Step 4: Round each element to the nearest integer
-    rounded_array = [round(value) for value in multiplied_array]
-
-    # Step 5: Adjust rounding errors
-    rounded_sum = sum(rounded_array)
-    difference = total_sum - rounded_sum
-
-    if difference > 0:
-        # Rounded sum is too small, find elements where rounded number is the most smaller than the actual number
-        rounding_errors = [value - rounded_array[index] if value > rounded_array[index] else 0 for index, value in enumerate(multiplied_array)]
-        adjustment = 1
-    elif difference < 0:
-        # Rounded sum is too large, find elements where rounded number is the most larger than the actual number
-        rounding_errors = [rounded_array[index] - value if value < rounded_array[index] else 0 for index, value in enumerate(multiplied_array)]
-        adjustment = -1
-    else:
-        # Rounded sum is already equal to total_sum, no adjustment needed
-        return rounded_array
-
-    # Sort rounding errors in descending order and find the indices of the largest ones
-    largest_rounding_error_indices = sorted(range(len(rounding_errors)), key=lambda i: rounding_errors[i], reverse=True)[:abs(difference)]
-
-    # Split the difference equally among the elements with the largest rounding errors
-    adjusted_array = [value + (adjustment if index in largest_rounding_error_indices else 0) for index, value in enumerate(rounded_array)]
-
-    return adjusted_array
-
+   
 
 # PAGES
 class Welcome(Page):
@@ -258,8 +284,19 @@ class Introduction(Page):
 
 
 class Instructions(Page):
-    pass
-
+    @staticmethod
+    def vars_for_template(player):
+        myLabels = json.dumps(C.LAEBELS)
+        myHeights = json.dumps(C.BAR_HEIGHTS)
+        reversed_dividedBarHeights = json.dumps(C.BAR_HEIGHTS[::-1])
+        print(myHeights)
+        print(reversed_dividedBarHeights)
+        return {
+            'top_labels':myLabels,
+            'top_dividedBarHeights': myHeights,
+            'bottom_labels':myLabels,
+            'bottom_dividedBarHeights': reversed_dividedBarHeights,     
+        }
 
 class UnderstandingQuestions(Page):
     form_model = 'player'
@@ -272,7 +309,19 @@ class UnderstandingQuestions(Page):
         questions = [f"CQ_{domain}_{question}" for question in questions]
         return questions
 
-
+    @staticmethod
+    def vars_for_template(player):
+        myLabels = json.dumps(C.LAEBELS)
+        myHeights = json.dumps(C.BAR_HEIGHTS)
+        reversed_dividedBarHeights = json.dumps(C.BAR_HEIGHTS[::-1])
+        print(myHeights)
+        print(reversed_dividedBarHeights)
+        return {
+            'top_labels':myLabels,
+            'top_dividedBarHeights': myHeights,
+            'bottom_labels':myLabels,
+            'bottom_dividedBarHeights': reversed_dividedBarHeights,     
+        }
     @staticmethod
     def error_message(player, values):
         if not player.session.config['dev_mode']:
@@ -514,7 +563,37 @@ class TransitionDemandElicitation(Page):
 
 
 class DemandElicitation(Page):
-    pass
+    form_model = 'player'
+    form_fields = ['wtp']
+
+
+    @staticmethod
+    def vars_for_template(player):
+        
+        def custom_format(number):
+            number = float(number)
+            if number.is_integer():
+                return "{:.0f}".format(number)
+            else:
+                return "{:.2f}".format(number)
+        start = 0
+        end = 10
+        increment = .1 
+        numbers = np.arange(start + increment , end + increment, increment)
+        rightText = [f'Get ${custom_format(numbers[len(numbers)-1-i])}' for i in range(len(numbers))] + [f'Get/Pay ${custom_format(0)}'] + [f'Pay ${custom_format(numbers[i])}' for i in range(len(numbers))]
+
+        leftText = ['Complete collaboartive task']*len(rightText)
+        return {
+            'leftText':  json.dumps(leftText),
+            'rightText': json.dumps(rightText)
+        }
+    
+    @staticmethod
+    def error_message(player, values):
+        if not player.session.config['dev_mode']:
+            if values['wtp']=='':
+
+                return {'wtp':'Please make your choices by clicking on the table below.'}
 
 
 class TransitionUnincentivized(Page):
@@ -613,7 +692,7 @@ class Finished(Page):
 page_sequence = [
     Welcome,
     Consent,
-    Introduction,
+    # Introduction,
     Instructions,
     UnderstandingQuestions,
     TransitionPractice,

@@ -248,7 +248,7 @@ function task(parameters){
         endTaskButton.setAttribute("data-bs-target","#confirmModal");
         
         
-        td2.appendChild(endTaskButton);
+        // td2.appendChild(endTaskButton);
 
         tr.appendChild(td2)  
     }
