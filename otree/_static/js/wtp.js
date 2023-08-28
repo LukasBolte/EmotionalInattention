@@ -21,9 +21,10 @@ function drawWTP(parameters){
     this.drawChoices = function(base,leftHeader,rightHeader,leftBonus,rightBonus){
         var table=document.createElement("table");
         table.setAttribute("id","id_"+this.varname)
-        table.className="table table-hover";
+        table.className="table table-sm table-hover mx-0 px-0 mb-0";
         table.style.backgroundColor = 'navajowhite';
         table.style.pointerEvents = '';
+      
         base.appendChild(table);
         //add header
         var thead=document.createElement("thead");
@@ -54,10 +55,16 @@ function drawWTP(parameters){
         //create body
         var tbody=document.createElement("tbody");
         tbody.addEventListener("mouseleave", this.unhighlight.bind(this));
+        
         table.appendChild(tbody);
         var counter=0;
         for(let i=0;i<leftBonus.length;i++){
             var tr=document.createElement("tr");
+            tr.setAttribute('height',"20px");
+            if ((leftBonus[i]=="Get/Pay $0") || (rightBonus[i]=="Get/Pay $0")){
+                tr.className='border-5 border-danger'  
+            };
+   
             this.tdList[i]=[];
             tbody.appendChild(tr);
             //left choice
@@ -66,6 +73,7 @@ function drawWTP(parameters){
             var text=document.createTextNode(leftBonus[i]);
             td.appendChild(text);
             td.setAttribute("cutoff","left:"+i);
+            
             tr.appendChild(td);
             this.tdList[i].push(td);
             td.addEventListener("click", this.selectCutoff.bind(this));
@@ -163,6 +171,8 @@ function drawWTP(parameters){
         console.log(document.getElementById(this.varname).value);  
         //make the oTree next button appear if present
         setTimeout(this.showNext,2000);
+
+        this.drawExplainer();
     }
     
     this.highlightSelection = function(e){
@@ -209,17 +219,246 @@ function drawWTP(parameters){
     row.className="row";
     container.appendChild(row);
     this.leftDiv=document.createElement("div");
-    this.leftDiv.className="col-2";
+    this.leftDiv.className="col-2 px-0";
     this.leftDiv.innerHTML="&nbsp;";
     row.appendChild(this.leftDiv);
-    var midDiv=document.createElement("div");
-    midDiv.className="col-8";
-    row.appendChild(midDiv);
+    this.midDiv=document.createElement("div");
+    this.midDiv.className="col-8 px-0 mx-0";
+    row.appendChild(this.midDiv);
     this.rightDiv=document.createElement("div");
-    this.rightDiv.className="col-2";
+    this.rightDiv.className="col-2 px-0";
     this.rightDiv.innerHTML="&nbsp;";
     row.appendChild(this.rightDiv);
-    this.drawChoices(midDiv,this.leftHeader,this.rightHeader,this.leftBonus,this.rightBonus);
-
+    this.drawChoices(this.midDiv,this.leftHeader,this.rightHeader,this.leftBonus,this.rightBonus);
     this.load();
+
+    this.drawExplainer = function(){
+        if (this.selectedCutoff!=undefined){
+            
+            console.log(this.selectedCutoff,'my cutoff')
+            var choiceFrags=this.selectedCutoff.split(':');
+            var cutoffNum=parseFloat(choiceFrags[1])+1;
+
+            var multipler = cutoffNum;
+            if (choiceFrags[0] == 'right') {
+                multipler += 1;
+            }
+
+            var tdheight = parseFloat(window.getComputedStyle(this.tdList[0][0]).height)
+
+
+            var base = this.rightDiv;
+            base.innerHTML = '';
+            var div=document.createElement("div");
+            base.appendChild(div);
+
+            div.className="text-center p-2";
+
+
+            
+            var text = 'to be made conditional'; 
+            // I prefer completing the task over " + this.leftBonus[i] + " but I prefer " + this.rightBonus[i] over completing the task"
+            div.innerHTML=text;
+            div.style.width=window.getComputedStyle(base).width;
+            var h=parseFloat(window.getComputedStyle(div).height);
+            div.style.position="relative";
+
+            var tbody = document.getElementById("id_wtp").getElementsByTagName("tbody")[0];
+            var tbody_height=parseFloat(window.getComputedStyle(tbody).height);
+            console.log('mycurrent top',div.style.top)
+            div.style.top=-h/2+multipler*tdheight+    "px";
+            console.log('my computed stuff', multipler, tdheight, -h/2+multipler*tdheight+    "px")
+            console.log('I am drawing explainer', h,tbody_height)
+        } else {
+            var base = this.rightDiv;
+            base.innerHTML = '';
+            var div=document.createElement("div");
+            base.appendChild(div);
+            div.className="text-center p-2";
+            div.innerHTML='Click on a row to input your choices!';
+            div.style.width=window.getComputedStyle(base).width;
+            var h=parseFloat(window.getComputedStyle(div).height);
+            div.style.position="relative";
+
+            var tbody = document.getElementById("id_wtp").getElementsByTagName("tbody")[0];
+            var tbody_height=parseFloat(window.getComputedStyle(tbody).height);
+            console.log('mycurrent top',div.style.top)
+            div.style.top=-h/2+tbody_height/2+    "px";
+            console.log('I am drawing explainer', h,tbody_height)
+        }       
+    }
+    this.drawExplainer();
+
+
+    this.drawArrows = function(){
+
+
+        var table = document.getElementById("id_wtp");
+        var thead = table.querySelector('thead');
+        var tr = thead.querySelector('tr');
+
+        var trHeight = window.getComputedStyle(tr).height
+
+        trHeight = parseFloat(trHeight)
+
+        var spacer_div = document.createElement("div")
+        spacer_div.style.height = trHeight + 'px'
+        spacer_div.style.width = '100%'
+
+
+
+        var canvas = document.createElement("canvas");
+        canvas.setAttribute("id","id_canvas");
+
+        var window_height = parseFloat(window.getComputedStyle(this.leftDiv).height)
+        canvas.setAttribute("width", window.getComputedStyle(this.leftDiv).width)
+        canvas.setAttribute("height", (window_height - trHeight) + "px")
+
+        console.log(window_height,trHeight)
+
+        this.leftDiv.innerHTML='';
+        this.leftDiv.appendChild(spacer_div);
+        this.leftDiv.appendChild(canvas);
+        var context = canvas.getContext("2d");
+
+         // Save the initial context
+        context.save();
+
+    
+        // Arrow line
+        context.beginPath();
+        context.moveTo(canvas.width/2, .45*canvas.height );
+        context.lineTo(canvas.width/2, .2*canvas.height);
+        context.lineWidth = 40;
+        context.strokeStyle = "green";
+        context.stroke();
+
+        // Arrowhead
+        context.moveTo(.3*canvas.width, .2*canvas.height);
+        context.lineTo(.5*canvas.width, .1*canvas.height);
+        context.lineTo(.7*canvas.width, .2*canvas.height);
+        context.fillStyle = "green";
+        context.fill();
+
+        // Arrow line
+        context.beginPath();
+        context.moveTo(canvas.width/2, .55*canvas.height );
+        context.lineTo(canvas.width/2, .8*canvas.height);
+        context.lineWidth = 40;
+        context.strokeStyle = "blue";
+        context.stroke();
+
+
+
+        // Arrowhead
+        context.moveTo(.3*canvas.width, .8*canvas.height);
+        context.lineTo(.5*canvas.width, .9*canvas.height);
+        context.lineTo(.7*canvas.width, .8*canvas.height);
+       
+        context.fillStyle = "blue";
+
+        context.fill();
+
+        // Restore the initial context
+        context.restore();
+
+        // Text 1
+
+        context.save();
+
+        // Rotate the canvas context by -90 degrees for the second text
+        context.rotate(-Math.PI / 2);
+
+        // Text 1
+        context.font = "bold 25px Arial"; // Larger font size
+        context.textAlign = "center";
+        context.fillText("I like the task", -.3*canvas.height,1/4*canvas.width);
+
+        // Restore the saved context for future drawings
+        context.restore();
+
+        // Text 2
+
+        context.save();
+
+        // Rotate the canvas context by -90 degrees for the second text
+        context.rotate(-Math.PI / 2);
+
+        // Text 2
+        context.font = "bold 25px Arial"; // Larger font size
+        context.textAlign = "center";
+        context.fillText("I don't like the task", -.7*canvas.height,1/4*canvas.width);
+
+        // Restore the saved context for future drawings
+        context.restore();
+
+
+     
+    }
+
+    this.drawArrows();
+
+
+}
+
+
+
+// var drawExplainer=function(on_left,ymin,ymax,text){
+//     var base=rightDiv;
+//     if (on_left){
+//         base=leftDiv;
+//     }
+//     $(base).empty();
+//     var div=document.createElement("div");
+//     base.appendChild(div);
+//     div.innerHTML=text;
+//     div.style.width=window.getComputedStyle(base).width;
+//     var h=parseFloat(window.getComputedStyle(div).height);
+//     div.style.position="absolute";
+//     div.style.top=(-h/2+(ymin+ymax)/2)+"px";
+// }
+
+// var formatExplainer = function(rows,leftright){
+//     if (rows==1){
+//         return "If this row is selected for payment you are choosing the "+leftright+" option."
+//     }
+//     else{  
+//         return "If one of these "+rows+" rows is selected for payment you are choosing the "+leftright+" option."
+//     }
+// }
+
+this.highlight = function(cutoff,color){
+    var choiceFrags=cutoff.split(':');
+    var cutoffNum=parseFloat(choiceFrags[1]);
+    for(var c in this.tdList){
+        var cf=parseFloat(c);
+        $(this.tdList[c][0]).removeClass("orange");
+        $(this.tdList[c][0]).removeClass("darkorange");
+        $(this.tdList[c][1]).removeClass("orange");
+        $(this.tdList[c][1]).removeClass("darkorange");
+        var color_dummy = 0;
+        if (this.color_switched) {
+            color_dummy = 1;
+            console.log('color switched')
+        };
+
+        if (cf<cutoffNum){
+            $(this.tdList[c][color_dummy]).addClass(color);
+        }
+        if (cf>cutoffNum){
+            $(this.tdList[c][1-color_dummy]).addClass(color);
+        }
+        if (cf==cutoffNum){
+            switch(choiceFrags[0]){
+                case "left":
+                    $(this.tdList[c][0]).addClass(color);
+                    break;
+                case "middle":
+                    break;
+                case "right":
+                    $(this.tdList[c][1]).addClass(color);
+                    break;
+            }
+        }
+    }    
 }

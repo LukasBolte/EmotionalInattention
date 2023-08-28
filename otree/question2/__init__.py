@@ -578,7 +578,7 @@ class DemandElicitation(Page):
                 return "{:.2f}".format(number)
         start = 0
         end = 10
-        increment = .1 
+        increment = .5
         numbers = np.arange(start + increment , end + increment, increment)
         rightText = [f'Get ${custom_format(numbers[len(numbers)-1-i])}' for i in range(len(numbers))] + [f'Get/Pay ${custom_format(0)}'] + [f'Pay ${custom_format(numbers[i])}' for i in range(len(numbers))]
 

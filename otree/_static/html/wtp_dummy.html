@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    canvas {
+      border: 1px solid black;
+    }
+  </style>
+</head>
+<body>
+  <canvas id="arrowCanvas" width="400" height="300"></canvas>
+
+  <script>
+    var canvas = document.getElementById("arrowCanvas");
+    var context = canvas.getContext("2d");
+
+    // Arrow line
+    context.beginPath();
+    context.moveTo(200, 200);
+    context.lineTo(200, 100);
+    context.lineWidth = 5;
+    context.strokeStyle = "blue";
+    context.stroke();
+
+    // Arrowhead
+    context.beginPath();
+    context.moveTo(195, 110);
+    context.lineTo(200, 100);
+    context.lineTo(205, 110);
+    context.lineWidth = 5;
+    context.fillStyle = "blue";
+    context.fill();
+
+    // Rotate the canvas context by 90 degrees
+    context.rotate(-Math.PI / 2);
+
+    // Text
+    context.font = "14px Arial";
+    context.textAlign = "center";
+    context.fillText("I like the task", -canvas.height * 3 / 4, 100); // Adjust the y-coordinate as needed
+  </script>
+</body>
+</html>

@@ -31,6 +31,39 @@ Demand elicitation
      background-color: #f7920d !important;
      }
  </style>
+
+<style>
+   .arrow-container {
+     position: relative;
+     display: flex;
+     align-items: center;
+     margin-left: -40px; /* Adjust this value to align the arrows properly */
+   }
+
+   .arrow {
+     position: absolute;
+     width: 0;
+     height: 0;
+     border-left: 20px solid transparent; /* Adjust the size of the arrow */
+     border-right: 20px solid transparent;
+   }
+
+   .arrow-up {
+     border-bottom: 20px solid #007bff; /* Arrow color */
+     top: 0;
+   }
+
+   .arrow-down {
+     border-top: 20px solid #dc3545; /* Arrow color */
+     bottom: 0;
+   }
+
+   .arrow-text {
+     margin: 0 10px;
+     font-size: 14px;
+     font-weight: bold;
+   }
+</style>
  
 {% endblock %}
 
@@ -44,7 +77,7 @@ parameters={
    playerID : "{{participant.code}}" + "{{ player.round_number }}",
      leftHeader:"Left Option", 
      rightHeader:"Left Option", 
-     leftBonus: {{ rightText|safe }},
+     leftBonus: {{ leftText|safe }},
      rightBonus: {{ rightText|safe }},
      varname:"wtp", //variable name on oTree  ES_wtp3', '',
      root:"wtp",
