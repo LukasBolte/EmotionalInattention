@@ -11,9 +11,44 @@ Results
 <button class="btn btn-danger otree-btn-next" style="float: right;">Skip</button>
 {{ endif }}
 
-<p>
-    Here are the results.
-</p>
+{{ if participant.part_payment == 'Part 1'}}
+
+    <p>
+        <b>Part 1</b> was randomly chosen for payment. This means that you will get ${{C.BALANCE}} in addition to your participation fee of ${{ C.PARTICIPATION_FEE}}.
+        
+        
+    </p>
+
+    <p>
+        The question randomly chosen is:
+    </p>
+    <p class="text-center">
+        <i>
+            {{ participant.question }}
+        </i>
+
+    </p>
+
+    {{ if participant.collaborative_job }}
+        <p>
+            For this question, you chose <b>complete the Collaborative Job</b>. Thus you will next complete the Collaborative Job. Once you complete it, you will receive your participation fee of ${{ C.PARTICIPATION_FEE}}, your balance of ${{ C.BALANCE }}, and the bonus minus the penalty from the Collaborative Job.
+        </p>
+    {{ else }}
+        <p>
+            For this question, you chose {{ right_option }}. {{ payment_text}}
+        </p>
+
+    {{ endif }}
+
+{{ else }}
+
+    <p>
+        <b>Part 2</b> was randomly chosen for payment. This means that you do not complete the Collaborative Job. But you do receive a payment of ${{C.PAYMENT_PART_2}} for completing Part 2 in addition to your participation fee of ${{ C.PARTICIPATION_FEE}}.
+    </p>
+
+{{ endif }}
+
+
 
 <button style="float: right" class="btn btn-primary btn-large">Next</button>
 

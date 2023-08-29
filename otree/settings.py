@@ -36,7 +36,7 @@ SESSION_CONFIG_DEFAULTS = dict(
     real_world_currency_per_point=1.00, participation_fee=0.00, doc=""
 )
 
-PARTICIPANT_FIELDS = ['treatment','domain','valence','high_payoff','experiment_sequence','sequence','mistakes','times','num_draws','bonus_payment','expected_bonus','feedback','demographics']
+PARTICIPANT_FIELDS = ['treatment','domain','valence','high_payoff','part_payment','collaborative_job','random_row','question','wtp','experiment_sequence','sequence','mistakes','times','num_draws','bonus_payment','expected_bonus','feedback','demographics']
 SESSION_FIELDS = []
 
 # ISO-639 code
