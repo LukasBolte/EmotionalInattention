@@ -13,8 +13,132 @@ Do you agree with the following statements?
 
 <p>
     Do you agree with the following statements?
-    </p>
+</p>
+
+
+
+
+<div class="container">
+    <table class="table custom-table table-borderless">
+      <tbody>
+        {{ for field in form }}
+        {{ if field.name in ['sports','car', 'illness','will','vacation','lottery','date','portfolio'] }}
+        <tr>
+            <td colspan="6"><b>{{ field.label }}</b> {{ formfield_errors field.name }}</td>
+        </tr>
+        <tr height="15px">
+            {{ for choice in field }}
+          <td class="text-center p-0 m-0">{{ choice }}</td>
+          {{ endfor }}
+        </tr>
+
+        <tr height="15px">
+            {{ for choice in field }}
+          <td class="text-center p-0 m-0">{{ choice.label }}</td>
+          {{ endfor }}
+        </tr>
+        <tr class="empty-tr">
+            <td colspan="5"></td>
+          </tr>
+          {% endif %}
+
+
+          {{ endfor }}
+
+
+          {% with field=form.summary_bad %}
+
+          <tr>
+            <td colspan="6"><b>{{ field.label }}</b> {{ formfield_errors field.name }}</td>
+          </tr>
+          <tr height="15px">
+              {{ for choice in field }}
+            <td class="text-center p-0 m-0">{{ choice }}</td>
+            {{ endfor }}
+          </tr>
+  
+          <tr height="15px">
+              {{ for choice in field }}
+            <td class="text-center p-0 m-0">{{ choice.label }}</td>
+            {{ endfor }}
+          </tr>
+
+          <tr height="15px">
+            <td colspan="6"><b>... to distract myself from difficult or painful thoughts.</b></td>
+          </tr>
+
+
+          <tr class="empty-tr">
+              <td colspan="5"></td>
+            </tr>
+
+            {% endwith %}
+
+
+          {% with field=form.summary_good %}
+
+          <tr>
+            <td colspan="6"><b>{{ field.label }}</b> {{ formfield_errors field.name }}</td>
+          </tr>
+          <tr height="15px">
+              {{ for choice in field }}
+            <td class="text-center p-0 m-0">{{ choice }}</td>
+            {{ endfor }}
+          </tr>
+  
+          <tr height="15px">
+              {{ for choice in field }}
+            <td class="text-center p-0 m-0">{{ choice.label }}</td>
+            {{ endfor }}
+          </tr>
+
+          <tr height="15px">
+            <td colspan="6"><b>... to think about pleasant memories and look forward to birgher prospects.</b></td>
+          </tr>
+
+
+    
+            {% endwith %}
+
+       
+      </tbody>
+    </table>
+  </div>
+
+<!-- 
+<table>
+    {{ for field in form }}
+        <tr>
+            <td>{{ field.label }}</td>
+            
+        </tr>
+      <tr>                
+        {{ for choice in field }}
+        <td class="buttonGroup">
+          <div class="buttonWrap">  </div>
+          <div class="labelWrap"> {{ choice.label }} </div>
+        </td>
+        {{ endfor }}
+      </tr>
+    {{ endfor }}
+</table> -->
 
 <button style="float: right" class="btn btn-primary btn-large">Next</button>
+
+{% endblock %}
+
+{% block styles %}
+
+<style>
+.custom-table {
+   table-layout: fixed;
+}
+  
+.empty-tr {
+   line-height: 25px;
+   min-height: 25px;
+   height: 25px;
+}
+</style>
 
 {% endblock %}

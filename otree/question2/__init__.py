@@ -104,6 +104,15 @@ def create_DE_texts():
     return (leftText,rightText)
 
 
+def likelihood_scale():
+    return [
+        [1, 'Extremely likely'],
+        [2, 'Likely'],
+        [3, 'Somewhat likely'],
+        [4, 'Somewhat unlikely'],
+        [5, 'Unlikely'],
+        [6, 'Extremely unlikely']
+        ]
 
 class C(BaseConstants):
     NAME_IN_URL = 'question2'
@@ -119,6 +128,7 @@ class C(BaseConstants):
     PARTICIPATION_FEE = 2
     NUM_PRACTICE = 5
     NUM_FORCED_OPEN = 50
+    PAYMENT_PART_2 = .50
 
 
     READ_ALL = 'question2/ReadAll.html'
@@ -235,8 +245,23 @@ class Player(BasePlayer):
     # )
 
     # num_draws = models.StringField()
+
+
+    confused_binary = models.StringField(
+        blank=True,
+        choices=[
+            [1, 'Yes.'],
+            [0, 'No.'],
+        ],
+        widget=widgets.RadioSelect,
+        label="Was the procedure on the previous page confusing in any way?"
+    )
+        
+
+    confused_text = models.LongStringField(blank=True)
+
      
-    CQ_conditions_collaborative_job = models.StringField(
+    CQ_conditions_collaborative_job = models.IntegerField(
         blank=True,
         choices=[
             [1, 'If Part 1 is chosen for payment, I will complete the Job for sure regardless of my other decisions.'],
@@ -247,7 +272,7 @@ class Player(BasePlayer):
         label='What must happen for you to complete the Collaborative Job?'
     )
 
-    CQ_bonus_collabarotive_job_consists = models.StringField(
+    CQ_bonus_collabarotive_job_consists = models.IntegerField(
         blank=True,
         choices=[
             [1, 'A bonus task completed by you, AND a penalty task completed by a computer.'],
@@ -259,7 +284,7 @@ class Player(BasePlayer):
         label='What does the Collaborative Job consist of?'
     )
 
-    CQ_penalty_collabarotive_job_consists = models.StringField(
+    CQ_penalty_collabarotive_job_consists = models.IntegerField(
         blank=True,
         choices=[
             [1, 'A penalty task completed by you, AND a bonus task completed by a computer.'],
@@ -272,7 +297,7 @@ class Player(BasePlayer):
     )
 
 
-    CQ_bonus_collaboartive_job_payment = models.StringField(
+    CQ_bonus_collaboartive_job_payment = models.IntegerField(
         blank=True,
         choices=[
             [1, 'The bonus I earn in the bonus task ONLY.'],
@@ -284,7 +309,7 @@ class Player(BasePlayer):
     )
 
 
-    CQ_penalty_collaboartive_job_payment = models.StringField(
+    CQ_penalty_collaboartive_job_payment = models.IntegerField(
         blank=True,
         choices=[
             [1, 'The bonus the computer earns in the bonus task ONLY.'],
@@ -299,7 +324,7 @@ class Player(BasePlayer):
 
 
 
-    CQ_bonus_tentative_bonus = models.StringField(
+    CQ_bonus_tentative_bonus = models.IntegerField(
         blank=True,
         choices=[
             [1, 'It can increase OR stay the same.'],
@@ -313,7 +338,7 @@ class Player(BasePlayer):
     )
 
 
-    CQ_penalty_tentative_bonus = models.StringField(
+    CQ_penalty_tentative_bonus = models.IntegerField(
         blank=True,
         choices=[
             [1, 'It can increase OR stay the same.'],
@@ -330,7 +355,7 @@ class Player(BasePlayer):
 
 
 
-    CQ_bonus_tentative_penalty = models.StringField(
+    CQ_bonus_tentative_penalty = models.IntegerField(
         blank=True,
         choices=[
             [1, 'It can increase OR stay the same.'],
@@ -345,7 +370,7 @@ class Player(BasePlayer):
 
 
 
-    CQ_penalty_tentative_penalty = models.StringField(
+    CQ_penalty_tentative_penalty = models.IntegerField(
         blank=True,
         choices=[
             [1, 'It can increase OR stay the same.'],
@@ -358,11 +383,10 @@ class Player(BasePlayer):
         label='What can happen to your tentative penalty when your open a box in the penalty task?'
     )
 
+    
 
 
-
-
-    CQ_tasks_payment = models.StringField(
+    CQ_tasks_payment = models.IntegerField(
         blank=True,
         choices=[
             [1, 'It is the payment from opening the boxes.'],
@@ -372,7 +396,7 @@ class Player(BasePlayer):
         label='What is the total payment you get for completing this study?'
     )
 
-    CQ_tasks_demand_elicitation = models.StringField(
+    CQ_tasks_demand_elicitation = models.IntegerField(
         blank=True,
         choices=[
             [1, 'It is the payment from opening the boxes.'],
@@ -383,7 +407,7 @@ class Player(BasePlayer):
     )
 
 
-    CQ_states_payment = models.StringField(
+    CQ_states_payment = models.IntegerField(
         blank=True,
         choices=[
             [1, 'It is the payment from opening the boxes.'],
@@ -393,7 +417,7 @@ class Player(BasePlayer):
         label='STATES: What is the total payment you get for completing this study?'
     )
 
-    CQ_states_demand_elicitation = models.StringField(
+    CQ_states_demand_elicitation = models.IntegerField(
         blank=True,
         choices=[
             [1, 'It is the payment from opening the boxes.'],
@@ -404,7 +428,7 @@ class Player(BasePlayer):
     )
 
 
-    CQ_time_periods_payment = models.StringField(
+    CQ_time_periods_payment = models.IntegerField(
         blank=True,
         choices=[
             [1, 'It is the payment from opening the boxes.'],
@@ -414,7 +438,7 @@ class Player(BasePlayer):
         label='TIME: What is the total payment you get for completing this study?'
     )
 
-    CQ_time_periods_demand_elicitation = models.StringField(
+    CQ_time_periods_demand_elicitation = models.IntegerField(
         blank=True,
         choices=[
             [1, 'It is the payment from opening the boxes.'],
@@ -431,6 +455,81 @@ class Player(BasePlayer):
 
    
     feedback = models.LongStringField(blank=True)
+
+
+    
+    sports = models.IntegerField(
+        blank=True,
+        choices=likelihood_scale(),
+        widget=widgets.RadioSelect,
+        label='Your favorite sports team loses a game. How likely are you to watch the match highlights and talk to your friends about the game?'
+    )
+
+    car = models.IntegerField(
+        blank=True,
+        choices=likelihood_scale(),
+        widget=widgets.RadioSelect,
+        label='After buying a car, your bank account balance is low. If you know that you have enough money to cover your day-to-day expenses, how likely are you to check your bank balance?'
+    )
+
+    illness = models.IntegerField(
+        blank=True,
+        choices=likelihood_scale(),
+        widget=widgets.RadioSelect,
+        label='You were recently tested for a serious medical illness. How likely are you to try and distract yourself from thinking about the results while you wait for them (for example by binge-watching TV shows)?'
+    )
+
+    will = models.IntegerField(
+        blank=True,
+        choices=likelihood_scale(),
+        widget=widgets.RadioSelect,
+        label='Your parents want to discuss their will with you. They are currently in good health. How likely are you to try to avoid the conversation?'
+    )
+
+    vacation = models.IntegerField(
+        blank=True,
+        choices=likelihood_scale(),
+        widget=widgets.RadioSelect,
+        label='You are excited to go on a vacation organized by a travel agency in a couple of months. You are familiar with the travel itinerary already. How likely are you to browse through it again?'
+    )
+
+    lottery = models.IntegerField(
+        blank=True,
+        choices=likelihood_scale(),
+        widget=widgets.RadioSelect,
+        label='You buy a lottery ticket with a $5 million jackpot. How likely are you to imagine what you would spend the money on if you won?'
+    )
+
+    date = models.IntegerField(
+        blank=True,
+        choices=likelihood_scale(),
+        widget=widgets.RadioSelect,
+        label='You go on a first date with someone you really like. How likely are you to daydream about what your potential relationship could look like?'
+    )
+
+    portfolio = models.IntegerField(
+        blank=True,
+        choices=likelihood_scale(),
+        widget=widgets.RadioSelect,
+        label='You have an investment portfolio that you cannot alter for another 6 months. You receive a newsletter from your investment manager telling you that, due to good market conditions, the value of your portfolio has increased by 50% over the past month. How likely are you to log into your account to look at the value of your portfolio?'
+    )
+
+    summary_bad = models.IntegerField(
+        blank=True,
+        choices=likelihood_scale(),
+        widget=widgets.RadioSelect,
+        label='Some people distract themselves from difficult or painful thoughts, even if there are useful lessons they could learn from them. Others embrace them. How would you describe yourself?'
+    )
+
+    summary_good = models.IntegerField(
+        blank=True,
+        choices=likelihood_scale(),
+        widget=widgets.RadioSelect,
+        label='Some people spend a lot of time thinking about pleasant memories and looking forward to brighter prospects. Others focus on the here and know. How would you describe yourself?'
+    )
+
+
+
     
    
 
@@ -770,12 +869,44 @@ class DemandElicitation(Page):
 
 
 class TransitionUnincentivized(Page):
-    pass
+    form_model = 'player'
+    form_fields = [ 'confused_binary','confused_text']   
+
+    @staticmethod
+    def error_message(player, values):
+        if not player.session.config['dev_mode']:
+            if values['confused_binary'] is None:
+                return {'confused_binary': 'Please answer the question.'}
+
+
+ 
+class UnincentivizedInstructions(Page):
+    form_model = 'player'
+    form_fields = ['confused_binary','confused_text']
+
+    @staticmethod
+    def error_message(player, values):
+        if not player.session.config['dev_mode']:
+            if values['confused_binary'] is None:
+                return {'confused_binary': 'Please answer the question.'}
 
 
 
 class Unincentivized(Page):
-    pass
+    form_model = 'player'
+    form_fields = ['sports','car', 'illness','will','vacation','lottery','date','portfolio','summary_bad','summary_good']
+
+
+    @staticmethod
+    def error_message(player, values):
+        if not player.session.config['dev_mode']:
+            error_messages = {}
+            questions = ['sports','car', 'illness','will','vacation','lottery','date','portfolio','summary_bad','summary_good']
+            for field_name in questions:
+                if values[field_name] is None:
+                    error_messages[field_name] = 'Please answer the question.'
+            return error_messages
+        
 
 
 
@@ -825,7 +956,7 @@ class Finished(Page):
 #     def error_message(player, values):
 #         if not player.session.config['dev_mode']:
             
-#             error_messages = {}
+#             error_messages = {}pl
 #             for field_name in ['gender', 'ethnic', 'age','education', 'marital', 'income', 'percentProlific','state']:
 #                 if values[field_name] is None:
 #                     error_messages[field_name] = 'Please answer the question.'
@@ -874,6 +1005,7 @@ page_sequence = [
     TransitionDemandElicitation2,
     DemandElicitation,
     TransitionUnincentivized,
+    UnincentivizedInstructions,
     Unincentivized,
     Results, 
     Feedback,

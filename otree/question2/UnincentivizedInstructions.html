@@ -1,0 +1,27 @@
+{% extends "global/Page.html" %}
+{% load otree %}
+
+{% block title %}
+Part 2
+{% endblock %}
+
+{% block content %}
+
+{{ if session.config.dev_mode }}
+<button class="btn btn-danger otree-btn-next" style="float: right;">Skip</button>
+{{ endif }}
+
+<p>
+    We will now describe Part 2 of the experiment. 
+</p>
+
+<p>
+    Recall that either Part 1 or Part 2 are randomly chosen to determine your additional payment. If Part 2 is randomly chosen for payment, you will receive an additional payment of ${{C.PAYMENT_PART_2}}. 
+</p>
+    In this part of the experiment, you only need to answer a few simple questions. Your additional payment from Part 2 will not be affected by your answers.
+</p>
+
+
+<button style="float: right" class="btn btn-primary btn-large">Next</button>
+
+{% endblock %}
