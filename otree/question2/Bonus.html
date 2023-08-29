@@ -1,11 +1,12 @@
 {% load otree %}
 
 <p>
-    In the bonus task, you start with a tentative bonus of $2. You will then open XX boxes. Each time you open a box, you will wait 10 seconds to reveal the bonus inside. Two things can happen to your tentative payment after you open a box:
+    In the <b>bonus task</b>, you start with a <b>tentative bonus</b> of ${{ C.START_VALUE }}. You will then open {{ C.NUM_FORCED_OPEN }} boxes. Each time you open a box, you will wait {{ C.DELAY }} seconds to reveal the bonus inside. Two things can happen to your tentative payment after you open a box:
 
-
-    1.	If the bonus inside the box is smaller than your tentative bonus, your tentative bonus stays the same.
-    2.	If the bonus inside the box is larger than your tentative bonus, the bonus inside the box becomes your new tentative bonus.
-
-    After you open all XX boxes, the tentative bonus will be added to your payment from this experiment. 
+    <ol>
+        <li>If the bonus inside the box is <b>smaller</b> than your tentative bonus, <b>your tentative bonus stays the same</b>.</li>
+        <li>If the bonus inside the box is <b>larger</b> than your tentative bonus, <b>the bonus inside the box becomes your new tentative bonus</b>.</li>
+    </ol>  
+    
+    After you open all {{ C.NUM_FORCED_OPEN }} boxes, the <b>final tentative bonus will be added to your payment</b> from Part 1. 
 </p>

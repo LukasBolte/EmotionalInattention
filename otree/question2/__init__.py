@@ -85,6 +85,25 @@ def manipulate_array(array, total_sum):
 
     return adjusted_array
 
+def create_DE_texts():
+    start = 0
+    end = 10
+    increment = .5
+    numbers = np.arange(start + increment , end + increment, increment)
+    rightText = [f'Get ${"{:.2f}".format(float(numbers[len(numbers)-1-i]))}' for i in range(len(numbers))] + [f'Get/Pay ${"{:.2f}".format(0)}'] 
+    
+    start = 0
+    end = 8
+    increment = .5
+    numbers = np.arange(start + increment , end + increment, increment)
+
+
+    rightText = rightText + [f'Pay ${"{:.2f}".format(float(numbers[i]))}' for i in range(len(numbers))]
+
+    leftText = ['Complete Collabarative Job']*len(rightText)
+    return (leftText,rightText)
+
+
 
 class C(BaseConstants):
     NAME_IN_URL = 'question2'
@@ -99,6 +118,7 @@ class C(BaseConstants):
     BALANCE = 8
     PARTICIPATION_FEE = 2
     NUM_PRACTICE = 5
+    NUM_FORCED_OPEN = 50
 
 
     READ_ALL = 'question2/ReadAll.html'
@@ -109,11 +129,12 @@ class C(BaseConstants):
     BONUS = 'question2/Bonus.html'
     PENALTY = 'question2/Penalty.html'
     SUMMARY = 'question2/Summary.html'
+    DEMAND_ELICIATION_INSTRUCTIONS = 'question2/DemandElicitationInstructions.html'
 
     height_constant = 50000
 
-    START_VALUE = 1
-    END_VALUE = 9
+    START_VALUE = 2
+    END_VALUE = 10
     INCREMENT_VALUE = 0.01
 
     CQ_TASKS = ['CQ_tasks_payment', 'CQ_tasks_demand_elicitation']
@@ -123,11 +144,26 @@ class C(BaseConstants):
     LAEBELS = labels(START_VALUE, END_VALUE, INCREMENT_VALUE, lambda i: i)
     BAR_HEIGHTS = bar_heights(START_VALUE, END_VALUE, INCREMENT_VALUE, NUM_BOXES, lambda i: math.exp(-1.75 * i))
 
+    LEFT_TEXT, RIGHT_TEXT = create_DE_texts()
+
+    NUM_DEMAND_ELICITATION_QUESTIONS = len(LEFT_TEXT)
     CONTROL_QUESTIONS = {
-        'CQ_tasks': {
-            'payment':(1,'myHint'),
-            'demand_elicitation':(2,'myHint')
+        'CQ_tasks_bonus': {
+            'CQ_conditions_collaborative_job':(3,'myHint'),
+            'CQ_bonus_collabarotive_job_consists': (1,'myHint'),
+            'CQ_bonus_collaboartive_job_payment': (3, 'myHint'),
+            'CQ_bonus_tentative_bonus': (1, 'myHint'),
+            'CQ_bonus_tentative_penalty': (2, 'myHint'),
         },
+        'CQ_tasks_penalty': {
+            'CQ_conditions_collaborative_job':(3,'myHint'),
+            'CQ_penalty_collabarotive_job_consists': (1,'myHint'),
+            'CQ_penalty_collaboartive_job_payment': (3, 'myHint'),
+            'CQ_penalty_tentative_bonus': (1, 'myHint'),
+            'CQ_penalty_tentative_penalty': (2, 'myHint'),
+        },
+
+
         'CQ_states': {
             'payment':(1,'myHint'),
             'demand_elicitation':(2,'myHint')
@@ -137,6 +173,11 @@ class C(BaseConstants):
             'demand_elicitation':(2,'myHint')
         }
     }
+
+
+
+
+
     
    
 
@@ -195,6 +236,132 @@ class Player(BasePlayer):
 
     # num_draws = models.StringField()
      
+    CQ_conditions_collaborative_job = models.StringField(
+        blank=True,
+        choices=[
+            [1, 'If Part 1 is chosen for payment, I will complete the Job for sure regardless of my other decisions.'],
+            [2, 'If I decide to complete the Job, I will complete it regardless of whether Part 1 is chosen for payment.'],
+            [3, 'I will complete the Job ONLY if I decide to complete it AND Part 1 is chosen for payment.'],
+        ],
+        widget=widgets.RadioSelect,
+        label='What must happen for you to complete the Collaborative Job?'
+    )
+
+    CQ_bonus_collabarotive_job_consists = models.StringField(
+        blank=True,
+        choices=[
+            [1, 'A bonus task completed by you, AND a penalty task completed by a computer.'],
+            [2, 'A penalty task completed by you, AND a bonus task completed by a computer.'],
+            [3, 'A bonus task completed by you ONLY.'],
+            [4, 'A penalty task completed by a computer ONLY.'],
+        ],
+        widget=widgets.RadioSelect,
+        label='What does the Collaborative Job consist of?'
+    )
+
+    CQ_penalty_collabarotive_job_consists = models.StringField(
+        blank=True,
+        choices=[
+            [1, 'A penalty task completed by you, AND a bonus task completed by a computer.'],
+            [2, 'A bonus task completed by you, AND a penalty task completed by a computer.'],
+            [3, 'A penalty task completed by you ONLY.'],
+            [4, 'A bonus task completed by a computer ONLY.'],
+        ],
+        widget=widgets.RadioSelect,
+        label='What does the Collaborative Job consist of?'
+    )
+
+
+    CQ_bonus_collaboartive_job_payment = models.StringField(
+        blank=True,
+        choices=[
+            [1, 'The bonus I earn in the bonus task ONLY.'],
+            [2, 'The penalty the computer earns in the penalty task ONLY.'],
+            [3, 'The bonus I earn in the bonus task MINUS the penalty the computer earns in the penalty task.'],
+        ],
+        widget=widgets.RadioSelect,
+        label='What payment will you receive from the Collaborative Job if you complete it?'
+    )
+
+
+    CQ_penalty_collaboartive_job_payment = models.StringField(
+        blank=True,
+        choices=[
+            [1, 'The bonus the computer earns in the bonus task ONLY.'],
+            [2, 'The penalty I earn in the penalty task ONLY.'],
+            [3, 'The bonus the computer earns in the bonus task MINUS the penalty I earn in the penalty task.'],
+        ],
+        widget=widgets.RadioSelect,
+        label='What payment will you receive from the Collaborative Job if you complete it?'
+    )
+
+
+
+
+
+    CQ_bonus_tentative_bonus = models.StringField(
+        blank=True,
+        choices=[
+            [1, 'It can increase OR stay the same.'],
+            [2, 'It can decrease OR stay the same.'],
+            [3, 'It ALWAYS increases.'],
+            [4, 'It ALWAYS stays the same.'],
+            [5, 'It ALWAYS decreases.'],
+        ],
+        widget=widgets.RadioSelect,
+        label='What can happen to your tentative bonus when you open a box in the bonus task?'
+    )
+
+
+    CQ_penalty_tentative_bonus = models.StringField(
+        blank=True,
+        choices=[
+            [1, 'It can increase OR stay the same.'],
+            [2, 'It can decrease OR stay the same.'],
+            [3, 'It ALWAYS increases.'],
+            [4, 'It ALWAYS stays the same.'],
+            [5, 'It ALWAYS decreases.'],
+        ],
+        widget=widgets.RadioSelect,
+        label="What can happen to the computer's tentative bonus when it opens a boox in the bonus task?"
+    )
+
+
+
+
+
+    CQ_bonus_tentative_penalty = models.StringField(
+        blank=True,
+        choices=[
+            [1, 'It can increase OR stay the same.'],
+            [2, 'It can decrease OR stay the same.'],
+            [3, 'It ALWAYS increases.'],
+            [4, 'It ALWAYS stays the same.'],
+            [5, 'It ALWAYS decreases.'],
+        ],
+        widget=widgets.RadioSelect,
+        label="What can happen to the computer's tentative penalty when it opens a box in the penalty task?"
+    )
+
+
+
+    CQ_penalty_tentative_penalty = models.StringField(
+        blank=True,
+        choices=[
+            [1, 'It can increase OR stay the same.'],
+            [2, 'It can decrease OR stay the same.'],
+            [3, 'It ALWAYS increases.'],
+            [4, 'It ALWAYS stays the same.'],
+            [5, 'It ALWAYS decreases.'],
+        ],
+        widget=widgets.RadioSelect,
+        label='What can happen to your tentative penalty when your open a box in the penalty task?'
+    )
+
+
+
+
+
     CQ_tasks_payment = models.StringField(
         blank=True,
         choices=[
@@ -304,9 +471,10 @@ class UnderstandingQuestions(Page):
     @staticmethod
     def get_form_fields(player):
         domain = player.participant.domain
-        control_questions = C.CONTROL_QUESTIONS[f"CQ_{domain}"]
+        valence = player.participant.valence
+        control_questions = C.CONTROL_QUESTIONS[f"CQ_{domain}_{valence}"]
         questions = list(control_questions.keys())
-        questions = [f"CQ_{domain}_{question}" for question in questions]
+        
         return questions
 
     @staticmethod
@@ -326,9 +494,11 @@ class UnderstandingQuestions(Page):
     def error_message(player, values):
         if not player.session.config['dev_mode']:
             domain = player.participant.domain
-            control_questions = C.CONTROL_QUESTIONS[f"CQ_{domain}"]
+            valence = player.participant.valence
+            control_questions = C.CONTROL_QUESTIONS[f"CQ_{domain}_{valence}"]
+            
             questions = list(control_questions.keys())
-            questions = [f"CQ_{domain}_{question}" for question in questions]
+            
 
             if 'mistakes' not in player.participant.vars.keys():
                 player.participant.mistakes = {question:0 for question in questions}
@@ -561,6 +731,8 @@ class Task(Page):
 class TransitionDemandElicitation(Page):
     pass
 
+class TransitionDemandElicitation2(Page):
+    pass
 
 class DemandElicitation(Page):
     form_model = 'player'
@@ -570,22 +742,22 @@ class DemandElicitation(Page):
     @staticmethod
     def vars_for_template(player):
         
-        def custom_format(number):
-            number = float(number)
-            if number.is_integer():
-                return "{:.2f}".format(number)
-            else:
-                return "{:.2f}".format(number)
-        start = 0
-        end = 10
-        increment = .5
-        numbers = np.arange(start + increment , end + increment, increment)
-        rightText = [f'Get ${custom_format(numbers[len(numbers)-1-i])}' for i in range(len(numbers))] + [f'Get/Pay ${custom_format(0)}'] + [f'Pay ${custom_format(numbers[i])}' for i in range(len(numbers))]
+        
 
-        leftText = ['Complete collaboartive task']*len(rightText)
+        myLabels = json.dumps(C.LAEBELS)
+        myHeights = json.dumps(C.BAR_HEIGHTS)
+        reversed_dividedBarHeights = json.dumps(C.BAR_HEIGHTS[::-1])
+ 
+        
+
         return {
-            'leftText':  json.dumps(leftText),
-            'rightText': json.dumps(rightText)
+            'leftText':  json.dumps(C.LEFT_TEXT),
+            'rightText': json.dumps(C.RIGHT_TEXT),
+
+            'top_labels':myLabels,
+            'top_dividedBarHeights': myHeights,
+            'bottom_labels':myLabels,
+            'bottom_dividedBarHeights': reversed_dividedBarHeights,   
         }
     
     @staticmethod
@@ -698,6 +870,7 @@ page_sequence = [
     TransitionPractice,
     Task,
     TransitionDemandElicitation,
+    TransitionDemandElicitation2,
     DemandElicitation,
     TransitionUnincentivized,
     Unincentivized,

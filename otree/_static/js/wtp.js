@@ -17,6 +17,28 @@ function drawWTP(parameters){
     this.leftDiv;
     this.rightDiv;
 
+    
+
+    var modal_div=document.createElement("div");
+    modal_div.innerHTML=`
+    <div class="modal fade" id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="confirmModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+            <div class="modal-body" id="confirm_modal_text_id">
+                <p class="pb-0 mb-0">Dummy Text</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" data-bs-dismiss="modal" class="btn btn-secondary">Change answers</button>
+                <button id="id_button_end_task" style="float: right" class="btn btn-primary btn-large">Confirm</button>
+            </div>
+            </div>
+        </div>
+    </div>`
+
+
+    document.getElementById(this.root).appendChild(modal_div);
+
+
 
     this.drawChoices = function(base,leftHeader,rightHeader,leftBonus,rightBonus){
         var table=document.createElement("table");
@@ -61,7 +83,7 @@ function drawWTP(parameters){
         for(let i=0;i<leftBonus.length;i++){
             var tr=document.createElement("tr");
             tr.setAttribute('height',"15px");
-            if ((leftBonus[i]=="Get/Pay $0") || (rightBonus[i]=="Get/Pay $0")){
+            if ((leftBonus[i]=="Get/Pay $0.00") || (rightBonus[i]=="Get/Pay $0.00")){
                 tr.className='border-5 border-danger'  
             };
    
@@ -260,18 +282,37 @@ function drawWTP(parameters){
             var switch_row = multipler - 2; 
             console.log('my switch row',switch_row,this.tdList)
             if ((switch_row >= 0) && (switch_row < this.leftBonus.length-1)) {
-                var text = 'I prefer completing the task over ' + this.rightBonus[switch_row+1] + ' but I prefer ' + this.rightBonus[switch_row] + ' over completing the task';
+                var text = 'I prefer completing the job over ' + this.rightBonus[switch_row+1] + ' but I prefer ' + this.rightBonus[switch_row] + ' over completing the job';
             } else if (switch_row < 0) {
-                var text = 'I prefer completing the task over ' + this.rightBonus[0];
+                var text = 'I prefer completing the job over ' + this.rightBonus[0];
             } else {
                 console.log('I am here',this.rightBonus, this.rightBonus.length-1)
-                var text = 'I prefer ' + this.rightBonus[this.rightBonus.length-1] + ' over completing the task';
+                var text = 'I prefer ' + this.rightBonus[this.rightBonus.length-1] + ' over completing the job';
             }
 
             text = text.replaceAll("Pay", "paying");
             text = text.replaceAll("Get", "getting");
 
+            var modal_text = document.getElementById("confirm_modal_text_id")
+            modal_text.innerHTML = ''
+            var p1 = document.createElement("p");
             
+            p1.innerHTML = 'You chose: '
+            
+            
+            modal_text.appendChild(p1);
+
+            var ptext = document.createElement("p");
+            ptext.innerHTML = '<i>' + text + '</i>';
+            ptext.className = 'text-center'
+            modal_text.appendChild(ptext);
+            var p2 = document.createElement("p");
+            p2.className = "pb-0 mb-0";
+            p2.innerHTML = 'Is this correct? Please confirm below.'
+            modal_text.appendChild(p2);
+
+            document.getElementById("next_button_id_de").disabled= false;
+          
             
             // I prefer completing the task over " + this.leftBonus[i] + " but I prefer " + this.rightBonus[i] over completing the task"
             div.innerHTML=text;
@@ -391,7 +432,7 @@ function drawWTP(parameters){
         // Text 1
         context.font = "bold 25px Arial"; // Larger font size
         context.textAlign = "center";
-        context.fillText("I like the task", -.3*canvas.height,1/4*canvas.width);
+        context.fillText("I like the job", -.3*canvas.height,1/4*canvas.width);
 
         // Restore the saved context for future drawings
         context.restore();
@@ -406,7 +447,7 @@ function drawWTP(parameters){
         // Text 2
         context.font = "bold 25px Arial"; // Larger font size
         context.textAlign = "center";
-        context.fillText("I don't like the task", -.7*canvas.height,1/4*canvas.width);
+        context.fillText("I don't like the job", -.7*canvas.height,1/4*canvas.width);
 
         // Restore the saved context for future drawings
         context.restore();

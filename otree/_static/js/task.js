@@ -152,7 +152,7 @@ function task(parameters){
 
         var amount
         if (this.treatment=="bonus"){
-            p.innerHTML="Your payment if you end the task now:"
+            p.innerHTML="Your bonus if you end the task now:"
             amount = bonus
         } else if (this.treatment=="penalty"){
             p.innerHTML="Your penalty if you end the task now:"
@@ -313,7 +313,7 @@ function task(parameters){
         console.log(typeof(last_num), 'last number type')
         var p=document.createElement('p');
         if (this.treatment=="bonus"){
-            p.innerHTML="The box contains a payment amount of $"+this.formatNumberOrString(last_num)
+            p.innerHTML="The box contains a bonus amount of $"+this.formatNumberOrString(last_num)
         } else if (this.treatment=="penalty"){
             var penalty = this.min_pay+this.max_pay-last_num
             p.innerHTML="The box contains a penalty amount of $"+this.formatNumberOrString(penalty)
@@ -326,7 +326,7 @@ function task(parameters){
         var bonus=Math.max(...this.sequence.slice(0,this.num_draws))
    
         if (this.treatment=="bonus"){
-            p.innerHTML="So your payment if you end the task now is $"+ this.formatNumberOrString(bonus)
+            p.innerHTML="So your bonus if you end the task now is $"+ this.formatNumberOrString(bonus)
         } else if (this.treatment=="penalty"){
             var penalty = this.min_pay+this.max_pay-bonus
             p.innerHTML="So your penalty if you end the task now is $"+ this.formatNumberOrString(penalty)
@@ -372,7 +372,7 @@ function task(parameters){
 
        
         if (this.treatment=="bonus"){
-            p.innerHTML="Your final payment is $"+ this.formatNumberOrString(bonus)
+            p.innerHTML="Your final bonus is $"+ this.formatNumberOrString(bonus)
         } else if (this.treatment=="penalty"){
             var penalty = this.min_pay+this.max_pay-bonus
             p.innerHTML="Your final penalty is $"+this.formatNumberOrString(penalty)

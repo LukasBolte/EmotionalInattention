@@ -1,13 +1,12 @@
- {% load otree %}
-
-
-
- <p>
+{% load otree %}
+<p>
   Both tasks have a similar structure:
 </p>
+
 <p>
-  For each task, there are 10,000 boxes. In the bonus task, each box contains a bonus between $2 and $10. In the penalty task, each box contains a penalty between $2 and $10. 
+  For each task, there are <span class='class_num_box'></span> boxes. In the <b>bonus task</b>, each box contains a <i>bonus between ${{ C.START_VALUE }} and ${{ C.END_VALUE }}</i>. In the <b>penalty task</b>, each box contains a <i>penalty between ${{ C.START_VALUE }} and ${{ C.END_VALUE }}</i>. 
 </p>
+
 <p>
   The goal is to find the highest bonus and smallest penalty, respectively. 
 </p>
@@ -15,10 +14,23 @@
   The graphs below show the number of boxes that contain each bonus amount in the bonus task, and each penalty amount in the penalty task.
 </p>
 
+<div class="d-flex justify-content-center align-items-center">
+  <div>
+    <p><b>Bonus task</b></p>
+  </div>
+</div>
 <div class="chart-container">
   <div class="chart" id="chart1"></div>
   <div class="chart-overlay">
     <p class="overlay-text" id="overlay1">Move your mouse over the figure</p>
+  </div>
+</div>
+
+<br>
+
+<div class="d-flex justify-content-center align-items-center">
+  <div>
+    <p><b>Penalty task</b></p>
   </div>
 </div>
 
