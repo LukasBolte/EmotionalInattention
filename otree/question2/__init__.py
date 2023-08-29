@@ -763,6 +763,7 @@ class DemandElicitation(Page):
     @staticmethod
     def error_message(player, values):
         if not player.session.config['dev_mode']:
+            print(values)
             if values['wtp']=='':
 
                 return {'wtp':'Please make your choices by clicking on the table below.'}

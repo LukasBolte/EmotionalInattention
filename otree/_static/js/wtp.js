@@ -254,6 +254,7 @@ function drawWTP(parameters){
     this.drawChoices(this.midDiv,this.leftHeader,this.rightHeader,this.leftBonus,this.rightBonus);
     this.load();
 
+    console.log(document.getElementById(this.varname).value,'my value')
     this.drawExplainer = function(){
         if (this.selectedCutoff!=undefined){
             
