@@ -23,10 +23,10 @@ def create_incremented_array(start, end, increment, callback):
     while i <= end:
         array.append(callback(i))
         i += increment
+
     return array
 
 def labels(start,end,increment,callback):
-    
     first_array =  create_incremented_array(start, end, increment, callback)
 
     return ["{:.2f}".format(num) for num in first_array]
@@ -232,7 +232,6 @@ class Player(BasePlayer):
     )
         
     confused_text = models.LongStringField(blank=True)
-
      
     CQ_conditions_collaborative_job = models.IntegerField(
         blank=True,
@@ -269,7 +268,6 @@ class Player(BasePlayer):
         label='What does the Collaborative Job consist of?'
     )
 
-
     CQ_bonus_collaboartive_job_payment = models.IntegerField(
         blank=True,
         choices=[
@@ -281,7 +279,6 @@ class Player(BasePlayer):
         label='How does completing the Collaborative Job affect your payment from Part 1?'
     )
 
-
     CQ_penalty_collaboartive_job_payment = models.IntegerField(
         blank=True,
         choices=[
@@ -292,10 +289,6 @@ class Player(BasePlayer):
         widget=widgets.RadioSelect,
         label='How does completing the Collaborative Job affect your payment from Part 1?'
     )
-
-
-
-
 
     CQ_bonus_tentative_own = models.IntegerField(
         blank=True,
