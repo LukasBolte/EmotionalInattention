@@ -7,7 +7,7 @@
 </p>
 
 <p>
-    In the <b>penalty task</b>, the computer starts with a <b>tentative penalty</b> of ${{ C.END_VALUE }}. It will then open {{ C.NUM_FORCED_OPEN }} boxes. Each time it opens a box, it will wait {{ C.DELAY }} seconds to reveal the penalty inside. One of two things can happen to the computer's tentative penalty after it opens a box:
+    In the <b>penalty task</b>, the computer starts with a <b>tentative penalty</b> of ${{ C.END_VALUE }}. It will then open {{ C.NUM_FORCED_OPEN }} of the 10,000 boxes in random order. Each time it opens a box, it will wait {{ C.DELAY }} seconds to reveal the penalty inside. One of two things can happen to the computer's tentative penalty after it opens a box:
 
     <ol>
         <li>If the penalty inside the box is <b>larger</b> than its tentative penalty, <b>its tentative penalty will stay the same</b>.</li>
@@ -20,7 +20,7 @@
 {{ else }}
 
 <p>
-    In the <b>penalty task</b>, you start with a <b>tentative penalty</b> of ${{ C.END_VALUE }}. You will then open {{ C.NUM_FORCED_OPEN }} boxes. Each time you open a box, you will wait {{ C.DELAY }} seconds to reveal the penalty inside. One of two things can happen to your tentative penalty after you open a box:
+    In the <b>penalty task</b>, you start with a <b>tentative penalty</b> of ${{ C.END_VALUE }}. You will then open {{ C.NUM_FORCED_OPEN }} of the 10,000 boxes in random order. Each time you open a box, you will wait {{ C.DELAY }} seconds to reveal the penalty inside. One of two things can happen to your tentative penalty after you open a box:
 
     <ol>
         <li>If the penalty inside the box is <b>larger</b> than your tentative penalty, <b>your tentative penalty will stay the same</b>.</li>
