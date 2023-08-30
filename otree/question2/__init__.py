@@ -122,11 +122,11 @@ class C(BaseConstants):
     MAX_TIME = 10
     MAX_PAY = 20
     NUM_BOXES = 10000
-    NUM_DRAWS = 1000
-    DELAY = 10
+    # NUM_DRAWS = 1000
+    DELAY = 3 # 10
     BALANCE = 8
     PARTICIPATION_FEE = 2
-    NUM_PRACTICE = 5
+    NUM_PRACTICE = 2 # 5
     NUM_FORCED_OPEN = 50
     PAYMENT_PART_2 = .50
 
@@ -231,7 +231,13 @@ def creating_session(subsession: Subsession):
                 B = C.BAR_HEIGHTS
                 new_list = [a for a, b in zip(A, B) for _ in range(b)]
                 
-                participant.sequence = json.dumps(random.sample(new_list, C.NUM_DRAWS))
+                participant.sequence = {'penalty':json.dumps(random.sample(new_list, C.NUM_FORCED_OPEN)),
+                                        'bonus':json.dumps(random.sample(new_list, C.NUM_FORCED_OPEN))}
+
+                new_list = [a for a, b in zip(A, B) for _ in range(b)]
+
+                participant.practice_sequence = {'penalty':json.dumps(random.sample(new_list, C.NUM_PRACTICE)),
+                                        'bonus':json.dumps(random.sample(new_list, C.NUM_PRACTICE))}
 
                 
 
@@ -529,10 +535,6 @@ class Player(BasePlayer):
     )
 
 
-
-    
-   
-
 # PAGES
 class Welcome(Page):
     @staticmethod
@@ -765,8 +767,9 @@ class Task(Page):
 
     @staticmethod
     def vars_for_template(player):
+        valence = player.participant.valence
         return {
-            'sequence':  json.dumps(player.participant.sequence)
+            'sequence':  json.dumps(player.participant.sequence[valence])
         }
     
     # def before_next_page(player, timeout_happened):
@@ -868,6 +871,38 @@ class DemandElicitation(Page):
                 return {'wtp':'Please make your choices by clicking on the table below.'}
 
 
+<<<<<<< Updated upstream
+=======
+    @staticmethod
+    def before_next_page(player, timeout_happened):
+        wtp = json.loads(player.wtp)
+        cutoff = wtp['cutoff']
+
+        parts = cutoff.split(":")
+        side = parts[0]
+        row = int(parts[1])
+
+        if side == "right":
+            row = row +1
+ 
+        large_number = 1
+        if row <=0:
+            player.participant.wtp = C.NUMERIC_WTP[0] + large_number
+        elif row > len(C.NUMERIC_WTP) - 1:
+            player.participant.wtp = C.NUMERIC_WTP[-1] - large_number
+        else:
+            player.participant.wtp = (C.NUMERIC_WTP[row] + C.NUMERIC_WTP[row-1])/ 2
+        
+        rows = [i for i in range(len(C.NUMERIC_WTP))]
+        player.participant.random_row = random.choice(rows)
+        player.participant.collaborative_job = (C.NUMERIC_WTP[player.participant.random_row] < player.participant.wtp) and (player.participant.part_payment == 'Part 1')
+
+        question = 'Do you prefer <b>complete the Collaborative Job</b> OR <b>'+C.RIGHT_TEXT[player.participant.random_row]+'</b>?'
+        player.participant.question = question
+
+
+
+>>>>>>> Stashed changes
 class TransitionUnincentivized(Page):
     form_model = 'player'
     form_fields = [ 'confused_binary','confused_text']   
@@ -929,7 +964,21 @@ class Feedback(Page):
 
 
 
+class TaskRandomlyChosen(Page):
+    form_model = 'player'  
 
+    @staticmethod
+
+    def vars_for_template(player):
+        valence = player.participant.valence
+        return {
+            'sequence':  json.dumps(player.participant.sequence[valence])
+        }
+    
+
+    @staticmethod
+    def is_displayed(player):
+        return player.participant.collaborative_job
 
 
 class Finished(Page):
