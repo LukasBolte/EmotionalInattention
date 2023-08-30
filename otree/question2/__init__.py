@@ -91,7 +91,7 @@ def create_DE_texts():
     increment = .5
     numbers = np.arange(start + increment , end + increment, increment)
     rightText = [f'Get ${"{:.2f}".format(float(numbers[len(numbers)-1-i]))}' for i in range(len(numbers))] + [f'Get/Pay ${"{:.2f}".format(0)}'] 
-    numeric = [numbers[-1-i] for i in range(len(numbers))]+ [0]
+    
     start = 0
     end = 8
     increment = .5
@@ -101,8 +101,7 @@ def create_DE_texts():
     rightText = rightText + [f'Pay ${"{:.2f}".format(float(numbers[i]))}' for i in range(len(numbers))]
 
     leftText = ['Complete Collabarative Job']*len(rightText)
-    numeric = numeric + [-el for el in numbers]
-    return (leftText,rightText,numeric)
+    return (leftText,rightText)
 
 
 def likelihood_scale():
@@ -130,7 +129,6 @@ class C(BaseConstants):
     NUM_PRACTICE = 5
     NUM_FORCED_OPEN = 50
     PAYMENT_PART_2 = .50
-    PROBABILITY_PART_1 = .05
 
 
     READ_ALL = 'question2/ReadAll.html'
@@ -156,7 +154,7 @@ class C(BaseConstants):
     LAEBELS = labels(START_VALUE, END_VALUE, INCREMENT_VALUE, lambda i: i)
     BAR_HEIGHTS = bar_heights(START_VALUE, END_VALUE, INCREMENT_VALUE, NUM_BOXES, lambda i: math.exp(-1.75 * i))
 
-    LEFT_TEXT, RIGHT_TEXT, NUMERIC_WTP = create_DE_texts()
+    LEFT_TEXT, RIGHT_TEXT = create_DE_texts()
 
     NUM_DEMAND_ELICITATION_QUESTIONS = len(LEFT_TEXT)
     CONTROL_QUESTIONS = {
@@ -220,12 +218,6 @@ def creating_session(subsession: Subsession):
                 participant.domain = participant.treatment[0]
                 participant.valence = participant.treatment[1]
                 participant.high_payoff = participant.treatment[2]
-
-                random_draw = random.random()
-
-                participant.part_payment = 'Part 2'
-                if C.PROBABILITY_PART_1 > random_draw:
-                    participant.part_payment = 'Part 1'
 
                 # participant.experiment_sequence = ['Welcome','Consent','Introduction',f"Payment_{participant.treatment}",f"UnderstandingQuestions_{participant.treatment}","Task","Diagnostic","Demographics",'Feedback','Finished']
 
@@ -308,24 +300,24 @@ class Player(BasePlayer):
     CQ_bonus_collaboartive_job_payment = models.IntegerField(
         blank=True,
         choices=[
-            [1, 'The bonus I earn in the bonus task ONLY.'],
-            [2, 'The penalty the computer earns in the penalty task ONLY.'],
-            [3, 'The bonus I earn in the bonus task MINUS the penalty the computer earns in the penalty task.'],
+            [1, 'The bonus I earn in the bonus task will be added to my Part 1 payment.'],
+            [2, 'The penalty the computer earns in the penalty task will be taken away from my Part 1 payment.'],
+            [3, 'The bonus I earn in the bonus task will be added to my Part 1 payment, AND the penalty the computer earns in the penalty task will be taken away from this payment.'],
         ],
         widget=widgets.RadioSelect,
-        label='What payment will you receive from the Collaborative Job if you complete it?'
+        label='How does completing the Collaborative Job affect your payment from Part 1?'
     )
 
 
     CQ_penalty_collaboartive_job_payment = models.IntegerField(
         blank=True,
         choices=[
-            [1, 'The bonus the computer earns in the bonus task ONLY.'],
-            [2, 'The penalty I earn in the penalty task ONLY.'],
-            [3, 'The bonus the computer earns in the bonus task MINUS the penalty I earn in the penalty task.'],
+            [1, 'The bonus I earn in the bonus task will be added to my Part 1 payment.'],
+            [2, 'The penalty the computer earns in the penalty task will be taken away from my Part 1 payment.'],
+            [3, 'The bonus I earn in the bonus task will be added to my Part 1 payment, AND the penalty the computer earns in the penalty task will be taken away from this payment.'],
         ],
         widget=widgets.RadioSelect,
-        label='What payment will you receive from the Collaborative Job if you complete it?'
+        label='How does completing the Collaborative Job affect your payment from Part 1?'
     )
 
 
@@ -876,35 +868,6 @@ class DemandElicitation(Page):
                 return {'wtp':'Please make your choices by clicking on the table below.'}
 
 
-    @staticmethod
-    def before_next_page(player, timeout_happened):
-        wtp = json.loads(player.wtp)
-        cutoff = wtp['cutoff']
-
-        parts = cutoff.split(":")
-        side = parts[0]
-        row = int(parts[1])
-
-        if side == "right":
-            row = row +1
- 
-        large_number = 1
-        if row <=0:
-            player.participant.wtp = C.NUMERIC_WTP[0] + large_number
-        elif row > len(C.NUMERIC_WTP) - 1:
-            player.participant.wtp = C.NUMERIC_WTP[-1] - large_number
-        else:
-            player.participant.wtp = (C.NUMERIC_WTP[row] + C.NUMERIC_WTP[row-1])/ 2
-        
-        rows = [i for i in range(len(C.NUMERIC_WTP))]
-        player.participant.random_row = random.choice(rows)
-        player.participant.collaborative_job = C.NUMERIC_WTP[player.participant.random_row] < player.participant.wtp
-
-        question = 'Do you prefer <b>complete the Collaborative Job</b> OR <b>'+C.RIGHT_TEXT[player.participant.random_row]+'</b>?'
-        player.participant.question = question
-
-
-
 class TransitionUnincentivized(Page):
     form_model = 'player'
     form_fields = [ 'confused_binary','confused_text']   
@@ -951,26 +914,8 @@ class Unincentivized(Page):
 
 
 class Results(Page):
-    @staticmethod
-    def vars_for_template(player):
+    pass
 
-        numeric_wtp = C.NUMERIC_WTP[player.participant.random_row]
-        text = ''
-        if numeric_wtp < 0:
-            text = 'Thus we will take away $'+str(abs(numeric_wtp))+' from your $'+str(C.BALANCE) +'.'
-        elif numeric_wtp > 0:
-            text = 'Thus we will add $'+str(abs(numeric_wtp))+' to your $'+str(C.BALANCE) +'.'
-        elif numeric_wtp == 0:
-            text = 'Thus we will not change your $'+str(C.BALANCE) +'.'
-
-        right_option = C.RIGHT_TEXT[player.participant.random_row]
-
-        if player.participant.collaborative_job:
-            total_payment = C.PARTICIPATION_FEE + C.BALANCE
-
-        return {'total_payment': total_payment,
-                'payment_text': text,
-                'right_option': right_option}
 
 
 class Feedback(Page):

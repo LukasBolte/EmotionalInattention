@@ -1,14 +1,14 @@
 {% load otree %}
 
 <p>
-    While you work on the bonus task, the computer will complete a <b>penalty task</b>. 
+    While you work on the bonus task, the computer will complete the <b>penalty task</b>. 
 </p>
 <p>
-    In the <b>penalty task</b>, the computer start with a <b>tentative penalty</b> of ${{ C.END_VALUE }}. It will then open {{ C.NUM_FORCED_OPEN }} boxes. Each time it opens a box, it will wait {{ C.DELAY }} seconds to reveal the penalty inside. Two things can happen to the computer's tentative payment after it opens a box:
+    In the <b>penalty task</b>, the computer starts with a <b>tentative penalty</b> of ${{ C.END_VALUE }}. It will then open {{ C.NUM_FORCED_OPEN }} boxes. Each time it opens a box, it will wait {{ C.DELAY }} seconds to reveal the penalty inside. One of two things can happen to the computer's tentative penalty after it opens a box:
 
     <ol>
-        <li>If the penalty inside the box is <b>larger</b> than its tentative penalty, <b>its tentative penalty stays the same</b>.</li>
-        <li>If the penalty inside the box is <b>smaller</b> than its tentative penalty, <b>the penalty inside the box becomes its new tentative penalty</b>.</li>
+        <li>If the penalty inside the box is <b>larger</b> than its tentative penalty, <b>its tentative penalty will stay the same</b>.</li>
+        <li>If the penalty inside the box is <b>smaller</b> than its tentative penalty, <b>the penalty inside the box will become its new tentative penalty</b>.</li>
     </ol>  
     
     After the computer opens all {{ C.NUM_FORCED_OPEN }} boxes, the <b>final tentative penalty will be taken away from your payment</b> from Part 1. 
