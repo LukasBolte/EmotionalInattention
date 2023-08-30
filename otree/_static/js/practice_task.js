@@ -153,10 +153,10 @@ function task(parameters){
 
         var amount
         if (this.treatment=="bonus"){
-            p.innerHTML="Your payment if you end the task now:"
+            p.innerHTML="Your tentative bonus:"
             amount = bonus
         } else if (this.treatment=="penalty"){
-            p.innerHTML="Your penalty if you end the task now:"
+            p.innerHTML="Your tentative penalty:"
             amount = this.min_pay+this.max_pay-bonus
         }
 
@@ -305,7 +305,7 @@ function task(parameters){
         this.drawBox();
         var td=document.getElementById("row1_id");
         var p=document.createElement('p');
-        p.innerHTML="You decided to open the box"
+        p.innerHTML="You opened another box"
         td.appendChild(p);
         var img=document.createElement('img');
         img.setAttribute("src",this.open_box_src)
@@ -321,7 +321,7 @@ function task(parameters){
         console.log(typeof(last_num), 'last number type')
         var p=document.createElement('p');
         if (this.treatment=="bonus"){
-            p.innerHTML="The box contains a payment amount of $"+this.formatNumberOrString(last_num)
+            p.innerHTML="The box contains a bonus amount of $"+this.formatNumberOrString(last_num)
         } else if (this.treatment=="penalty"){
             var penalty = this.min_pay+this.max_pay-last_num
             p.innerHTML="The box contains a penalty amount of $"+this.formatNumberOrString(penalty)
@@ -334,10 +334,10 @@ function task(parameters){
         var bonus=Math.max(...this.sequence.slice(0,this.num_draws))
    
         if (this.treatment=="bonus"){
-            p.innerHTML="So your payment if you end the task now is $"+ this.formatNumberOrString(bonus)
+            p.innerHTML="So your tentative bonus is $"+ this.formatNumberOrString(bonus)
         } else if (this.treatment=="penalty"){
             var penalty = this.min_pay+this.max_pay-bonus
-            p.innerHTML="So your penalty if you end the task now is $"+ this.formatNumberOrString(penalty)
+            p.innerHTML="So your tentative penalty is $"+ this.formatNumberOrString(penalty)
         }
 
         
@@ -361,13 +361,16 @@ function task(parameters){
 
         var endPracticeButton=document.createElement("button")
         endPracticeButton.setAttribute("id","endPracticeButton_id")
-        endPracticeButton.className="btn btn-secondary btn-large";
-        endPracticeButton.innerHTML="End pratice";
+        endPracticeButton.className="btn btn-primary btn-large";
+        endPracticeButton.innerHTML="Next";
         
 
         //   <button id="id_button_end_task" style="float: right" class="btn btn-secondary btn-large">End task</button>
 
         if (this.practice_boxes-this.num_draws==0){
+            p = document.createElement('p');
+            p.innerHTML='You have opened all the boxes. Click "Next" to see what the computer earned during its practice.'
+            td.appendChild(p)
             td.appendChild(endPracticeButton);
         } else {
             td.appendChild(continueButton);
@@ -396,7 +399,7 @@ function task(parameters){
 
        
         if (this.treatment=="bonus"){
-            p.innerHTML="Your final payment is $"+ this.formatNumberOrString(bonus)
+            p.innerHTML="Your final bonus is $"+ this.formatNumberOrString(bonus)
         } else if (this.treatment=="penalty"){
             var penalty = this.min_pay+this.max_pay-bonus
             p.innerHTML="Your final penalty is $"+this.formatNumberOrString(penalty)

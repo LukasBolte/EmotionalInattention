@@ -4,16 +4,26 @@
 </p>
 
 <p>
-    There are <span class='class_num_box'></span> boxes in each task. In the <b>bonus task</b>, each box contains a <i>bonus between ${{ C.START_VALUE }} and ${{ C.END_VALUE }}</i>. In the <b>penalty task</b>, each box contains a <i>penalty between ${{ C.START_VALUE }} and ${{ C.END_VALUE }}</i>.
+    There are <span class='class_num_box'></span> boxes in each task. In the <b>{{ participant.valence }} task</b>, each box contains a <i>{{ participant.valence }} between ${{ C.START_VALUE }} and ${{ C.END_VALUE }}</i>. In the <b>{{ participant.anti_valence }} task</b>, each box contains a <i>{{ participant.anti_valence }} between ${{ C.START_VALUE }} and ${{ C.END_VALUE }}</i>.
 </p>
 
 <p>
+
+{{ if participant.valence == 'bonus' }}
+
   Your payment from the job will be maximized if you find the largest bonus in the bonus task, and the computer finds the smallest penalty in the penalty task. 
+
+{{ else }}
+
+  Your payment from the job will be maximized if you find the smallest penalty in the penalty task, and the computer finds the largest bonus in the bonus task. 
+
+{{ endif }}
 </p>
 <p>
-  The graphs below show the number of boxes that contain each bonus amount in the bonus task, and each penalty amount in the penalty task.
+  The graphs below show the number of boxes that contain each {{ participant.valence }} amount in the {{ participant.valence }} task, and each {{ participant.anti_valence }} amount in the {{ participant.anti_valence }} task.
 </p>
 
+{{ if participant.valence == 'bonus' }}
 <div class="d-flex justify-content-center align-items-center">
   <div>
     <p><b>Bonus task</b></p>
@@ -41,6 +51,36 @@
   </div>
 </div>
 
+{{ else }}
+
+<div class="d-flex justify-content-center align-items-center">
+  <div>
+    <p><b>Penalty task</b></p>
+  </div>
+</div>
+
+<div class="chart-container">
+  <div class="chart" id="chart2"></div>
+  <div class="chart-overlay">
+    <p class="overlay-text" id="overlay2">Move your mouse over the figure</p>
+  </div>
+</div>
+
+<br>
+
+<div class="d-flex justify-content-center align-items-center">
+  <div>
+    <p><b>Bonus task</b></p>
+  </div>
+</div>
+<div class="chart-container">
+  <div class="chart" id="chart1"></div>
+  <div class="chart-overlay">
+    <p class="overlay-text" id="overlay1">Move your mouse over the figure</p>
+  </div>
+</div>
+
+{{ endif }}
 
 <script>
 

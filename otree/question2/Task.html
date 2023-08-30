@@ -12,6 +12,47 @@
 
 <div id="task_root"></div>
 
+
+
+<div class="col-md-12 text-center ">
+    <button type="button" class="btn btn-secondary btn-sm" data-bs-toggle="modal" data-bs-target="#exampleModal">Review Instructions</button>
+  </div>
+  
+  
+  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Review Instructions</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+  
+        {{ include C.READ_ALL }}
+        {{ include C.TWO_PARTS }}
+        {{ include C.PAYMENT }}
+        {{ include C.COLLABORATIVE_JOB }}
+        {{ include C.TASK_GENERAL }}
+  
+        {{ if participant.valence == 'bonus' }}
+          {{ include C.BONUS }}
+          {{ include C.PENALTY }}
+        {{ else }}
+          {{ include C.PENALTY }}
+          {{ include C.BONUS }}
+        {{ endif }}
+  
+        {{ include C.BONUS }}
+        {{ include C.PENALTY }}
+        {{ include C.SUMMARY }}
+  
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
 {% endblock %}
 
 

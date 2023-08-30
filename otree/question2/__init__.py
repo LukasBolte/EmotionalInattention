@@ -91,7 +91,7 @@ def create_DE_texts():
     increment = .5
     numbers = np.arange(start + increment , end + increment, increment)
     rightText = [f'Get ${"{:.2f}".format(float(numbers[len(numbers)-1-i]))}' for i in range(len(numbers))] + [f'Get/Pay ${"{:.2f}".format(0)}'] 
-    
+    numeric = [numbers[-1-i] for i in range(len(numbers))]+ [0]
     start = 0
     end = 8
     increment = .5
@@ -101,7 +101,8 @@ def create_DE_texts():
     rightText = rightText + [f'Pay ${"{:.2f}".format(float(numbers[i]))}' for i in range(len(numbers))]
 
     leftText = ['Complete Collabarative Job']*len(rightText)
-    return (leftText,rightText)
+    numeric = numeric + [-el for el in numbers]
+    return (leftText,rightText,numeric)
 
 
 def likelihood_scale():
@@ -128,7 +129,8 @@ class C(BaseConstants):
     PARTICIPATION_FEE = 2
     NUM_PRACTICE = 2 # 5
     NUM_FORCED_OPEN = 50
-    PAYMENT_PART_2 = .50
+    PAYMENT_PART_2 = "0.50"
+    PROBABILITY_PART_1 = .05
 
 
     READ_ALL = 'question2/ReadAll.html'
@@ -154,7 +156,7 @@ class C(BaseConstants):
     LAEBELS = labels(START_VALUE, END_VALUE, INCREMENT_VALUE, lambda i: i)
     BAR_HEIGHTS = bar_heights(START_VALUE, END_VALUE, INCREMENT_VALUE, NUM_BOXES, lambda i: math.exp(-1.75 * i))
 
-    LEFT_TEXT, RIGHT_TEXT = create_DE_texts()
+    LEFT_TEXT, RIGHT_TEXT, NUMERIC_WTP = create_DE_texts()
 
     NUM_DEMAND_ELICITATION_QUESTIONS = len(LEFT_TEXT)
     CONTROL_QUESTIONS = {
@@ -162,17 +164,16 @@ class C(BaseConstants):
             'CQ_conditions_collaborative_job':(3,'myHint'),
             'CQ_bonus_collabarotive_job_consists': (1,'myHint'),
             'CQ_bonus_collaboartive_job_payment': (3, 'myHint'),
-            'CQ_bonus_tentative_bonus': (1, 'myHint'),
-            'CQ_bonus_tentative_penalty': (2, 'myHint'),
+            'CQ_bonus_tentative_own': (1, 'myHint'),
+            'CQ_bonus_tentative_other': (2, 'myHint'),
         },
         'CQ_tasks_penalty': {
             'CQ_conditions_collaborative_job':(3,'myHint'),
             'CQ_penalty_collabarotive_job_consists': (1,'myHint'),
             'CQ_penalty_collaboartive_job_payment': (3, 'myHint'),
-            'CQ_penalty_tentative_bonus': (1, 'myHint'),
-            'CQ_penalty_tentative_penalty': (2, 'myHint'),
+            'CQ_penalty_tentative_own': (2, 'myHint'),
+            'CQ_penalty_tentative_other': (1, 'myHint'),
         },
-
 
         'CQ_states': {
             'payment':(1,'myHint'),
@@ -217,7 +218,18 @@ def creating_session(subsession: Subsession):
                 participant.treatment = next(treatments)
                 participant.domain = participant.treatment[0]
                 participant.valence = participant.treatment[1]
+                participant.anti_valence = [el for el in bonus_penalty if el != participant.valence][0]
                 participant.high_payoff = participant.treatment[2]
+
+                print(participant.treatment)
+
+
+                random_draw = random.random()
+
+                participant.part_payment = 'Part 2'
+                if C.PROBABILITY_PART_1 > random_draw:
+                    participant.part_payment = 'Part 1'
+
 
                 # participant.experiment_sequence = ['Welcome','Consent','Introduction',f"Payment_{participant.treatment}",f"UnderstandingQuestions_{participant.treatment}","Task","Diagnostic","Demographics",'Feedback','Finished']
 
@@ -318,9 +330,9 @@ class Player(BasePlayer):
     CQ_penalty_collaboartive_job_payment = models.IntegerField(
         blank=True,
         choices=[
-            [1, 'The bonus I earn in the bonus task will be added to my Part 1 payment.'],
-            [2, 'The penalty the computer earns in the penalty task will be taken away from my Part 1 payment.'],
-            [3, 'The bonus I earn in the bonus task will be added to my Part 1 payment, AND the penalty the computer earns in the penalty task will be taken away from my Part 1 payment.'],
+            [1, 'The penalty I earn in the penalty task will be taken away from my Part 1.'],
+            [2, 'The bonus the computer earns in the bonus task will be added to my Part 1 payment.'],
+            [3, 'The penalty I earn in the penalty task will be taken away from my Part 1 payment, AND the bonus the computer earns in the bonus task will be added to my Part 1 payment.'],
         ],
         widget=widgets.RadioSelect,
         label='How does completing the Collaborative Job affect your payment from Part 1?'
@@ -330,7 +342,7 @@ class Player(BasePlayer):
 
 
 
-    CQ_bonus_tentative_bonus = models.IntegerField(
+    CQ_bonus_tentative_own = models.IntegerField(
         blank=True,
         choices=[
             [1, 'It can increase OR stay the same.'],
@@ -344,7 +356,34 @@ class Player(BasePlayer):
     )
 
 
-    CQ_penalty_tentative_bonus = models.IntegerField(
+    CQ_penalty_tentative_own = models.IntegerField(
+        blank=True,
+        choices=[
+            [1, 'It can increase OR stay the same.'],
+            [2, 'It can decrease OR stay the same.'],
+            [3, 'It ALWAYS increases.'],
+            [4, 'It ALWAYS stays the same.'],
+            [5, 'It ALWAYS decreases.'],
+        ],
+        widget=widgets.RadioSelect,
+        label='What can happen to your tentative penalty when your open a box in the penalty task?'
+    )
+
+    CQ_bonus_tentative_other = models.IntegerField(
+        blank=True,
+        choices=[
+            [1, 'It can increase OR stay the same.'],
+            [2, 'It can decrease OR stay the same.'],
+            [3, 'It ALWAYS increases.'],
+            [4, 'It ALWAYS stays the same.'],
+            [5, 'It ALWAYS decreases.'],
+        ],
+        widget=widgets.RadioSelect,
+        label="What can happen to the computer's tentative penalty when it opens a box in the penalty task?"
+    )
+
+
+    CQ_penalty_tentative_other = models.IntegerField(
         blank=True,
         choices=[
             [1, 'It can increase OR stay the same.'],
@@ -361,33 +400,11 @@ class Player(BasePlayer):
 
 
 
-    CQ_bonus_tentative_penalty = models.IntegerField(
-        blank=True,
-        choices=[
-            [1, 'It can increase OR stay the same.'],
-            [2, 'It can decrease OR stay the same.'],
-            [3, 'It ALWAYS increases.'],
-            [4, 'It ALWAYS stays the same.'],
-            [5, 'It ALWAYS decreases.'],
-        ],
-        widget=widgets.RadioSelect,
-        label="What can happen to the computer's tentative penalty when it opens a box in the penalty task?"
-    )
+    
 
 
 
-    CQ_penalty_tentative_penalty = models.IntegerField(
-        blank=True,
-        choices=[
-            [1, 'It can increase OR stay the same.'],
-            [2, 'It can decrease OR stay the same.'],
-            [3, 'It ALWAYS increases.'],
-            [4, 'It ALWAYS stays the same.'],
-            [5, 'It ALWAYS decreases.'],
-        ],
-        widget=widgets.RadioSelect,
-        label='What can happen to your tentative penalty when your open a box in the penalty task?'
-    )
+    
 
     
 
@@ -768,9 +785,18 @@ class Task(Page):
     @staticmethod
     def vars_for_template(player):
         valence = player.participant.valence
+
+        myLabels = json.dumps(C.LAEBELS)
+        myHeights = json.dumps(C.BAR_HEIGHTS)
+        reversed_dividedBarHeights = json.dumps(C.BAR_HEIGHTS[::-1])
         return {
-            'sequence':  json.dumps(player.participant.sequence[valence])
+            'top_labels':myLabels,
+            'top_dividedBarHeights': myHeights,
+            'bottom_labels':myLabels,
+            'bottom_dividedBarHeights': reversed_dividedBarHeights,     
+            'sequence':  json.dumps(player.participant.practice_sequence[valence])
         }
+
     
     # def before_next_page(player, timeout_happened):
 
@@ -829,6 +855,32 @@ class Task(Page):
     # def is_displayed(player: Player):
     #     return player.participant.experiment_sequence[player.round_number - 1] == 'Diagnostic'
 
+class TransitionDemandElicitation0(Page):
+    @staticmethod
+    def vars_for_template(player):
+        
+        valence = player.participant.valence
+        anti_valence = player.participant.anti_valence
+
+        own_payoff = float(max(json.loads(player.participant.practice_sequence[valence])[:C.NUM_PRACTICE]))
+        computer_payoff = float(max(json.loads(player.participant.practice_sequence[anti_valence])[:C.NUM_PRACTICE]))
+
+        if valence == 'bonus':
+            computer_payoff = C.START_VALUE + C.END_VALUE - computer_payoff
+        else:
+            own_payoff = C.START_VALUE + C.END_VALUE - own_payoff   
+
+        own_payoff = "{:.2f}".format(own_payoff)
+        computer_payoff = "{:.2f}".format(computer_payoff)
+
+        if valence == 'bonus':
+            text = "<p>In this practice round to get you familiar with the Collaborative Job, <b>your tentative bonus after opening " + str(C.NUM_PRACTICE) + " boxes in the bonus task is $" + own_payoff + "</b>. In the meantime, <b>the computer has also opened " + str(C.NUM_PRACTICE) + " boxes in the penalty task, earning a tentative penalty of $" + computer_payoff + "</b>.</p> <p>Remember, if Part 1 is chosen for payment, <b>you would also get a balance of $" + str(C.BALANCE) + "</b>, and <b>the number of boxes you and the computer would need to open would be " + '{:,}'.format(C.NUM_BOXES) + "</b>.</p>"
+        else:
+            text = "<p>In this practice round to get you familiar with the Collaborative Job, <b>your tentative penalty after opening " + str(C.NUM_PRACTICE) + " boxes in the penalty task is $" + own_payoff + "</b>. In the meantime, <b>the computer has also opened " + str(C.NUM_PRACTICE) + " boxes in the bonus task, earning a tentative bonus of $" + computer_payoff + "</b>.</p> <p>Remember, if Part 1 is chosen for payment, <b>you would also get a balance of $" + str(C.BALANCE) + "</b>, and <b>the number of boxes you and the computer would need to open would be " + '{:,}'.format(C.NUM_BOXES) + "</b>.</p>"
+            
+        return {
+            'text':  text
+        }
 
 class TransitionDemandElicitation(Page):
     pass
@@ -871,8 +923,6 @@ class DemandElicitation(Page):
                 return {'wtp':'Please make your choices by clicking on the table below.'}
 
 
-<<<<<<< Updated upstream
-=======
     @staticmethod
     def before_next_page(player, timeout_happened):
         wtp = json.loads(player.wtp)
@@ -902,7 +952,6 @@ class DemandElicitation(Page):
 
 
 
->>>>>>> Stashed changes
 class TransitionUnincentivized(Page):
     form_model = 'player'
     form_fields = [ 'confused_binary','confused_text']   
@@ -981,12 +1030,51 @@ class TaskRandomlyChosen(Page):
         return player.participant.collaborative_job
 
 
+
+class AfterTaskRandomlyChosen(Page):
+    form_model = 'player'  
+
+    @staticmethod
+    def vars_for_template(player):
+        
+        valence = player.participant.valence
+        anti_valence = player.participant.anti_valence
+
+        own_payoff = float(max(json.loads(player.participant.sequence[valence])[:C.NUM_FORCED_OPEN]))
+        computer_payoff = float(max(json.loads(player.participant.sequence[anti_valence])[:C.NUM_FORCED_OPEN]))
+
+        if valence == 'bonus':
+            computer_payoff = C.START_VALUE + C.END_VALUE - computer_payoff
+        else:
+            own_payoff = C.START_VALUE + C.END_VALUE - own_payoff   
+
+        own_payoff = "{:.2f}".format(own_payoff)
+        computer_payoff = "{:.2f}".format(computer_payoff)
+
+        player.participant.payoff = float(C.PARTICIPATION_FEE) + float(C.BALANCE)
+        if valence =='bonus':
+            player.participant.payoff += float(own_payoff) - float(computer_payoff)
+        else:
+            player.participant.payoff += float(computer_payoff) - float(own_payoff)
+
+        if valence == 'bonus':
+            text = "<p>You have completed the Collaborative Job. The bonus you earned is $" + own_payoff + ". In the meantime, the computer earned a penalty of $" + computer_payoff + ".</p> <p>Since Part 1 is chosen, you also get a balance of $" + str(C.BALANCE) + ". Including the participation fee of $" + str(C.PARTICIPATION_FEE) + ", your total payment for the study is thus <b>{:,}'.format({player.participant.payoff}</b>.</p>"
+        else:
+            text = "<p>You have completed the Collaborative Job. The penalty you earned is $" + own_payoff + ". In the meantime, the computer earned a bonus of $" + computer_payoff + ".</p> <p>Since Part 1 is chosen, you also get a balance of $" + str(C.BALANCE) + ". Including the participation fee of $" + str(C.PARTICIPATION_FEE) + ", your total payment for the study is thus <b>{:,}'.format({player.participant.payoff}</b>.</p>"
+        return {
+            'text':  text
+        }
+
+
+
 class Finished(Page):
 
     @staticmethod
     def vars_for_template(player):
         player.participant.times['finished'] = time.time()
 
+        if player.participant.part_payment == 'Part 2': 
+            player.participant.payoff = C.PARTICIPATION_FEE + float(C.PAYMENT_PART_2)
         # part1 = F"You will receive your payment of {player.participant.payoff_plus_participation_fee()}" 
         # part2 = ""
         # if player.participant.treatment=="penalty":
@@ -1050,6 +1138,7 @@ page_sequence = [
     UnderstandingQuestions,
     TransitionPractice,
     Task,
+    TransitionDemandElicitation0,
     TransitionDemandElicitation,
     TransitionDemandElicitation2,
     DemandElicitation,
@@ -1057,6 +1146,8 @@ page_sequence = [
     UnincentivizedInstructions,
     Unincentivized,
     Results, 
+    TaskRandomlyChosen,
+    AfterTaskRandomlyChosen,
     Feedback,
     Finished
 ]

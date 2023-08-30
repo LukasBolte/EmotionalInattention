@@ -35,6 +35,15 @@ Checking your understanding
       {{ include C.PAYMENT }}
       {{ include C.COLLABORATIVE_JOB }}
       {{ include C.TASK_GENERAL }}
+
+      {{ if participant.valence == 'bonus' }}
+        {{ include C.BONUS }}
+        {{ include C.PENALTY }}
+      {{ else }}
+        {{ include C.PENALTY }}
+        {{ include C.BONUS }}
+      {{ endif }}
+
       {{ include C.BONUS }}
       {{ include C.PENALTY }}
       {{ include C.SUMMARY }}

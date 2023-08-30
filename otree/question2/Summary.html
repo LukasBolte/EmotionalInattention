@@ -1,10 +1,18 @@
 {% load otree %}
 
 <p>
-    In summary, if Part 1 is selected for payment and you decide to complete the Collaborative Job, you will complete the bonus task and a computer will complete the penalty task.
+    In summary, if Part 1 is selected for payment and you decide to complete the Collaborative Job, you will complete the {{ participant.valence }}  task and a computer will complete the {{ participant.anti_valence }} task.
 
 </p>
 
 <p>
+    {{ if participant.valence == 'bonus' }}
+
     After completing the job, the <b>bonus</b> you earn in the bonus task will be <b>added</b> to your payment from Part 1, and the <b>penalty</b> the computer eans in the penalty task will be <b>taken away</b> from this payment.
+
+    {{ else }}
+
+    After completing the job, the <b>penalty</b> you earn in the penalty task will be <b>taken away</b> from your payment from Part 1, and the <b>bonus</b> the computer earns in the bonus task will be <b>added</b> to this payment.
+
+    {{ endif }}
 </p>

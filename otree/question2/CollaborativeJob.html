@@ -1,9 +1,13 @@
  {% load otree %}
 
+ 
  <p>
-  The Collaborative Job consists of two tasks: a bonus task and a penalty task. 
+    The Collaborative Job consists of two tasks: a {{ participant.valence }} task and a {{ participant.anti_valence }} task. 
 </p>
 
  <p>
-     Suppose that Part 1 is chosen for payment and you decide to complete the Collaborative Job. Then <b>you</b> will complete the <b>bonus task</b>, and a <b>computer</b> will complete the <b>penalty task</b>. You will receive the payoff earned by you <u>AND</u> the computer.
+     Suppose that Part 1 is chosen for payment and you decide to complete the Collaborative Job. Then <b>you</b> will complete the <b>{{ participant.valence }} task</b>, and a <b>computer</b> will complete the <b>{{ participant.anti_valence }} task</b>. You will receive the payoff earned by you <u>AND</u> the computer.
  </p>
+
+
+

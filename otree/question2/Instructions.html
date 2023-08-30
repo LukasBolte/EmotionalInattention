@@ -17,12 +17,19 @@ Instructions
 
     {{ include C.READ_ALL}}
 
+    <p>
+      When you are ready, click "Next" to begin.
+  </p>
     <button type="button" id="nextBtn1" class="btn btn-primary" style="float: right;">Next</button> 
 </div>
 
 <div class="page" id="page2">
 
     {{ include C.TWO_PARTS }}
+
+    <p>
+      Click "Next" to learn more about Part 1.
+    </p>
 
     <button type="button" id="backBtn2" class="btn btn-primary" style="float: left;">Back</button>
     <button type="button" id="nextBtn2" class="btn btn-primary" style="float: right;">Next</button>  
@@ -51,6 +58,8 @@ Instructions
     <button type="button" id="nextBtn5" class="btn btn-primary" style="float: right;">Next</button> 
 </div>
 
+{{ if participant.valence == 'bonus' }}
+
 <div class="page" id="page6">
 
     {{ include C.BONUS }}
@@ -67,6 +76,27 @@ Instructions
     <button type="button" id="backBtn7" class="btn btn-primary" style="float: left;">Back</button>
     <button type="button" id="nextBtn7" class="btn btn-primary" style="float: right;">Next</button> 
 </div>
+
+{{ else }}
+
+<div class="page" id="page6">
+
+
+  {{ include C.PENALTY }}
+  
+  <button type="button" id="backBtn6" class="btn btn-primary" style="float: left;">Back</button>
+  <button type="button" id="nextBtn6" class="btn btn-primary" style="float: right;">Next</button> 
+</div>
+
+<div class="page" id="page7">
+  
+  {{ include C.BONUS }}
+  <button type="button" id="backBtn7" class="btn btn-primary" style="float: left;">Back</button>
+  <button type="button" id="nextBtn7" class="btn btn-primary" style="float: right;">Next</button> 
+</div>
+
+{{ endif }}
+
 
 <div class="page" id="page8">
     
