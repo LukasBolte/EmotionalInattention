@@ -303,7 +303,6 @@ class Player(BasePlayer):
         label='What can happen to your tentative bonus when you open a box in the bonus task?'
     )
 
-
     CQ_penalty_tentative_own = models.IntegerField(
         blank=True,
         choices=[
@@ -330,7 +329,6 @@ class Player(BasePlayer):
         label="What can happen to the computer's tentative penalty when it opens a box in the penalty task?"
     )
 
-
     CQ_penalty_tentative_other = models.IntegerField(
         blank=True,
         choices=[
@@ -343,19 +341,6 @@ class Player(BasePlayer):
         widget=widgets.RadioSelect,
         label="What can happen to the computer's tentative bonus when it opens a boox in the bonus task?"
     )
-
-
-
-
-
-    
-
-
-
-    
-
-    
-
 
     CQ_tasks_payment = models.IntegerField(
         blank=True,
@@ -377,7 +362,6 @@ class Player(BasePlayer):
         label='What is the total payment you get for completing this study?'
     )
 
-
     CQ_states_payment = models.IntegerField(
         blank=True,
         choices=[
@@ -397,7 +381,6 @@ class Player(BasePlayer):
         widget=widgets.RadioSelect,
         label='STATES: What is the total payment you get for completing this study?'
     )
-
 
     CQ_time_periods_payment = models.IntegerField(
         blank=True,
@@ -419,47 +402,44 @@ class Player(BasePlayer):
         label='TIME: What is the total payment you get for completing this study?'
     )
 
-
     wtp = models.StringField(blank=True)
-
-
-
    
     feedback = models.LongStringField(blank=True)
 
-
-    feedbackDifficulty = models.IntegerField(label="How clear were the instructions? Please answer on a scale of 1 "
-                                                   "to 10, with 10 being the clearest.",
-                                             blank=True,
-                                             choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
-                                             widget=widgets.RadioSelectHorizontal)
-    feedbackUnderstanding = models.IntegerField(label="How well did you understand what you were asked to do?"
-                                                      " Please answer on a scale of 1 to 10, with 10 being the case when"
-                                                      " you understood perfectly.",
-                                                blank=True,
-                                                choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
-                                                widget=widgets.RadioSelectHorizontal)
-    feedbackSatisfied = models.IntegerField(label="How satisfied are you with this study overall?"
-                                                  " Please answer on a scale of 1 to 10, with 10 being the most "
-                                                  "satisfied.",
-                                            blank=True,
-                                            choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
-                                            widget=widgets.RadioSelectHorizontal)
-    feedbackPay = models.IntegerField(label="How appropriate do you think the payment for this study is relative to "
-                                            "other ones on Prolific? Please answer on a scale of 1 to 10, with 10 being "
-                                            "the most appropriate.",
-                                      blank=True,
-                                      choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
-                                      widget=widgets.RadioSelectHorizontal)
+    feedbackDifficulty = models.IntegerField(
+        label="How clear were the instructions? Please answer on a scale of 1 to 10, with 10 being the clearest.",
+        blank=True,
+        choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+        widget=widgets.RadioSelectHorizontal
+        )
     
-
+    feedbackUnderstanding = models.IntegerField(
+        label="How well did you understand what you were asked to do? Please answer on a scale of 1 to 10, with 10 being the case when you understood perfectly.",
+        blank=True,
+        choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+        widget=widgets.RadioSelectHorizontal
+        )
+    
+    feedbackSatisfied = models.IntegerField(
+        label="How satisfied are you with this study overall? Please answer on a scale of 1 to 10, with 10 being the most satisfied.",
+        blank=True,
+        choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+        widget=widgets.RadioSelectHorizontal
+        )
+    
+    feedbackPay = models.IntegerField(
+        label="How appropriate do you think the payment for this study is relative to other ones on Prolific? Please answer on a scale of 1 to 10, with 10 being the most appropriate.",
+        blank=True,
+        choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+        widget=widgets.RadioSelectHorizontal
+        )
     
     sports = models.IntegerField(
         blank=True,
         choices=likelihood_scale(),
         widget=widgets.RadioSelect,
         label='Your favorite sports team loses a game. How likely are you to watch the match highlights and talk to your friends about the game?'
-    )
+        )
 
     car = models.IntegerField(
         blank=True,
