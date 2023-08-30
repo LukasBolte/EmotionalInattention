@@ -17,7 +17,6 @@ Vlasta Rasocha
  
 # FUNCTIONS 
 
-
 def create_incremented_array(start, end, increment, callback):
     array = []
     i = start
@@ -93,12 +92,10 @@ def create_DE_texts():
     end = 8
     increment = .5
     numbers = np.arange(start + increment , end + increment, increment)
-
-
     rightText = rightText + [f'Pay ${"{:.2f}".format(float(numbers[i]))}' for i in range(len(numbers))]
-
     leftText = ['Complete Collabarative Job']*len(rightText)
     numeric = numeric + [-el for el in numbers]
+
     return (leftText,rightText,numeric)
 
 
@@ -120,15 +117,16 @@ class C(BaseConstants):
     MAX_TIME = 10
     MAX_PAY = 20
     NUM_BOXES = 10000
-    # NUM_DRAWS = 1000
-    DELAY = 3 # 10
+    DELAY = 10
     BALANCE = 8
     PARTICIPATION_FEE = 2
-    NUM_PRACTICE = 2 # 5
-    NUM_FORCED_OPEN = 3 # 50
+    NUM_PRACTICE = 5
+    NUM_FORCED_OPEN = 50
     PAYMENT_PART_2 = "0.50"
-    PROBABILITY_PART_1 = 1 # .05
-
+    PROBABILITY_PART_1 = .05
+    START_VALUE = 2
+    END_VALUE = 10
+    INCREMENT_VALUE = 0.01
 
     READ_ALL = 'question2/ReadAll.html'
     TWO_PARTS = 'question2/TwoParts.html'
@@ -141,10 +139,6 @@ class C(BaseConstants):
     DEMAND_ELICIATION_INSTRUCTIONS = 'question2/DemandElicitationInstructions.html'
 
     height_constant = 50000
-
-    START_VALUE = 2
-    END_VALUE = 10
-    INCREMENT_VALUE = 0.01
 
     CQ_TASKS = ['CQ_tasks_payment', 'CQ_tasks_demand_elicitation']
     CQ_STATES = ['CQ_states_payment', 'CQ_states_demand_elicitation']
@@ -183,21 +177,10 @@ class C(BaseConstants):
     }
 
 
-
-
-
-    
-   
-
-
-# create a function 
-
 class Subsession(BaseSubsession):
     pass
 
 def creating_session(subsession: Subsession):
-    
-    
     for player in subsession.get_players():
         if subsession.round_number == 1:
 
@@ -217,51 +200,27 @@ def creating_session(subsession: Subsession):
                 participant.valence = participant.treatment[1]
                 participant.anti_valence = [el for el in bonus_penalty if el != participant.valence][0]
                 participant.high_payoff = participant.treatment[2]
-
-                print(participant.treatment)
-
-
                 random_draw = random.random()
-
                 participant.part_payment = 'Part 2'
                 if C.PROBABILITY_PART_1 > random_draw:
                     participant.part_payment = 'Part 1'
 
-
-                # participant.experiment_sequence = ['Welcome','Consent','Introduction',f"Payment_{participant.treatment}",f"UnderstandingQuestions_{participant.treatment}","Task","Diagnostic","Demographics",'Feedback','Finished']
-
-                # I have two lists: A and B. They have the same length. I want to create a third list that has element A[i] repeated B[i] times.
-                # 
-
-                # A = labels(player.subsession)
-                # B = bar_heights(player.subsession)
-
                 A = C.LAEBELS
                 B = C.BAR_HEIGHTS
+
                 new_list = [a for a, b in zip(A, B) for _ in range(b)]
-                
                 participant.sequence = {'penalty':json.dumps(random.sample(new_list, C.NUM_FORCED_OPEN)),
                                         'bonus':json.dumps(random.sample(new_list, C.NUM_FORCED_OPEN))}
 
                 new_list = [a for a, b in zip(A, B) for _ in range(b)]
-
                 participant.practice_sequence = {'penalty':json.dumps(random.sample(new_list, C.NUM_PRACTICE)),
                                         'bonus':json.dumps(random.sample(new_list, C.NUM_PRACTICE))}
 
                 
-
 class Group(BaseGroup):
     pass
 
 class Player(BasePlayer):
-
-    # expected_bonus = models.StringField(
-    #     blank=True
-    # )
-
-    # num_draws = models.StringField()
-
-
     confused_binary = models.StringField(
         blank=True,
         choices=[
@@ -272,7 +231,6 @@ class Player(BasePlayer):
         label='Was the procedure on the previous page confusing in any way?'
     )
         
-
     confused_text = models.LongStringField(blank=True)
 
      
