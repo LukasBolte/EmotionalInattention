@@ -250,11 +250,11 @@ class Player(BasePlayer):
     confused_binary = models.StringField(
         blank=True,
         choices=[
-            [1, 'Yes.'],
-            [0, 'No.'],
+            [1, 'Yes'],
+            [0, 'No'],
         ],
         widget=widgets.RadioSelect,
-        label="Was the procedure on the previous page confusing in any way?"
+        label='Was the procedure on the previous page confusing in any way?'
     )
         
 
@@ -314,7 +314,7 @@ class Player(BasePlayer):
         choices=[
             [1, 'The bonus I earn in the bonus task will be added to my Part 1 payment.'],
             [2, 'The penalty the computer earns in the penalty task will be taken away from my Part 1 payment.'],
-            [3, 'The bonus I earn in the bonus task will be added to my Part 1 payment, AND the penalty the computer earns in the penalty task will be taken away from this payment.'],
+            [3, 'The bonus I earn in the bonus task will be added to my Part 1 payment, AND the penalty the computer earns in the penalty task will be taken away from my Part 1 payment.'],
         ],
         widget=widgets.RadioSelect,
         label='How does completing the Collaborative Job affect your payment from Part 1?'
@@ -469,7 +469,7 @@ class Player(BasePlayer):
         blank=True,
         choices=likelihood_scale(),
         widget=widgets.RadioSelect,
-        label='After buying a car, your bank account balance is low. If you know that you have enough money to cover your day-to-day expenses, how likely are you to check your bank balance?'
+        label='After buying a car, your bank account balance is low. If you know that you have enough money to cover your day-to-day expenses, how likely are you to actively avoid checking your bank balance?'
     )
 
     illness = models.IntegerField(
