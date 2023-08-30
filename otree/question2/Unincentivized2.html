@@ -16,8 +16,6 @@ Do you agree with the following statements?
 </p>
 
 
-
-
 <div class="container">
     <table class="table custom-table table-borderless">
       <tbody>
@@ -46,60 +44,7 @@ Do you agree with the following statements?
           {{ endfor }}
 
 
-          {% with field=form.summary_bad %}
-
-          <tr>
-            <td colspan="6"><b>{{ field.label }}</b> {{ formfield_errors field.name }}</td>
-          </tr>
-          <tr height="15px">
-              {{ for choice in field }}
-            <td class="text-center p-0 m-0">{{ choice }}</td>
-            {{ endfor }}
-          </tr>
-  
-          <tr height="15px">
-              {{ for choice in field }}
-            <td class="text-center p-0 m-0">{{ choice.label }}</td>
-            {{ endfor }}
-          </tr>
-
-          <tr height="15px">
-            <td colspan="6"><b>... to distract myself from difficult or painful thoughts.</b></td>
-          </tr>
-
-
-          <tr class="empty-tr">
-              <td colspan="5"></td>
-            </tr>
-
-            {% endwith %}
-
-
-          {% with field=form.summary_good %}
-
-          <tr>
-            <td colspan="6"><b>{{ field.label }}</b> {{ formfield_errors field.name }}</td>
-          </tr>
-          <tr height="15px">
-              {{ for choice in field }}
-            <td class="text-center p-0 m-0">{{ choice }}</td>
-            {{ endfor }}
-          </tr>
-  
-          <tr height="15px">
-              {{ for choice in field }}
-            <td class="text-center p-0 m-0">{{ choice.label }}</td>
-            {{ endfor }}
-          </tr>
-
-          <tr height="15px">
-            <td colspan="6"><b>... to think about pleasant memories and look forward to birgher prospects.</b></td>
-          </tr>
-
-
-    
-            {% endwith %}
-
+         
        
       </tbody>
     </table>

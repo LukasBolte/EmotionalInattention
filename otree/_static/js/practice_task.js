@@ -369,7 +369,11 @@ function task(parameters){
 
         if (this.practice_boxes-this.num_draws==0){
             p = document.createElement('p');
-            p.innerHTML='You have opened all the boxes. Click "Next" to see what the computer earned during its practice.'
+            if (this.practice){
+                p.innerHTML='You have opened all the boxes. Click "Next" to see what the computer earned during its practice.'
+            } else {
+                p.innerHTML='You have opened all the boxes. Click "Next" to see what the computer earned during the Collaborative Job.'
+            }
             td.appendChild(p)
             td.appendChild(endPracticeButton);
         } else {

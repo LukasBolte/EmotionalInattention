@@ -14,9 +14,6 @@ Authors:
 Lukas Bolte (lukas.bolte@outlook.com)
 Vlasta Rasocha 
 """
-
-
-
  
 # FUNCTIONS 
 
@@ -128,9 +125,9 @@ class C(BaseConstants):
     BALANCE = 8
     PARTICIPATION_FEE = 2
     NUM_PRACTICE = 2 # 5
-    NUM_FORCED_OPEN = 50
+    NUM_FORCED_OPEN = 3 # 50
     PAYMENT_PART_2 = "0.50"
-    PROBABILITY_PART_1 = .05
+    PROBABILITY_PART_1 = 1 # .05
 
 
     READ_ALL = 'question2/ReadAll.html'
@@ -479,6 +476,31 @@ class Player(BasePlayer):
    
     feedback = models.LongStringField(blank=True)
 
+
+    feedbackDifficulty = models.IntegerField(label="How clear were the instructions? Please answer on a scale of 1 "
+                                                   "to 10, with 10 being the clearest.",
+                                             blank=True,
+                                             choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+                                             widget=widgets.RadioSelectHorizontal)
+    feedbackUnderstanding = models.IntegerField(label="How well did you understand what you were asked to do?"
+                                                      " Please answer on a scale of 1 to 10, with 10 being the case when"
+                                                      " you understood perfectly.",
+                                                blank=True,
+                                                choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+                                                widget=widgets.RadioSelectHorizontal)
+    feedbackSatisfied = models.IntegerField(label="How satisfied are you with this study overall?"
+                                                  " Please answer on a scale of 1 to 10, with 10 being the most "
+                                                  "satisfied.",
+                                            blank=True,
+                                            choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+                                            widget=widgets.RadioSelectHorizontal)
+    feedbackPay = models.IntegerField(label="How appropriate do you think the payment for this study is relative to "
+                                            "other ones on Prolific? Please answer on a scale of 1 to 10, with 10 being "
+                                            "the most appropriate.",
+                                      blank=True,
+                                      choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+                                      widget=widgets.RadioSelectHorizontal)
+    
 
     
     sports = models.IntegerField(
@@ -901,7 +923,7 @@ class DemandElicitation(Page):
         myLabels = json.dumps(C.LAEBELS)
         myHeights = json.dumps(C.BAR_HEIGHTS)
         reversed_dividedBarHeights = json.dumps(C.BAR_HEIGHTS[::-1])
- 
+        numeric_WTP = json.dumps(C.NUMERIC_WTP)
         
 
         return {
@@ -912,6 +934,7 @@ class DemandElicitation(Page):
             'top_dividedBarHeights': myHeights,
             'bottom_labels':myLabels,
             'bottom_dividedBarHeights': reversed_dividedBarHeights,   
+            'numeric_WTP': numeric_WTP
         }
     
     @staticmethod
@@ -976,16 +999,16 @@ class UnincentivizedInstructions(Page):
 
 
 
-class Unincentivized(Page):
+class Unincentivized1(Page):
     form_model = 'player'
-    form_fields = ['sports','car', 'illness','will','vacation','lottery','date','portfolio','summary_bad','summary_good']
+    form_fields = ['sports','car', 'illness','will']
 
 
     @staticmethod
     def error_message(player, values):
         if not player.session.config['dev_mode']:
             error_messages = {}
-            questions = ['sports','car', 'illness','will','vacation','lottery','date','portfolio','summary_bad','summary_good']
+            questions = ['sports','car', 'illness','will']
             for field_name in questions:
                 if values[field_name] is None:
                     error_messages[field_name] = 'Please answer the question.'
@@ -994,7 +1017,37 @@ class Unincentivized(Page):
 
 
 
+class Unincentivized2(Page):
+    form_model = 'player'
+    form_fields = ['vacation','lottery','date','portfolio']
 
+
+    @staticmethod
+    def error_message(player, values):
+        if not player.session.config['dev_mode']:
+            error_messages = {}
+            questions = ['vacation','lottery','date','portfolio']
+            for field_name in questions:
+                if values[field_name] is None:
+                    error_messages[field_name] = 'Please answer the question.'
+            return error_messages
+        
+
+
+class Unincentivized3(Page):
+    form_model = 'player'
+    form_fields = ['summary_bad','summary_good']
+
+
+    @staticmethod
+    def error_message(player, values):
+        if not player.session.config['dev_mode']:
+            error_messages = {}
+            questions = ['summary_bad','summary_good']
+            for field_name in questions:
+                if values[field_name] is None:
+                    error_messages[field_name] = 'Please answer the question.'
+            return error_messages
 
 
 class Results(Page):
@@ -1006,10 +1059,18 @@ class Feedback(Page):
     form_model = 'player'
     form_fields = [ 'feedback']   
 
+    form_model = 'player'
+    form_fields = ['feedback', 'feedbackDifficulty', 'feedbackUnderstanding', 'feedbackSatisfied', 'feedbackPay']
+
     @staticmethod
-    def before_next_page(player, timeout_happened):
-        player.participant.feedback = player.feedback
-        pass
+    def error_message(player, values):
+        if not player.session.config['dev_mode']:
+            error_messages = {}
+            for field_name in ['feedback', 'feedbackDifficulty', 'feedbackUnderstanding', 'feedbackSatisfied',
+                               'feedbackPay']:
+                if values[field_name] is None:
+                    error_messages[field_name] = 'Please answer the question.'
+            return error_messages
 
 
 
@@ -1058,9 +1119,9 @@ class AfterTaskRandomlyChosen(Page):
             player.participant.payoff += float(computer_payoff) - float(own_payoff)
 
         if valence == 'bonus':
-            text = "<p>You have completed the Collaborative Job. The bonus you earned is $" + own_payoff + ". In the meantime, the computer earned a penalty of $" + computer_payoff + ".</p> <p>Since Part 1 is chosen, you also get a balance of $" + str(C.BALANCE) + ". Including the participation fee of $" + str(C.PARTICIPATION_FEE) + ", your total payment for the study is thus <b>{:,}'.format({player.participant.payoff}</b>.</p>"
+            text = "<p>You have completed the Collaborative Job. The bonus you earned is $" + own_payoff + ". In the meantime, the computer earned a penalty of $" + computer_payoff + ".</p> <p>Since Part 1 is chosen, you also get a balance of $" + str(C.BALANCE) + ". Including the participation fee of $" + str(C.PARTICIPATION_FEE) + ", your total payment for the study is thus <b>$" + str(player.participant.payoff) + "</b>.</p>"
         else:
-            text = "<p>You have completed the Collaborative Job. The penalty you earned is $" + own_payoff + ". In the meantime, the computer earned a bonus of $" + computer_payoff + ".</p> <p>Since Part 1 is chosen, you also get a balance of $" + str(C.BALANCE) + ". Including the participation fee of $" + str(C.PARTICIPATION_FEE) + ", your total payment for the study is thus <b>{:,}'.format({player.participant.payoff}</b>.</p>"
+            text = "<p>You have completed the Collaborative Job. The penalty you earned is $" + own_payoff + ". In the meantime, the computer earned a bonus of $" + computer_payoff + ".</p> <p>Since Part 1 is chosen, you also get a balance of $" + str(C.BALANCE) + ". Including the participation fee of $" + str(C.PARTICIPATION_FEE) + ", your total payment for the study is thus <b>$" +  str(player.participant.payoff) + "</b>.</p>"
         return {
             'text':  text
         }
@@ -1144,7 +1205,9 @@ page_sequence = [
     DemandElicitation,
     TransitionUnincentivized,
     UnincentivizedInstructions,
-    Unincentivized,
+    Unincentivized1,
+    Unincentivized2,
+    Unincentivized3,
     Results, 
     TaskRandomlyChosen,
     AfterTaskRandomlyChosen,

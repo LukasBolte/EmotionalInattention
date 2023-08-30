@@ -10,6 +10,7 @@ function drawWTP(parameters){
     this.color_switched=parameters.color_switched
     this.hidden_fields_name=parameters.hidden_fields_name
     this.playerID=parameters.playerID
+    this.numeric_WTP=parameters.numeric_WTP
     this.tdList={};
     this.selectedCutoff;
     this.cutoffHistory=[];
@@ -283,16 +284,25 @@ function drawWTP(parameters){
             var switch_row = multipler - 2; 
             console.log('my switch row',switch_row,this.tdList)
             if ((switch_row >= 0) && (switch_row < this.leftBonus.length-1)) {
-                var text = 'I prefer completing the job over ' + this.rightBonus[switch_row+1] + ' but I prefer ' + this.rightBonus[switch_row] + ' over completing the job';
+                // cases: 
+                if (this.numeric_WTP[switch_row]==0){
+                    var text = 'I prefer completing the job over ' + this.rightBonus[switch_row+1] + ' (or more) but I prefer ' + this.rightBonus[switch_row] + ' (or more) over completing the job';
+                } else if (this.numeric_WTP[switch_row]>0){
+                    var text = 'I prefer completing the job over ' + this.rightBonus[switch_row+1] + ' (or less) but I prefer ' + this.rightBonus[switch_row] + ' (or more) over completing the job';
+                } else {
+                    var text = 'I prefer completing the job over ' + this.rightBonus[switch_row+1] + ' (or more) but I prefer ' + this.rightBonus[switch_row] + ' (or less) over completing the job';
+                };
+                   
+
             } else if (switch_row < 0) {
-                var text = 'I prefer completing the job over ' + this.rightBonus[0];
+                var text = 'I prefer completing the job over ' + this.rightBonus[0] + '(or less)';
             } else {
-                console.log('I am here',this.rightBonus, this.rightBonus.length-1)
-                var text = 'I prefer ' + this.rightBonus[this.rightBonus.length-1] + ' over completing the job';
+                var text = 'I prefer ' + this.rightBonus[this.rightBonus.length-1] + '(or less) over completing the job';
             }
 
             text = text.replaceAll("Pay", "paying");
             text = text.replaceAll("Get", "getting");
+            text = text.replaceAll("getting/paying", "getting ");
 
             var modal_text = document.getElementById("confirm_modal_text_id")
             modal_text.innerHTML = ''

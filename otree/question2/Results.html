@@ -2,7 +2,7 @@
 {% load otree %}
 
 {% block title %}
-Results
+Which part was randomly chosen for payment?
 {% endblock %}
 
 {% block content %}
@@ -11,16 +11,17 @@ Results
 <button class="btn btn-danger otree-btn-next" style="float: right;">Skip</button>
 {{ endif }}
 
+<p>
+    We have collected your answers and randomly chosen which part of the experiment will be used to determine your additional payment.
+</p>
 {{ if participant.part_payment == 'Part 1'}}
 
     <p>
-        <b>Part 1</b> was randomly chosen for payment. This means that you will get ${{C.BALANCE}} in addition to your participation fee of ${{ C.PARTICIPATION_FEE}}.
-        
-        
+        <b>Part 1 was randomly chosen for payment</b>. This means that you will get ${{C.BALANCE}} in addition to your participation fee of ${{ C.PARTICIPATION_FEE}}.
     </p>
 
     <p>
-        The question randomly chosen is:
+        During Part 1, we asked you several questions where you had to choose between completing the Collaborative Job and getting/paying some money. The question randomly chosen is:
     </p>
     <p class="text-center">
         <i>

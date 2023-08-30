@@ -11,12 +11,24 @@ Thank you for your participation! What do you think?
 <button class="btn btn-danger otree-btn-next" style="float: right;">Skip</button>
 {{ endif }}
 
+<h5> You are now done with the study</h5>
+
+<br>
+<h3 class="col-md-12 text-center">
+    <b>Thank you! What do you think?</b>
+</h3>
+    {{ formfield 'feedbackDifficulty' }}
+    {{ formfield 'feedbackUnderstanding' }}
+    {{ formfield 'feedbackSatisfied' }}
+    {{ formfield 'feedbackPay' }}
+
 <p>
-    We would be grateful for any comments. Did you feel comfortable with the instructions? Were you confused? If you can tell us which aspects are confusing and what we can do better, we would be very grateful! Thanks in advance! 
+We would be grateful for any comments on the study. Did you feel comfortable with the instructions? Were you
+confused? If you can tell us which aspects are confusing and what we can do better, we would be very grateful!
+Thank you so much for your attention and participation.
 </p>
 
-{{ form.feedback }}
-{{ formfield_errors 'feedback' }}
+    {{ formfield 'feedback' }}
 
 <p class="mt-3">
     After you are done providing feedback, click "Next."
