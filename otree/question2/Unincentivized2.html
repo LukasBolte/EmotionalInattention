@@ -15,58 +15,33 @@ Do you agree with the following statements?
     Do you agree with the following statements?
 </p>
 
-
 <div class="container">
-    <table class="table custom-table table-borderless">
-      <tbody>
-        {{ for field in form }}
+  <table class="table custom-table table-borderless">
+    <tbody>
+      {{ for field in form }}
         {{ if field.name in ['sports','car', 'illness','will','vacation','lottery','date','portfolio'] }}
-        <tr>
+          <tr>
             <td colspan="6"><b>{{ field.label }}</b> {{ formfield_errors field.name }}</td>
-        </tr>
-        <tr height="15px">
+          </tr>
+          <tr height="15px">
             {{ for choice in field }}
-          <td class="text-center p-0 m-0">{{ choice }}</td>
-          {{ endfor }}
-        </tr>
+              <td class="text-center p-0 m-0">{{ choice }}</td>
+            {{ endfor }}
+          </tr>
 
-        <tr height="15px">
+          <tr height="15px">
             {{ for choice in field }}
-          <td class="text-center p-0 m-0">{{ choice.label }}</td>
-          {{ endfor }}
-        </tr>
-        <tr class="empty-tr">
+              <td class="text-center p-0 m-0">{{ choice.label }}</td>
+            {{ endfor }}
+          </tr>
+          <tr class="empty-tr">
             <td colspan="5"></td>
           </tr>
-          {% endif %}
-
-
-          {{ endfor }}
-
-
-         
-       
-      </tbody>
-    </table>
-  </div>
-
-<!-- 
-<table>
-    {{ for field in form }}
-        <tr>
-            <td>{{ field.label }}</td>
-            
-        </tr>
-      <tr>                
-        {{ for choice in field }}
-        <td class="buttonGroup">
-          <div class="buttonWrap">  </div>
-          <div class="labelWrap"> {{ choice.label }} </div>
-        </td>
-        {{ endfor }}
-      </tr>
+        {% endif %}
     {{ endfor }}
-</table> -->
+    </tbody>
+  </table>
+</div>
 
 <button style="float: right" class="btn btn-primary btn-large">Next</button>
 

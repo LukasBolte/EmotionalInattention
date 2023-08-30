@@ -1,11 +1,11 @@
 {% load otree %}
 
-
 {{ if participant.valence == 'bonus' }}
 
 <p>
     While you work on the bonus task, the computer will complete the <b>penalty task</b>. 
 </p>
+
 <p>
     In the <b>penalty task</b>, the computer starts with a <b>tentative penalty</b> of ${{ C.END_VALUE }}. It will then open {{ C.NUM_FORCED_OPEN }} boxes. Each time it opens a box, it will wait {{ C.DELAY }} seconds to reveal the penalty inside. One of two things can happen to the computer's tentative penalty after it opens a box:
 

@@ -59,33 +59,33 @@ Familiarize yourself with the {{ participant.valence }} task
 
 {% block styles %}
 <style>
-    .no-border-table td,
-    .no-border-table th {
-        border: none;
-    }
-    .no-padding {
-        padding: 0 !important;
-    }
+  .no-border-table td,
+  .no-border-table th {
+      border: none;
+  }
+  .no-padding {
+      padding: 0 !important;
+  }
 </style>
 {% endblock %}
 
 {% block scripts %}
 <script src="{% static 'js/practice_task.js' %}"></script>
 <script>
-    var parameters={
-        playerID : "{{participant.code}}", //this is used for stored variables not to collide
-        root: "task_root",
-        varname: "num_draws", //this is the name of the hidden field where output will be stored 
-        min_pay: "{{ C.START_VALUE}}",
-        max_pay: "{{ C.END_VALUE}}",
-        treatment: "{{ participant.valence }}",
-        delay: "{{ C.DELAY }}", 
-        open_box_src: "{% static 'img/open_box.jpg' %}",
-        closed_box_src: "{% static 'img/closed_box.jpg' %}",
-        practice_boxes: "{{ C.NUM_PRACTICE }}",
-        sequence: {{ sequence|safe }},// [3,4,5,5,5,6,5,4,4,5,6,7,5,5,6,3,8,6,10,8,5,3,3],
-    };
-    task =new task(parameters);
+  var parameters={
+      playerID : "{{participant.code}}", //this is used for stored variables not to collide
+      root: "task_root",
+      varname: "num_draws", //this is the name of the hidden field where output will be stored 
+      min_pay: "{{ C.START_VALUE}}",
+      max_pay: "{{ C.END_VALUE}}",
+      treatment: "{{ participant.valence }}",
+      delay: "{{ C.DELAY }}", 
+      open_box_src: "{% static 'img/open_box.jpg' %}",
+      closed_box_src: "{% static 'img/closed_box.jpg' %}",
+      practice_boxes: "{{ C.NUM_PRACTICE }}",
+      sequence: {{ sequence|safe }},// [3,4,5,5,5,6,5,4,4,5,6,7,5,5,6,3,8,6,10,8,5,3,3],
+  };
+  task =new task(parameters);
 </script>
 
 

@@ -14,6 +14,7 @@ Which part was randomly chosen for payment?
 <p>
     We have collected your answers and randomly chosen which part of the experiment will be used to determine your additional payment.
 </p>
+
 {{ if participant.part_payment == 'Part 1'}}
 
     <p>
@@ -23,17 +24,18 @@ Which part was randomly chosen for payment?
     <p>
         During Part 1, we asked you several questions where you had to choose between completing the Collaborative Job and getting/paying some money. The question randomly chosen is:
     </p>
+
     <p class="text-center">
         <i>
             {{ participant.question }}
         </i>
-
     </p>
 
     {{ if participant.collaborative_job }}
         <p>
             For this question, you chose <b>complete the Collaborative Job</b>. Thus you will next complete the Collaborative Job. Once you complete it, you will receive your participation fee of ${{ C.PARTICIPATION_FEE}}, your balance of ${{ C.BALANCE }}, and the bonus minus the penalty from the Collaborative Job.
         </p>
+        
     {{ else }}
         <p>
             For this question, you chose {{ right_option }}. {{ payment_text}}
@@ -43,13 +45,11 @@ Which part was randomly chosen for payment?
 
 {{ else }}
 
-    <p>
-        <b>Part 2</b> was randomly chosen for payment. This means that you do not complete the Collaborative Job. But you do receive a payment of ${{C.PAYMENT_PART_2}} for completing Part 2 in addition to your participation fee of ${{ C.PARTICIPATION_FEE}}.
-    </p>
+<p>
+    <b>Part 2</b> was randomly chosen for payment. This means that you do not complete the Collaborative Job. But you do receive a payment of ${{C.PAYMENT_PART_2}} for completing Part 2 in addition to your participation fee of ${{ C.PARTICIPATION_FEE}}.
+</p>
 
 {{ endif }}
-
-
 
 <button style="float: right" class="btn btn-primary btn-large">Next</button>
 

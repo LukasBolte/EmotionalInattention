@@ -11,11 +11,9 @@ Demand elicitation
 <button class="btn btn-danger otree-btn-next" style="float: right;">Skip</button>
 {{ endif }}
 
-
 <p>
   Please choose the rows in which you would rather complete the Collaborative Job and the rows in which you would rather get/pay the money. You can review the instructions by clicking the button below.
 </p>
-
 
 <div class="col-md-12 text-center pb-3">
   <button type="button" class="btn btn-secondary btn-sm" data-bs-toggle="modal" data-bs-target="#exampleModal">Review Instructions</button>
@@ -30,15 +28,24 @@ Demand elicitation
       </div>
       <div class="modal-body">
 
-      {{ include C.READ_ALL }}
-      {{ include C.TWO_PARTS }}
-      {{ include C.PAYMENT }}
-      {{ include C.COLLABORATIVE_JOB }}
-      {{ include C.TASK_GENERAL }}
-      {{ include C.BONUS }}
-      {{ include C.PENALTY }}
-      {{ include C.SUMMARY }}
-      {{ include C.DEMAND_ELICIATION_INSTRUCTIONS }}
+        {{ include C.READ_ALL }}
+        {{ include C.TWO_PARTS }}
+        {{ include C.PAYMENT }}
+        {{ include C.COLLABORATIVE_JOB }}
+        {{ include C.TASK_GENERAL }}
+
+        {{ if participant.valence == 'bonus' }}
+          {{ include C.BONUS }}
+          {{ include C.PENALTY }}
+        {{ else }}
+          {{ include C.PENALTY }}
+          {{ include C.BONUS }}
+        {{ endif }}
+
+        {{ include C.BONUS }}
+        {{ include C.PENALTY }}
+        {{ include C.SUMMARY }}
+        {{ include C.DEMAND_ELICIATION_INSTRUCTIONS }}
 
       </div>
       <div class="modal-footer">

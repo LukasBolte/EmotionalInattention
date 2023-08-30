@@ -18,73 +18,74 @@
   Your payment from the job will be maximized if you find the smallest penalty in the penalty task, and the computer finds the largest bonus in the bonus task. 
 
 {{ endif }}
+
 </p>
+
 <p>
   The graphs below show the number of boxes that contain each {{ participant.valence }} amount in the {{ participant.valence }} task, and each {{ participant.anti_valence }} amount in the {{ participant.anti_valence }} task.
 </p>
 
 {{ if participant.valence == 'bonus' }}
-<div class="d-flex justify-content-center align-items-center">
-  <div>
-    <p><b>Bonus task</b></p>
-  </div>
-</div>
-<div class="chart-container">
-  <div class="chart" id="chart1"></div>
-  <div class="chart-overlay">
-    <p class="overlay-text" id="overlay1">Move your mouse over the figure</p>
-  </div>
-</div>
 
-<br>
-
-<div class="d-flex justify-content-center align-items-center">
-  <div>
-    <p><b>Penalty task</b></p>
+  <div class="d-flex justify-content-center align-items-center">
+    <div>
+      <p><b>Bonus task</b></p>
+    </div>
   </div>
-</div>
-
-<div class="chart-container">
-  <div class="chart" id="chart2"></div>
-  <div class="chart-overlay">
-    <p class="overlay-text" id="overlay2">Move your mouse over the figure</p>
+  <div class="chart-container">
+    <div class="chart" id="chart1"></div>
+    <div class="chart-overlay">
+      <p class="overlay-text" id="overlay1">Move your mouse over the figure</p>
+    </div>
   </div>
-</div>
+
+  <br>
+
+  <div class="d-flex justify-content-center align-items-center">
+    <div>
+      <p><b>Penalty task</b></p>
+    </div>
+  </div>
+
+  <div class="chart-container">
+    <div class="chart" id="chart2"></div>
+    <div class="chart-overlay">
+      <p class="overlay-text" id="overlay2">Move your mouse over the figure</p>
+    </div>
+  </div>
 
 {{ else }}
 
-<div class="d-flex justify-content-center align-items-center">
-  <div>
-    <p><b>Penalty task</b></p>
+  <div class="d-flex justify-content-center align-items-center">
+    <div>
+      <p><b>Penalty task</b></p>
+    </div>
   </div>
-</div>
 
-<div class="chart-container">
-  <div class="chart" id="chart2"></div>
-  <div class="chart-overlay">
-    <p class="overlay-text" id="overlay2">Move your mouse over the figure</p>
+  <div class="chart-container">
+    <div class="chart" id="chart2"></div>
+    <div class="chart-overlay">
+      <p class="overlay-text" id="overlay2">Move your mouse over the figure</p>
+    </div>
   </div>
-</div>
 
-<br>
+  <br>
 
-<div class="d-flex justify-content-center align-items-center">
-  <div>
-    <p><b>Bonus task</b></p>
+  <div class="d-flex justify-content-center align-items-center">
+    <div>
+      <p><b>Bonus task</b></p>
+    </div>
   </div>
-</div>
-<div class="chart-container">
-  <div class="chart" id="chart1"></div>
-  <div class="chart-overlay">
-    <p class="overlay-text" id="overlay1">Move your mouse over the figure</p>
+  <div class="chart-container">
+    <div class="chart" id="chart1"></div>
+    <div class="chart-overlay">
+      <p class="overlay-text" id="overlay1">Move your mouse over the figure</p>
+    </div>
   </div>
-</div>
 
 {{ endif }}
 
 <script>
-
-  
   function formatNumberWithCommas(number) {
   // Convert the number to a string
   var numString = number.toString();
@@ -122,8 +123,6 @@
     var formattedNumber = formatNumberWithCommas({{ C.NUM_BOXES }});
     numBox.innerHTML = formattedNumber;
   });
-
-
 
   // Reusable function to format number with commas
   function formatNumberWithCommas(number) {

@@ -570,7 +570,6 @@ class UnderstandingQuestions(Page):
             questions = list(control_questions.keys())
             if 'mistakes' not in player.participant.vars.keys():
                 player.participant.mistakes = {question:0 for question in questions}
-
             error_messages = {}
             for field_name in questions:
                 question = field_name.split(f'CQ_{domain}_')[-1]
@@ -578,7 +577,8 @@ class UnderstandingQuestions(Page):
                     error_messages[field_name] = 'Please answer the question.'
                 elif int(values[field_name]) != control_questions[question][0]:
                     error_messages[field_name] = control_questions[question][1]
-                    player.participant.mistakes[field_name]+=1    
+                    player.participant.mistakes[field_name]+=1  
+
             return error_messages
 
 
@@ -717,6 +717,7 @@ class UnincentivizedInstructions(Page):
     def error_message(player, values):
         if not player.session.config['dev_mode']:
             if values['confused_binary'] is None:
+
                 return {'confused_binary': 'Please answer the question.'}
 
 
@@ -732,13 +733,13 @@ class Unincentivized1(Page):
             for field_name in questions:
                 if values[field_name] is None:
                     error_messages[field_name] = 'Please answer the question.'
+
             return error_messages
 
 
 class Unincentivized2(Page):
     form_model = 'player'
     form_fields = ['vacation','lottery','date','portfolio']
-
 
     @staticmethod
     def error_message(player, values):
@@ -748,14 +749,13 @@ class Unincentivized2(Page):
             for field_name in questions:
                 if values[field_name] is None:
                     error_messages[field_name] = 'Please answer the question.'
+
             return error_messages
         
-
 
 class Unincentivized3(Page):
     form_model = 'player'
     form_fields = ['summary_bad','summary_good']
-
 
     @staticmethod
     def error_message(player, values):
@@ -765,12 +765,12 @@ class Unincentivized3(Page):
             for field_name in questions:
                 if values[field_name] is None:
                     error_messages[field_name] = 'Please answer the question.'
+
             return error_messages
 
 
 class Results(Page):
     pass
-
 
 
 class Feedback(Page):
@@ -791,12 +791,10 @@ class Feedback(Page):
             return error_messages
 
 
-
 class TaskRandomlyChosen(Page):
     form_model = 'player'  
 
     @staticmethod
-
     def vars_for_template(player):
         valence = player.participant.valence
         return {
@@ -809,13 +807,11 @@ class TaskRandomlyChosen(Page):
         return player.participant.collaborative_job
 
 
-
 class AfterTaskRandomlyChosen(Page):
     form_model = 'player'  
 
     @staticmethod
     def vars_for_template(player):
-        
         valence = player.participant.valence
         anti_valence = player.participant.anti_valence
 
@@ -840,79 +836,26 @@ class AfterTaskRandomlyChosen(Page):
             text = "<p>You have completed the Collaborative Job. The bonus you earned is $" + own_payoff + ". In the meantime, the computer earned a penalty of $" + computer_payoff + ".</p> <p>Since Part 1 is chosen, you also get a balance of $" + str(C.BALANCE) + ". Including the participation fee of $" + str(C.PARTICIPATION_FEE) + ", your total payment for the study is thus <b>$" + str(player.participant.payoff) + "</b>.</p>"
         else:
             text = "<p>You have completed the Collaborative Job. The penalty you earned is $" + own_payoff + ". In the meantime, the computer earned a bonus of $" + computer_payoff + ".</p> <p>Since Part 1 is chosen, you also get a balance of $" + str(C.BALANCE) + ". Including the participation fee of $" + str(C.PARTICIPATION_FEE) + ", your total payment for the study is thus <b>$" +  str(player.participant.payoff) + "</b>.</p>"
+        
         return {
             'text':  text
         }
 
 
-
 class Finished(Page):
-
     @staticmethod
     def vars_for_template(player):
         player.participant.times['finished'] = time.time()
 
         if player.participant.part_payment == 'Part 2': 
             player.participant.payoff = C.PARTICIPATION_FEE + float(C.PAYMENT_PART_2)
-        # part1 = F"You will receive your payment of {player.participant.payoff_plus_participation_fee()}" 
-        # part2 = ""
-        # if player.participant.treatment=="penalty":
-        #     part2 = F" consisting of the ${C.START_VALUE + C.END_VALUE} base payment minus the penalty of {C.START_VALUE + C.END_VALUE - player.participant.payoff_plus_participation_fee()}"
-        # part3 = " shortly."
 
         return {'payment_message': 'test'}
 
 
-
-# class Demographics(Page):
-#     form_model = 'player'
-#     form_fields = ['gender', 'ethnic', 'age','education', 'marital', 'income', 'percentProlific','state']
-
-#     @staticmethod
-#     def error_message(player, values):
-#         if not player.session.config['dev_mode']:
-            
-#             error_messages = {}pl
-#             for field_name in ['gender', 'ethnic', 'age','education', 'marital', 'income', 'percentProlific','state']:
-#                 if values[field_name] is None:
-#                     error_messages[field_name] = 'Please answer the question.'
-                      
-#             return error_messages
-    
-#     @staticmethod
-#     def before_next_page(player, timeout_happened):
-#         player.participant.demographics = {}
-#         for el in ['gender', 'ethnic', 'age','education', 'marital', 'income', 'percentProlific','state']:
-#             player.participant.demographics[el] = player.__dict__[el]
-            
-#     @staticmethod
-#     def is_displayed(player: Player):
-#         return player.participant.experiment_sequence[player.round_number - 1] == 'Demographics'
-
-# class Offer(Page):
-#     form_model = 'group'
-#     form_fields = ['kept']
-
-#     def is_displayed(player):
-#         return player.id_in_group == 1
-
-
-# class ResultsWaitPage(WaitPage):
-#     after_all_players_arrive = 'set_payoffs'
-
-
-# class Results(Page):
-#     @staticmethod
-#     def vars_for_template(player):
-#         group = player.group
-
-#         return dict(payoff=player.payoff, offer=C.ENDOWMENT - group.kept)
-    
-
 page_sequence = [
     Welcome,
     Consent,
-    # Introduction,
     Instructions,
     UnderstandingQuestions,
     TransitionPractice,
