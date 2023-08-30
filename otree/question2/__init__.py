@@ -517,6 +517,7 @@ class Welcome(Page):
 class Consent(Page):
     pass
 
+
 class Introduction(Page):
     pass
 
@@ -527,8 +528,7 @@ class Instructions(Page):
         myLabels = json.dumps(C.LAEBELS)
         myHeights = json.dumps(C.BAR_HEIGHTS)
         reversed_dividedBarHeights = json.dumps(C.BAR_HEIGHTS[::-1])
-        print(myHeights)
-        print(reversed_dividedBarHeights)
+
         return {
             'top_labels':myLabels,
             'top_dividedBarHeights': myHeights,
@@ -553,183 +553,37 @@ class UnderstandingQuestions(Page):
         myLabels = json.dumps(C.LAEBELS)
         myHeights = json.dumps(C.BAR_HEIGHTS)
         reversed_dividedBarHeights = json.dumps(C.BAR_HEIGHTS[::-1])
-        print(myHeights)
-        print(reversed_dividedBarHeights)
+
         return {
             'top_labels':myLabels,
             'top_dividedBarHeights': myHeights,
             'bottom_labels':myLabels,
             'bottom_dividedBarHeights': reversed_dividedBarHeights,     
         }
+    
     @staticmethod
     def error_message(player, values):
         if not player.session.config['dev_mode']:
             domain = player.participant.domain
             valence = player.participant.valence
             control_questions = C.CONTROL_QUESTIONS[f"CQ_{domain}_{valence}"]
-            
             questions = list(control_questions.keys())
-            
-
             if 'mistakes' not in player.participant.vars.keys():
                 player.participant.mistakes = {question:0 for question in questions}
 
             error_messages = {}
             for field_name in questions:
-                print(control_questions)
                 question = field_name.split(f'CQ_{domain}_')[-1]
                 if values[field_name] is None:
                     error_messages[field_name] = 'Please answer the question.'
                 elif int(values[field_name]) != control_questions[question][0]:
-                    print(type(values[field_name]),type(control_questions[question][0]))
                     error_messages[field_name] = control_questions[question][1]
                     player.participant.mistakes[field_name]+=1    
             return error_messages
-        
-    # def before_next_page(player, timeout_happened):
-    #     player.participant.times['start_task'] = time.time()
-    #     pass 
-
 
 
 class TransitionPractice(Page):
     pass
-
-
-
-# class Payment_B(Page):
-#     @staticmethod
-
-#     def vars_for_template(player):
-#         myLabels = json.dumps(labels(player.subsession))
-#         myHeights = json.dumps(bar_heights(player.subsession))
-#         return {
-#             'labels':myLabels,
-#             'dividedBarHeights': myHeights            
-#         }
-#     def is_displayed(player: Player):
-#         return player.participant.experiment_sequence[player.round_number - 1] == 'Payment_bonus'
-
-
-# class Payment_P(Page):
-#     @staticmethod
-#     def vars_for_template(player):
-#         myLabels = json.dumps(labels(player.subsession))
-#         myHeights = json.dumps(bar_heights(player.subsession))
-#         return {
-#             'labels':myLabels,
-#             'dividedBarHeights': myHeights,
-#             'base_payment':  C.START_VALUE + C.END_VALUE
-#          }
-    
-#     def is_displayed(player: Player):
-#         return player.participant.experiment_sequence[player.round_number - 1] == 'Payment_penalty'
-
-
-# class UnderstandingQuestions_P(Page):
-#     form_model = 'player'
-
-
-#     form_fields = [ 'payment_P','penalty','increase_penalty', 'same_penalty', 'decrease_penalty']   
-
-#     @staticmethod
-#     def error_message(player, values):
-#         if not player.session.config['dev_mode']:
-            
-#             solutions = {'payment_P':1 ,
-#                              'penalty':1,
-#                              'increase_penalty':False,
-#                              'same_penalty':True,
-#                              'decrease_penalty':True
-#             }
-#             hints = {
-#                 'payment_P':f"Your answer is incorrect. Your total payment for completing this study consists of the base payment of ${C.START_VALUE + C.END_VALUE} minus a penalty, and no bonus payment.",
-#                 'penalty':'You answer is incorrect. Your penalty corresponds to the smallest amount in any of the boxes you have opened.',
-#                 'decrease_penalty':'You answer is incorrect. When you open another box, two things can happen. When the amount in the new box is more than or equal to the largest amount so far, your potential penalty stays the same. When the amount is less, then your penalty decreases (to the amount in the last box).'
-#             }
-#             if 'mistakes' not in player.participant.vars.keys():
-#                 player.participant.mistakes={
-#                     'payment_P':0,
-#                     'penalty':0,
-#                     'penalty_change':0
-#             }
-
-#             error_messages = {}
-#             for field_name in ['payment_P','penalty']:
-#                 if values[field_name] is None:
-#                     error_messages[field_name] = 'Please answer the question.'
-#                 elif values[field_name] != solutions[field_name]:
-#                     error_messages[field_name] = hints[field_name]
-#                     player.participant.mistakes[field_name]+=1            
-#             penalty=['increase_penalty','same_penalty','decrease_penalty']
-
-#             if all([values[field_name]==False for field_name in penalty]):
-#                 error_messages['decrease_penalty']='Please select at least one to answer the question.'
-#             elif any([values[field_name]!=solutions[field_name] for field_name in ['increase_penalty','same_penalty','decrease_penalty']]):
-#                 error_messages['decrease_penalty']=hints['decrease_penalty']
-#                 player.participant.mistakes['penalty_change']+=1
-
-#             return error_messages
-        
-#     def before_next_page(player, timeout_happened):
-#         player.participant.times['start_task'] = time.time()
-#         pass 
-
-#     def is_displayed(player: Player):
-#         return player.participant.experiment_sequence[player.round_number - 1] == 'UnderstandingQuestions_penalty'
-    
-
-# class UnderstandingQuestions_B(Page):
-#     form_model = 'player'
-#     form_fields = [ 'payment_B','bonus','increase_bonus', 'same_bonus', 'decrease_bonus']   
- 
-#     @staticmethod
-#     def error_message(player, values):
-#         if not player.session.config['dev_mode']:
-            
-#             solutions = {
-#                 'payment_B':1 ,
-#                 'bonus':1,
-#                 'increase_bonus':True,
-#                 'same_bonus':True,
-#                 'decrease_bonus':False
-#             }
-#             hints = {
-#                 'payment_B':f"Your answer is incorrect. Your total payment for completing this study consists of the payment from opening the boxes, and there is no penalty charge or bonus payment.",
-#                 'bonus':'You answer is incorrect. Your payment corresponds to the largest amount in any of the boxes you have opened.',
-#                 'decrease_bonus':'You answer is incorrect. When you open another box, two things can happen. When the amount in the new box is less than or equal to the largest amount so far, your potential payment stays the same. When the amount is more, then your payment increases (to the amount in the last box).'
-#             }
-#             if 'mistakes' not in player.participant.vars.keys():
-
-#                 player.participant.mistakes={
-#                     'payment_B':0,
-#                     'bonus':0,
-#                     'bonus_change':0
-#             }
-
-#             error_messages = {}
-#             for field_name in ['payment_B','bonus']:
-#                 if values[field_name] is None:
-#                     error_messages[field_name] = 'Please answer the question.'
-#                 elif values[field_name] != solutions[field_name]:
-#                     error_messages[field_name] = hints[field_name]
-#                     player.participant.mistakes[field_name]+=1            
-#             bonus=['increase_bonus','same_bonus','decrease_bonus']
-
-#             if all([values[field_name]==False for field_name in bonus]):
-#                 error_messages['decrease_bonus']='Please select at least one to answer the question.'
-#             elif any([values[field_name]!=solutions[field_name] for field_name in ['increase_bonus','same_bonus','decrease_bonus']]):
-#                 error_messages['decrease_bonus']=hints['decrease_bonus']
-#                 player.participant.mistakes['bonus_change']+=1
-
-#             return error_messages
-        
-#     def before_next_page(player, timeout_happened):
-#         player.participant.times['start_task'] = time.time()
-#         pass 
-#     def is_displayed(player: Player):
-#         return player.participant.experiment_sequence[player.round_number - 1] == 'UnderstandingQuestions_bonus'
-    
 
 
 class Task(Page):
@@ -738,10 +592,10 @@ class Task(Page):
     @staticmethod
     def vars_for_template(player):
         valence = player.participant.valence
-
         myLabels = json.dumps(C.LAEBELS)
         myHeights = json.dumps(C.BAR_HEIGHTS)
         reversed_dividedBarHeights = json.dumps(C.BAR_HEIGHTS[::-1])
+
         return {
             'top_labels':myLabels,
             'top_dividedBarHeights': myHeights,
@@ -751,67 +605,9 @@ class Task(Page):
         }
 
     
-    # def before_next_page(player, timeout_happened):
-
-    #     payoff = json.loads(player.num_draws)
-    #     if payoff==0:
-    #         player.payoff=C.START_VALUE
-    #     else:
-    #         player.payoff = max(json.loads(player.participant.sequence)[:payoff])
-    #     player.participant.times['end_task'] = time.time()
-    #     player.participant.num_draws = player.num_draws
-    #     player.participant.bonus_payment = player.payoff - C.START_VALUE
-    #     pass 
-
-    # def is_displayed(player: Player):
-    #     return player.participant.experiment_sequence[player.round_number - 1] == 'Task'
-    
-
-# class Diagnostic(Page):
-    # form_model = 'player'
-    # form_fields = ['expected_bonus']
-
-
-    # @staticmethod
-    # def error_message(player, values):
-    #     if not player.session.config['dev_mode']:
-        
-    #         def is_valid_number_range(string, x, y):
-    #             try:
-    #                 number = float(string)
-    #                 if x <= number <= y:
-    #                     decimal_count = len(string.split('.')[-1])
-    #                     return decimal_count <= 2
-    #             except ValueError:
-    #                 return False
-
-    #             return False
-
-   
-    #         if values['expected_bonus'] is None:
-    #             return {'expected_bonus':'Please answer the question.'}
-    #         else:
-    #             if is_valid_number_range(values['expected_bonus'], C.START_VALUE, C.END_VALUE):
-    #                 return {}
-    #             else:
-    #                 return {'expected_bonus':f'Please enter a dollar amount  between ${C.START_VALUE} and ${C.END_VALUE} with at most two decimals points.'}
-    
-    # @staticmethod
-    # def before_next_page(player, timeout_happened):
-    #     normalized_bonus = player.expected_bonus
-    #     if player.participant.treatment == 'penalty':
-    #         normalized_bonus = C.START_VALUE + C.END_VALUE - float(player.expected_bonus)
-    #     player.participant.expected_bonus = normalized_bonus    
-    #     pass
-
-    # @staticmethod
-    # def is_displayed(player: Player):
-    #     return player.participant.experiment_sequence[player.round_number - 1] == 'Diagnostic'
-
 class TransitionDemandElicitation0(Page):
     @staticmethod
     def vars_for_template(player):
-        
         valence = player.participant.valence
         anti_valence = player.participant.anti_valence
 
@@ -835,32 +631,29 @@ class TransitionDemandElicitation0(Page):
             'text':  text
         }
 
+
 class TransitionDemandElicitation(Page):
     pass
 
+
 class TransitionDemandElicitation2(Page):
     pass
+
 
 class DemandElicitation(Page):
     form_model = 'player'
     form_fields = ['wtp']
 
-
     @staticmethod
     def vars_for_template(player):
-        
-        
-
         myLabels = json.dumps(C.LAEBELS)
         myHeights = json.dumps(C.BAR_HEIGHTS)
         reversed_dividedBarHeights = json.dumps(C.BAR_HEIGHTS[::-1])
         numeric_WTP = json.dumps(C.NUMERIC_WTP)
         
-
         return {
             'leftText':  json.dumps(C.LEFT_TEXT),
             'rightText': json.dumps(C.RIGHT_TEXT),
-
             'top_labels':myLabels,
             'top_dividedBarHeights': myHeights,
             'bottom_labels':myLabels,
@@ -881,7 +674,6 @@ class DemandElicitation(Page):
     def before_next_page(player, timeout_happened):
         wtp = json.loads(player.wtp)
         cutoff = wtp['cutoff']
-
         parts = cutoff.split(":")
         side = parts[0]
         row = int(parts[1])
@@ -905,7 +697,6 @@ class DemandElicitation(Page):
         player.participant.question = question
 
 
-
 class TransitionUnincentivized(Page):
     form_model = 'player'
     form_fields = [ 'confused_binary','confused_text']   
@@ -914,8 +705,8 @@ class TransitionUnincentivized(Page):
     def error_message(player, values):
         if not player.session.config['dev_mode']:
             if values['confused_binary'] is None:
-                return {'confused_binary': 'Please answer the question.'}
 
+                return {'confused_binary': 'Please answer the question.'}
 
  
 class UnincentivizedInstructions(Page):
@@ -929,11 +720,9 @@ class UnincentivizedInstructions(Page):
                 return {'confused_binary': 'Please answer the question.'}
 
 
-
 class Unincentivized1(Page):
     form_model = 'player'
     form_fields = ['sports','car', 'illness','will']
-
 
     @staticmethod
     def error_message(player, values):
@@ -944,8 +733,6 @@ class Unincentivized1(Page):
                 if values[field_name] is None:
                     error_messages[field_name] = 'Please answer the question.'
             return error_messages
-        
-
 
 
 class Unincentivized2(Page):
