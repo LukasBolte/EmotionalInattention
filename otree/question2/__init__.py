@@ -152,18 +152,18 @@ class C(BaseConstants):
     NUM_DEMAND_ELICITATION_QUESTIONS = len(LEFT_TEXT)
     CONTROL_QUESTIONS = {
         'CQ_tasks_bonus': {
-            'CQ_conditions_collaborative_job':(3,'myHint'),
-            'CQ_bonus_collabarotive_job_consists': (1,'myHint'),
-            'CQ_bonus_collaboartive_job_payment': (3, 'myHint'),
-            'CQ_bonus_tentative_own': (1, 'myHint'),
-            'CQ_bonus_tentative_other': (2, 'myHint'),
+            'CQ_conditions_collaborative_job':(3,'Sorry, that is incorrect. You will complete the Job only if you decide to complete it, AND Part 1 is chosen for payment.'),
+            'CQ_bonus_collabarotive_job_consists': (1,'Sorry, that is incorrect. The Collaborative Job consists of a bonus task completed by you, and a penalty task completed by a computer.'),
+            'CQ_bonus_collaboartive_job_payment': (3, 'Sorry, that is incorrect. If you complete the Collaborative Job, the bonus you earn in the bonus task will be added to your Part 1 payment, AND the penalty the computer earns will be taken away from this payment.'),
+            'CQ_bonus_tentative_own': (1, 'Sorry, that is incorrect. Your tentative bonus can increase (if the bonus inside the box is larger than your current tentative bonus). Or it can stay the same (if the bonus inside the box is smaller than your current tentative bonus).'),
+            'CQ_bonus_tentative_other': (2, 'Sorry, that is incorrect. Its tentative penalty can decrease (if the penalty inside the box is smaller than its current tentative penalty). Or it can stay the same (if the penalty inside the box is larger than its current tentative penalty).'),
         },
         'CQ_tasks_penalty': {
-            'CQ_conditions_collaborative_job':(3,'myHint'),
-            'CQ_penalty_collabarotive_job_consists': (1,'myHint'),
-            'CQ_penalty_collaboartive_job_payment': (3, 'myHint'),
-            'CQ_penalty_tentative_own': (2, 'myHint'),
-            'CQ_penalty_tentative_other': (1, 'myHint'),
+            'CQ_conditions_collaborative_job':(3,'Sorry, that is incorrect. You will complete the Job only if you decide to complete it, AND Part 1 is chosen for payment.'),
+            'CQ_penalty_collabarotive_job_consists': (1,'Sorry, that is incorrect. The Collaborative Job consists of a penalty task completed by you, and a bonus task completed by a computer.'),
+            'CQ_penalty_collaboartive_job_payment': (3, 'Sorry, that is incorrect. If you complete the Collaborative Job, the penalty you earn in the penalty task will be taken away from your Part 1 payment, AND the bonus the computer earns will be added to this payment.'),
+            'CQ_penalty_tentative_own': (2, 'Sorry, that is incorrect. Your tentative penalty can decrease (if the penalty inside the box is smaller than your current tentative penalty). Or it can stay the same (if the penalty inside the box is larger than your current tentative penalty).'),
+            'CQ_penalty_tentative_other': (1, 'Sorry, that is incorrect. Its tentative bonus can increase (if the bonus inside the box is larger than its current tentative bonus). Or it can stay the same (if the bonus inside the box is smaller than its current tentative bonus).'),
         },
 
         'CQ_states': {
@@ -623,9 +623,9 @@ class TransitionDemandElicitation0(Page):
         computer_payoff = "{:.2f}".format(computer_payoff)
 
         if valence == 'bonus':
-            text = "<p>In this practice round of the Collaborative Job, <b>you earned a tentative bonus of $" + own_payoff + " after opening " + str(C.NUM_PRACTICE) + " boxes in the bonus task</b>. In the meantime, <b>the computer has also opened " + str(C.NUM_PRACTICE) + " boxes in the penalty task, earning a tentative penalty of $" + computer_payoff + "</b>.</p> <p>Remember, if Part 1 is chosen for payment, <b>you will also get an additional payment of $" + str(C.BALANCE) + "</b> whether or not you decide to complete the Collaborative Job. If Part 1 is chosen for payment and you decide to complete the job, <b>you and the computer would both need to open " + '{:,}'.format(C.NUM_FORCED_OPEN) + " rather than just " + str(C.NUM_PRACTICE) + " boxes</b>.</p>"
+            text = "<p>In this practice round of the Collaborative Job, <b>you earned a tentative bonus of $" + own_payoff + " after opening " + str(C.NUM_PRACTICE) + " boxes in the bonus task</b>. In the meantime, <b>the computer has also opened " + str(C.NUM_PRACTICE) + " boxes in the penalty task, earning a tentative penalty of $" + computer_payoff + "</b>.</p> <p>Remember, if Part 1 is chosen for payment, <b>you will also get an additional payment of $" + str(C.BALANCE) + "</b> whether or not you decide to complete the Collaborative Job. If Part 1 is chosen for payment and you decide to complete the job, <b>you and the computer would both open " + '{:,}'.format(C.NUM_FORCED_OPEN) + " rather than just " + str(C.NUM_PRACTICE) + " boxes</b>.</p>"
         else:
-            text = "<p>In this practice round of the Collaborative Job, <b>you earned a tentative penalty of $" + own_payoff + " after opening " + str(C.NUM_PRACTICE) + " boxes in the penalty task</b>. In the meantime, <b>the computer has also opened " + str(C.NUM_PRACTICE) + " boxes in the bonus task, earning a tentative bonus of $" + computer_payoff + "</b>.</p> <p>Remember, if Part 1 is chosen for payment, <b>you will also get an additional payment of $" + str(C.BALANCE) + "</b> whether or not you decide to complete the Collaborative Job. If Part 1 is chosen for payment and you decide to complete the job, <b>you and the computer would both need to open " + '{:,}'.format(C.NUM_FORCED_OPEN) + " rather than just " + str(C.NUM_PRACTICE) + " boxes</b>.</p>"
+            text = "<p>In this practice round of the Collaborative Job, <b>you earned a tentative penalty of $" + own_payoff + " after opening " + str(C.NUM_PRACTICE) + " boxes in the penalty task</b>. In the meantime, <b>the computer has also opened " + str(C.NUM_PRACTICE) + " boxes in the bonus task, earning a tentative bonus of $" + computer_payoff + "</b>.</p> <p>Remember, if Part 1 is chosen for payment, <b>you will also get an additional payment of $" + str(C.BALANCE) + "</b> whether or not you decide to complete the Collaborative Job. If Part 1 is chosen for payment and you decide to complete the job, <b>you and the computer would both open " + '{:,}'.format(C.NUM_FORCED_OPEN) + " rather than just " + str(C.NUM_PRACTICE) + " boxes</b>.</p>"
             
         return {
             'text':  text
