@@ -30,19 +30,43 @@ Familiarize yourself with the {{ participant.valence }} task
         <div class="modal-body">
   
         {{ include C.READ_ALL }}
+
+        <hr>
+
         {{ include C.TWO_PARTS }}
+        
+        <hr>
+        
         {{ include C.PAYMENT }}
+        
+        <hr>
+        
         {{ include C.COLLABORATIVE_JOB }}
+        
+        <hr>
+        
         {{ include C.TASK_GENERAL }}
   
         {{ if participant.valence == 'bonus' }}
+          
           {{ include C.BONUS }}
+          
+          <hr>
+          
           {{ include C.PENALTY }}
+        
         {{ else }}
+          
           {{ include C.PENALTY }}
+          
+          <hr>
+
           {{ include C.BONUS }}
+
         {{ endif }}
-  
+          
+        <hr>
+        
         {{ include C.SUMMARY }}
   
         </div>

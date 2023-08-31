@@ -840,6 +840,10 @@ class AfterTaskRandomlyChosen(Page):
         return {
             'text':  text
         }
+    
+    @staticmethod
+    def is_displayed(player):
+        return player.participant.collaborative_job
 
 
 class Finished(Page):
@@ -850,7 +854,7 @@ class Finished(Page):
         if player.participant.part_payment == 'Part 2': 
             player.participant.payoff = C.PARTICIPATION_FEE + float(C.PAYMENT_PART_2)
 
-        return {'payment_message': 'test'}
+        return {}
 
 
 page_sequence = [

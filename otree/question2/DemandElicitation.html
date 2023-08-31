@@ -29,20 +29,49 @@ Demand elicitation
       <div class="modal-body">
 
         {{ include C.READ_ALL }}
+
+        <hr>
+
         {{ include C.TWO_PARTS }}
+
+        <hr>
+
         {{ include C.PAYMENT }}
+
+        <hr>
+
         {{ include C.COLLABORATIVE_JOB }}
+
+        <hr>
+
         {{ include C.TASK_GENERAL }}
 
+        <hr>
+
         {{ if participant.valence == 'bonus' }}
+
           {{ include C.BONUS }}
+
+          <hr>
+
           {{ include C.PENALTY }}
+
         {{ else }}
+
           {{ include C.PENALTY }}
+
+          <hr>
+
           {{ include C.BONUS }}
+
         {{ endif }}
 
+        <hr>
+
         {{ include C.SUMMARY }}
+
+        <hr>
+
         {{ include C.DEMAND_ELICIATION_INSTRUCTIONS }}
 
       </div>
@@ -52,9 +81,6 @@ Demand elicitation
     </div>
   </div>
 </div>
-
-
-
 
 {{ formfield_errors 'wtp' }}
 

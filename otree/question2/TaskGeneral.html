@@ -11,13 +11,13 @@
 
     {{ if participant.valence == 'bonus' }}
 
-    Your payment from the job will be larger the closer you get to finding the largest bonus ($10) in the bonus task, and the closer the computer gets to finding the smallest penalty ($2) in the penalty task.
+    Your payment from the job will be larger the closer you get to finding the largest bonus (${{ C.END_VALUE}}) in the bonus task, and the closer the computer gets to finding the smallest penalty (${{ C.START_VALUE }}) in the penalty task.
 
     {{ else }}
 
-    Your payment from the job will be larger the closer you get to finding the smallest penalty ($2) in the penalty task, and the closer the computer gets to finding the largest bonus ($10) in the bonus task.
+    Your payment from the job will be larger the closer you get to finding the smallest penalty (${{ C.START_VALUE }}) in the penalty task, and the closer the computer gets to finding the largest bonus (${{ C.END_VALUE}}) in the bonus task.
     {{ endif }}
-
+  
 </p>
 
 <p>

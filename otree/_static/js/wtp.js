@@ -395,10 +395,19 @@ function drawWTP(parameters){
          // Save the initial context
         context.save();
 
-    
+        
+
+        var zero_index = this.numeric_WTP.indexOf(0)
+
+        var tdheight = parseFloat(window.getComputedStyle(this.tdList[0][0]).height)
+        var tdheight_zero = parseFloat(window.getComputedStyle(this.tdList[zero_index][0]).height)
+        var tdheight_prior_zero = parseFloat(window.getComputedStyle(this.tdList[zero_index-1][0]).height)
+        
+        var mid_point = (zero_index - 1) * tdheight  + tdheight_zero/2 + tdheight_prior_zero
+
         // Arrow line
         context.beginPath();
-        context.moveTo(canvas.width/2, .45*canvas.height );
+        context.moveTo(canvas.width/2, mid_point - .05* canvas.height );
         context.lineTo(canvas.width/2, .2*canvas.height);
         context.lineWidth = 40;
         context.strokeStyle = "darkgreen";
@@ -413,7 +422,7 @@ function drawWTP(parameters){
 
         // Arrow line
         context.beginPath();
-        context.moveTo(canvas.width/2, .55*canvas.height );
+        context.moveTo(canvas.width/2, mid_point + .05* canvas.height );
         context.lineTo(canvas.width/2, .8*canvas.height);
         context.lineWidth = 40;
         context.strokeStyle = "darkred";
@@ -441,9 +450,11 @@ function drawWTP(parameters){
         context.rotate(-Math.PI / 2);
 
         // Text 1
+        var do_like_position = (mid_point - .05* canvas.height + .2*canvas.height)/2
+
         context.font = "bold 25px Arial"; // Larger font size
         context.textAlign = "center";
-        context.fillText("I like the job", -.3*canvas.height,1/4*canvas.width);
+        context.fillText("I like the job", -do_like_position,1/4*canvas.width);
 
         // Restore the saved context for future drawings
         context.restore();
@@ -456,10 +467,15 @@ function drawWTP(parameters){
         context.rotate(-Math.PI / 2);
 
         // Text 2
+        var dont_like_position = (mid_point + .05* canvas.height + .8*canvas.height)/2
         context.font = "bold 25px Arial"; // Larger font size
         context.textAlign = "center";
-        context.fillText("I don't like the job", -.7*canvas.height,1/4*canvas.width);
+        context.fillText("I don't like the job", -dont_like_position,1/4*canvas.width);
 
+
+        
+
+        
         // Restore the saved context for future drawings
         context.restore();
 
