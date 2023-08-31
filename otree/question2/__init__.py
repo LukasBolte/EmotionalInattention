@@ -510,7 +510,7 @@ class Welcome(Page):
     @staticmethod
     def vars_for_template(player):
         player.participant.times = {}
-        player.participant.times['start'] = time.time()
+        player.participant.times['time_started'] = time.time()
         pass 
 
 
@@ -849,13 +849,24 @@ class AfterTaskRandomlyChosen(Page):
 class Finished(Page):
     @staticmethod
     def vars_for_template(player):
-        player.participant.times['finished'] = time.time()
-
+        
+    
         if player.participant.part_payment == 'Part 2': 
             player.participant.payoff = C.PARTICIPATION_FEE + float(C.PAYMENT_PART_2)
 
+        player.participant.bonus_payment = player.participant.payoff - C.PARTICIPATION_FEE
         return {}
 
+    @staticmethod
+    def before_next_page(player, timeout_happened):
+        player.participant.times['time_finished'] = time.time()
+        player.participant.finished = True 
+        pass
+
+
+class Redirect(Page):
+    pass
+    
 
 page_sequence = [
     Welcome,
@@ -877,5 +888,6 @@ page_sequence = [
     TaskRandomlyChosen,
     AfterTaskRandomlyChosen,
     Feedback,
-    Finished
+    Finished,
+    Redirect
 ]

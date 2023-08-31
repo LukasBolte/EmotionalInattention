@@ -36,8 +36,8 @@ SESSION_CONFIG_DEFAULTS = dict(
     real_world_currency_per_point=1.00, participation_fee=0.00, doc=""
 )
 
-PARTICIPANT_FIELDS = ['treatment','domain','valence','anti_valence','high_payoff','part_payment','collaborative_job','random_row','question','wtp','experiment_sequence','sequence','practice_sequence','mistakes','times','num_draws','bonus_payment','expected_bonus','feedback','demographics']
-SESSION_FIELDS = []
+PARTICIPANT_FIELDS = ['treatment','domain','valence','anti_valence','high_payoff','part_payment','collaborative_job','random_row','question','wtp','experiment_sequence','sequence','practice_sequence','mistakes','times','num_draws','bonus_payment','expected_bonus','feedback','demographics','finished']
+SESSION_FIELDS = ['prolific_completion_url']
 
 # ISO-639 code
 # for example: de, fr, ja, ko, zh-hans
