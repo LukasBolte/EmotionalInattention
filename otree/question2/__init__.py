@@ -115,7 +115,7 @@ class C(BaseConstants):
     NUM_ROUNDS = 1
     MIN_TIME = 5
     MAX_TIME = 10
-    MAX_PAY = 20
+    MAX_PAY = 18
     NUM_BOXES = 10000
     DELAY = 10
     BALANCE = 8
