@@ -295,9 +295,9 @@ function drawWTP(parameters){
                    
 
             } else if (switch_row < 0) {
-                var text = 'I prefer completing the job over ' + this.rightBonus[0] + '(or less)';
+                var text = 'I prefer completing the job over ' + this.rightBonus[0] + ' (or less)';
             } else {
-                var text = 'I prefer ' + this.rightBonus[this.rightBonus.length-1] + '(or less) over completing the job';
+                var text = 'I prefer ' + this.rightBonus[this.rightBonus.length-1] + ' (or less) over completing the job';
             }
 
             text = text.replaceAll("Pay", "paying");
