@@ -714,15 +714,7 @@ class TransitionUnincentivized(Page):
 
  
 class UnincentivizedInstructions(Page):
-    form_model = 'player'
-    form_fields = ['confused_binary','confused_text']
-
-    @staticmethod
-    def error_message(player, values):
-        if not player.session.config['dev_mode']:
-            if values['confused_binary'] is None:
-
-                return {'confused_binary': 'Please answer the question.'}
+    pass
 
 
 class Unincentivized1(Page):
