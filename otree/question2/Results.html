@@ -18,7 +18,7 @@ Which part was randomly chosen for payment?
 {{ if participant.part_payment == 'Part 1'}}
 
     <p>
-        <b>Part 1 was randomly chosen for payment</b>. This means that you will get ${{C.BALANCE}} in addition to your participation fee of ${{ C.PARTICIPATION_FEE}}.
+        <b>Part 1 was randomly chosen for payment</b>. This means that you will get ${{C.BALANCE}} in addition to your participation fee of {{ C.PARTICIPATION_FEE|cu }}.
     </p>
 
     <p>
@@ -33,12 +33,12 @@ Which part was randomly chosen for payment?
 
     {{ if participant.collaborative_job }}
         <p>
-            For this question, you chose <b>complete the Collaborative Job</b>. Thus you will next complete the Collaborative Job. Once you complete it, you will receive your participation fee of ${{ C.PARTICIPATION_FEE}}, your balance of ${{ C.BALANCE }}, and the bonus minus the penalty from the Collaborative Job.
+            For this question, you chose <b>complete the Collaborative Job</b>. Thus you will next complete the Collaborative Job. Once you complete it, you will receive your participation fee of {{ C.PARTICIPATION_FEE|cu }}, your balance of ${{ C.BALANCE }}, and the bonus minus the penalty from the Collaborative Job.
         </p>
         
     {{ else }}
         <p>
-            For this question, you chose {{ right_option }}. {{ payment_text}}
+            For this question, you chose <b>{{ participant.right_option }}</b>. Thus, you will receive your partiicpation fee of {{ C.PARTICIPATION_FEE|cu }}, your balance of ${{ C.BALANCE }} and you will {{ payment_text}}.
         </p>
 
     {{ endif }}
@@ -46,7 +46,7 @@ Which part was randomly chosen for payment?
 {{ else }}
 
 <p>
-    <b>Part 2</b> was randomly chosen for payment. This means that you will not complete the Collaborative Job. But you will receive a payment of ${{C.PAYMENT_PART_2}} for completing Part 2 in addition to your participation fee of ${{ C.PARTICIPATION_FEE}}.
+    <b>Part 2</b> was randomly chosen for payment. This means that you will not complete the Collaborative Job. But you will receive a payment of ${{C.PAYMENT_PART_2}} for completing Part 2 in addition to your participation fee of {{ C.PARTICIPATION_FEE|cu }}.
 </p>
 
 {{ endif }}

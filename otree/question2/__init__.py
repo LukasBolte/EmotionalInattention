@@ -115,11 +115,12 @@ class C(BaseConstants):
     NUM_ROUNDS = 1
     MIN_TIME = 5
     MAX_TIME = 10
-    MAX_PAY = 18
+    AVERAGE_TIME = 15
+     
     NUM_BOXES = 10000
     DELAY = 10
     BALANCE = 8
-    PARTICIPATION_FEE = 2
+    PARTICIPATION_FEE = 2.50
     NUM_PRACTICE = 5
     NUM_FORCED_OPEN = 50
     PAYMENT_PART_2 = "0.50"
@@ -128,6 +129,8 @@ class C(BaseConstants):
     END_VALUE = 10
     INCREMENT_VALUE = 0.01
 
+    MAX_PAY = BALANCE + END_VALUE - START_VALUE
+    
     READ_ALL = 'question2/ReadAll.html'
     TWO_PARTS = 'question2/TwoParts.html'
     PAYMENT = 'question2/Payment.html'
@@ -695,6 +698,7 @@ class DemandElicitation(Page):
 
         question = 'Do you prefer <b>complete the Collaborative Job</b> OR <b>'+C.RIGHT_TEXT[player.participant.random_row]+'</b>?'
         player.participant.question = question
+        player.participant.right_option = C.RIGHT_TEXT[player.participant.random_row]
 
 
 class TransitionUnincentivized(Page):
@@ -770,7 +774,12 @@ class Unincentivized3(Page):
 
 
 class Results(Page):
-    pass
+    @staticmethod
+    def vars_for_template(player):
+        payment_text = player.participant.right_option 
+        payment_text = payment_text.lower()
+        return {'payment_text':payment_text}
+    
 
 
 class Feedback(Page):
