@@ -1,0 +1,89 @@
+{% extends "global/Page.html" %}
+{% load otree %}
+
+{% block title %}
+Familiarize yourself with the {{ participant.valence }} task
+{% endblock %}
+
+{% block content %}
+
+{{ if session.config.dev_mode }}
+<button class="btn btn-danger otree-btn-next" style="float: right;">Skip</button>
+{{ endif }}
+
+<div id="task_root"></div>
+
+
+
+<div class="col-md-12 text-center ">
+    <button type="button" class="btn btn-secondary btn-sm" data-bs-toggle="modal" data-bs-target="#exampleModal">Review Instructions</button>
+  </div>
+  
+  
+  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Review Instructions</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+  
+    
+          {{ include C.TWO_PARTS }}
+
+          <hr>
+          {{ include C.PAYMENT }}
+    
+          <hr>
+    
+          {{ include C.COLLABORATIVE_JOB }}
+    
+          <hr>
+    
+          {{ include C.TASK_GENERAL }}    
+  
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}
+
+
+{% block styles %}
+<style>
+  .no-border-table td,
+  .no-border-table th {
+      border: none;
+  }
+  .no-padding {
+      padding: 0 !important;
+  }
+</style>
+{% endblock %}
+
+{% block scripts %}
+<script src="{% static 'js/practice_task_decide.js' %}"></script>
+<script>
+  var parameters={
+      playerID : "{{participant.code}}", //this is used for stored variables not to collide
+      root: "task_root",
+      varname: "practice_data", //this is the name of the hidden field where output will be stored 
+      min_pay: "{{ C.START_VALUE}}",
+      max_pay: "{{ C.END_VALUE}}",
+      treatment: "{{ participant.valence }}",
+      delay: "{{ C.DELAY }}", 
+      open_box_src: "{% static 'img/open_box.jpg' %}",
+      closed_box_src: "{% static 'img/closed_box.jpg' %}",
+      practice_boxes: "{{ C.NUM_PRACTICE }}",
+      sequence: {{ sequence|safe }},// [3,4,5,5,5,6,5,4,4,5,6,7,5,5,6,3,8,6,10,8,5,3,3],
+  };
+  task =new task(parameters);
+</script>
+
+
+
+{% endblock %}

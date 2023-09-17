@@ -1,0 +1,22 @@
+{% extends "global/Page.html" %}
+{% load otree %}
+
+{% block title %}
+You finished the Collaborative Job!
+{% endblock %}
+
+{% block content %}
+
+{{ if session.config.dev_mode }}
+<button class="btn btn-danger otree-btn-next" style="float: right;">Skip</button>
+{{ endif }}
+
+{{ text }}
+
+<p>
+    When you are ready, click to provide us with some feedback and end the study.
+</p>
+
+<button style="float: right" class="btn btn-primary btn-large">Next</button>
+
+{% endblock %}

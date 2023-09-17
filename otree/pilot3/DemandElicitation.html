@@ -1,0 +1,161 @@
+{% extends "global/Page.html" %}
+{% load otree %}
+
+{{ block title }}
+Demand elicitation
+{% endblock %}
+
+{% block content %}
+
+{{ if session.config.dev_mode }}
+<button class="btn btn-danger otree-btn-next" style="float: right;">Skip</button>
+{{ endif }}
+
+<p>
+  Please choose the rows in which you would rather complete the Collaborative Job and the rows in which you would rather get/pay the money. You can review the instructions by clicking the button below.
+</p>
+
+<div class="col-md-12 text-center pb-3">
+  <button type="button" class="btn btn-secondary btn-sm" data-bs-toggle="modal" data-bs-target="#exampleModal">Review Instructions</button>
+</div>
+
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-xl">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Review Instructions</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+
+        {{ include C.TWO_PARTS }}
+
+        <hr>
+
+        {{ include C.PAYMENT }}
+
+        <hr>
+
+        {{ include C.COLLABORATIVE_JOB }}
+
+        <hr>
+
+        {{ include C.TASK_GENERAL }}
+
+        <hr>
+
+        {{ if participant.valence == 'bonus' }}
+
+          {{ include C.BONUS }}
+
+          <hr>
+
+          {{ include C.PENALTY }}
+
+        {{ else }}
+
+          {{ include C.PENALTY }}
+
+          <hr>
+
+          {{ include C.BONUS }}
+
+        {{ endif }}
+
+        <hr>
+
+        {{ include C.SUMMARY }}
+
+        <hr>
+
+        {{ include C.DEMAND_ELICIATION_INSTRUCTIONS }}
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+{{ formfield_errors 'wtp' }}
+
+<div id="root"></div>
+<div id="hidden_fields_wtp"></div>
+
+
+
+
+<button type="button" disabled id='next_button_id_de' class="btn btn-primary otree-btn-next" data-bs-toggle="modal" data-bs-target="#confirmModal" style="float: right;">Next</button>
+
+
+{% endblock %}
+
+{% block styles %}
+
+<style>
+   .orange{
+     background-color: #f7920d !important;
+     }
+   .darkorange{
+     background-color: #f7920d !important;
+     }
+ </style>
+
+<style>
+   .arrow-container {
+     position: relative;
+     display: flex;
+     align-items: center;
+     margin-left: -40px; /* Adjust this value to align the arrows properly */
+   }
+
+   .arrow {
+     position: absolute;
+     width: 0;
+     height: 0;
+     border-left: 20px solid transparent; /* Adjust the size of the arrow */
+     border-right: 20px solid transparent;
+   }
+
+   .arrow-up {
+     border-bottom: 20px solid #007bff; /* Arrow color */
+     top: 0;
+   }
+
+   .arrow-down {
+     border-top: 20px solid #dc3545; /* Arrow color */
+     bottom: 0;
+   }
+
+   .arrow-text {
+     margin: 0 10px;
+     font-size: 14px;
+     font-weight: bold;
+   }
+</style>
+ 
+{% endblock %}
+
+{% block scripts %}
+
+
+<script src="{% static 'js/wtp.js' %}"></script>
+
+<script>
+parameters={
+   playerID : "{{participant.code}}" + "{{ player.round_number }}",
+     leftHeader:"Left Option", 
+     rightHeader:"Right Option", 
+     numeric_WTP: {{ numeric_WTP|safe }},
+     leftBonus: {{ leftText|safe }},
+     rightBonus: {{ rightText|safe }},
+     varname:"wtp", //variable name on oTree  ES_wtp3', '',
+     root:"root",
+     hidden_fields_name:"hidden_fields_wtp",
+   color_switched: true,
+  }
+  wtp_1 =new drawWTP(parameters);
+</script>
+
+{% endblock %}

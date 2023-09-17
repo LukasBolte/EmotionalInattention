@@ -1,0 +1,27 @@
+{% extends "global/Page.html" %}
+{% load otree %}
+
+{% block title %}
+Thank you for giving your answers!
+{% endblock %}
+
+{% block content %}
+
+{{ if session.config.dev_mode }}
+<button class="btn btn-danger otree-btn-next" style="float: right;">Skip</button>
+{{ endif }}
+
+{{ formfield 'confused_binary'}}
+
+<p>
+    If you were confused, please indicate what was unclear in your own words: (one to two sentences are enough)
+</p>
+
+{{ form.confused_text }}
+{{ formfield_errors 'confused_text' }}
+
+<br>
+
+<button style="float: right" class="btn btn-primary btn-large">Next</button>
+
+{% endblock %}

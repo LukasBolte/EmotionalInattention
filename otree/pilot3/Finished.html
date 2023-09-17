@@ -1,0 +1,24 @@
+{% extends "global/Page.html" %}
+{% load otree %}
+
+{{ block title }}
+The study is now finished
+{{ endblock }}
+
+{{ block content }}
+
+{{ if session.config.dev_mode }}
+<button class="btn btn-danger otree-btn-next" style="float: right;">Skip</button>
+{{ endif }}
+
+<p>
+    Thank you for participating. Your total payment of {{ participant.payoff|cu  }} will soon be transferred to your account. 
+</p>
+
+<p class="text-danger h4">
+    Please click "Submit" to submit the study. 
+</p>
+
+<button style="float: right" class="btn btn-primary btn-large">Submit</button>
+
+{% endblock %}

@@ -1,6 +1,18 @@
 from os import environ
 
 SESSION_CONFIGS = [
+    dict(
+        name='pilot3',
+        app_sequence=['pilot3'],
+        num_demo_participants=8,
+        dev_mode=False
+    ),
+    dict(
+        name='pilot3_dev_mod',
+        app_sequence=['pilot3'],
+        num_demo_participants=8,
+        dev_mode=True
+    ),
         dict(
         name='question2',
         app_sequence=['question2'],
@@ -36,7 +48,7 @@ SESSION_CONFIG_DEFAULTS = dict(
     real_world_currency_per_point=1.00, participation_fee=0.00, doc=""
 )
 
-PARTICIPANT_FIELDS = ['treatment','domain','valence','anti_valence','high_payoff','part_payment','collaborative_job','random_row','question','right_option','wtp','experiment_sequence','sequence','practice_sequence','mistakes','times','num_draws','bonus_payment','expected_bonus','feedback','demographics','finished']
+PARTICIPANT_FIELDS = ['treatment','domain','valence','anti_valence','high_payoff','part_payment','collaborative_job','random_row','question','right_option','wtp','practice_payoff','actual_payoff','experiment_sequence','sequence','practice_sequence','mistakes','times','num_draws','bonus_payment','expected_bonus','feedback','demographics','finished']
 SESSION_FIELDS = ['prolific_completion_url']
 
 # ISO-639 code

@@ -1,0 +1,293 @@
+{% load otree %}
+
+<p>
+    There are <span class='class_num_box'></span> in the <b>{{ participant.valence }} task</b>. Each box contains a <i>{{ participant.valence }} amount between ${{ C.START_VALUE }} and ${{ C.END_VALUE }}</i>. 
+</p>
+
+<p>
+    Your payment from the task will be larger the closer you get to finding the {{ if participant.valence == 'bonus' }}largest bonus (${{ C.END_VALUE }}){{ else}}smallest penalty (${{ C.START_VALUE }}){{ endif }}.
+</p>
+
+<p>
+    The graph below shows the number of boxes that contain each {{ participant.valence }} amount.
+</p>
+
+{{ if participant.valence == 'bonus' }}
+
+  <div class="d-flex justify-content-center align-items-center">
+    <div>
+      <p><b>Bonus task</b></p>
+    </div>
+  </div>
+  <div class="chart-container">
+    <div class="chart" id="chart1"></div>
+    <div class="chart-overlay">
+      <p class="overlay-text" id="overlay1">Move your mouse over the figure</p>
+    </div>
+  </div>
+
+  <br>
+
+{{ else }}
+
+  <div class="d-flex justify-content-center align-items-center">
+    <div>
+      <p><b>Penalty task</b></p>
+    </div>
+  </div>
+
+  <div class="chart-container">
+    <div class="chart" id="chart2"></div>
+    <div class="chart-overlay">
+      <p class="overlay-text" id="overlay2">Move your mouse over the figure</p>
+    </div>
+  </div>
+
+{{ endif }}
+
+<script>
+  function formatNumberWithCommas(number) {
+  // Convert the number to a string
+  var numString = number.toString();
+
+  // Split the string into an array of characters
+  var numArray = numString.split('');
+
+  // Initialize variables
+  var formattedNumber = '';
+  var count = 0;
+
+  // Iterate through the characters in reverse order
+  for (var i = numArray.length - 1; i >= 0; i--) {
+      // Add the current character to the formatted number
+      formattedNumber = numArray[i] + formattedNumber;
+
+      // Increment the count
+      count++;
+
+      // Add a comma after every three digits
+      if (count % 3 === 0 && i !== 0) {
+      formattedNumber = ',' + formattedNumber;
+      }
+  }
+
+  return formattedNumber;
+  }
+
+  
+  // Select all span elements with the class "num_box"
+  var numBoxes = document.querySelectorAll('span.class_num_box');
+
+  // Iterate through the selected elements and set their innerHTML to the formatted number
+  numBoxes.forEach(function(numBox) {
+    var formattedNumber = formatNumberWithCommas({{ C.NUM_BOXES }});
+    numBox.innerHTML = formattedNumber;
+  });
+
+  // Reusable function to format number with commas
+  function formatNumberWithCommas(number) {
+    var numString = number.toString();
+    var numArray = numString.split('');
+    var formattedNumber = '';
+    var count = 0;
+    for (var i = numArray.length - 1; i >= 0; i--) {
+      formattedNumber = numArray[i] + formattedNumber;
+      count++;
+      if (count % 3 === 0 && i !== 0) {
+        formattedNumber = ',' + formattedNumber;
+      }
+    }
+    return formattedNumber;
+  }
+
+  // Reusable function to round number to two decimals
+  function roundNumberToTwoDecimals(number) {
+    const roundedNumber = Math.round(number * 100) / 100;
+    return Number.isInteger(roundedNumber) ? roundedNumber : roundedNumber.toFixed(2);
+  }
+
+  // Reusable function to change text on hover
+  function changeText(num, height, labels, overlayId) {
+    var overlay = document.getElementById(overlayId);
+    const contain = height === 1 ? 'box contains' : 'boxes contain';
+    overlay.innerHTML = Math.round(height) + ' ' + contain + ' $' + roundNumberToTwoDecimals(labels[num]);
+  }
+
+  // Reusable function to reset text on hover out
+  function changeTextBack(overlayId) {
+    var overlay = document.getElementById(overlayId);
+    overlay.innerHTML = 'Move your mouse over the figure';
+  }
+
+  // Function to create a chart
+  function createChart(chartId, overlayId, dividedBarHeights, labels) {
+
+    const numBox = {{ C.NUM_BOXES }};
+
+    const chart = document.getElementById(chartId);
+    const spacerElement = document.createElement('div');
+    spacerElement.style.width = '50px';
+    spacerElement.style.display = "inline-block";
+    spacerElement.className = "text";
+    spacerElement.innerHTML = "No. of boxes per amount";
+
+    chart.appendChild(spacerElement);
+
+    const overlay = document.getElementById(overlayId);
+
+    const max_height = Math.max(...dividedBarHeights);
+    const heightConstant = 180 / (max_height / numBox);
+
+    const divList = document.createElement('div');
+
+    for (let i = 0; i < dividedBarHeights.length; i++) {
+      const height = dividedBarHeights[i];
+
+      const bar = document.createElement('div');
+      bar.className = 'bar';
+      bar.style.height = (height / numBox) * heightConstant + 'px';
+
+      bar.setAttribute('data-toggle', 'tooltip');
+      bar.setAttribute('data-placement', 'bottom');
+      const contain = height === 1 ? 'box contains' : 'boxes contain';
+      bar.setAttribute(
+        'title',
+        Math.round(height) + ' ' + contain + ' $' + roundNumberToTwoDecimals(labels[i])
+      );
+
+      bar.setAttribute('num', i);
+
+      bar.addEventListener('mouseenter', function () {
+        const num = parseInt(this.getAttribute('num'));
+        changeText(num, height, labels, overlayId);
+      });
+
+      bar.addEventListener('mouseleave', function () {
+        changeTextBack(overlayId);
+      });
+
+      chart.appendChild(bar);
+
+      if (i % 100 === 0) {
+        const labelBox = document.createElement('div');
+        labelBox.className = 'label-boxes';
+        labelBox.innerHTML = '$' + roundNumberToTwoDecimals(labels[i]);
+        divList.appendChild(labelBox);
+      }
+    }
+
+    const br = document.createElement('br');
+    chart.appendChild(br);
+    chart.appendChild(divList);
+  }
+
+
+
+  
+  
+
+</script>
+
+<!-- // Call the createChart function for each chart -->
+{{ if participant.valence == 'bonus' }}
+
+<script>
+    top_dividedBarHeights = {{ top_dividedBarHeights|safe }}
+    top_labels = {{ top_labels|safe }}
+    createChart('chart1', 'overlay1', top_dividedBarHeights, top_labels);
+</script>
+
+{{ else }}
+
+
+<script>
+    bottom_dividedBarHeights = {{ bottom_dividedBarHeights|safe }}
+    bottom_labels = {{ bottom_labels|safe }}
+    createChart('chart2', 'overlay2', bottom_dividedBarHeights, bottom_labels);
+
+</script>
+    
+
+{{ endif }}
+
+<style>
+  .chart {
+      position: relative;
+  }
+
+  .bar {
+      display: inline-block;
+      width: 1px;
+      margin: 0;
+      background-color: #d9912c;
+      transition: height 0.3s;
+  }
+
+  .label-boxes {
+      display: inline-block;
+      width: 100px;
+      margin: 0;
+      height: 45px;
+      text-align: center;
+  }
+
+  .bar:hover {
+      background-color: #2E8B57;
+  }
+
+  .tooltip {
+      visibility: hidden;
+      background-color: #000 !important;
+      color: #fff !important;
+      text-align: center;
+      border-radius: 6px;
+      padding: 5px;
+      position: absolute;
+      z-index: 1;
+  }
+
+  .bar:hover .tooltip {
+      visibility: visible;
+  }
+
+  .bar:hover .label {
+      visibility: visible;
+  }
+
+  .chart-container {
+      position: relative;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+  }
+
+  .chart-overlay {
+      position: absolute;
+      top: -50px;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+  }
+
+  .overlay-text {
+      font-size: 18px;
+      color: rgb(0, 0, 0);
+  }
+
+  .rotated-text {
+      display: inline-block;
+      transform: rotate(-90deg);
+  }
+
+  .text {
+      display: inline-block;
+      white-space: nowrap;
+      transform: rotate(270deg);
+      transform-origin: left top;
+  }
+
+</style>

@@ -1,0 +1,32 @@
+{% extends "global/Page.html" %}
+{% load otree %}
+
+{% block title %}
+All your answers were correct!
+{% endblock %}
+
+{% block content %}
+
+{{ if session.config.dev_mode }}
+<button class="btn btn-danger otree-btn-next" style="float: right;">Skip</button>
+{{ endif }}
+
+<p>
+    Great, all your answers are correct! 
+</p>
+
+<p>
+    To get a feel for the {{ participant.valence }} task and familiarize yourself with the interface, we will now ask you to open {{ C.NUM_PRACTICE}} boxes in a trial version.
+</p>
+
+<p>
+    This is <b>just for practice</b>. The outcome of this trial version will not affect your payment.
+</p>
+
+<p>
+    When you are ready, click "Next" to continue.
+</p>
+
+<button style="float: right" class="btn btn-primary btn-large">Next</button>
+
+{% endblock %}

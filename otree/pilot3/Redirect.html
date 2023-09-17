@@ -1,0 +1,13 @@
+{% block title %}
+{% endblock %}
+{% block content %}
+{% endblock %}
+{% block styles %}
+{% endblock %}
+{% block scripts %}    
+<script>        
+    window.onload = function(){
+        window.location.href="{{ session.prolific_completion_url }}";
+        }
+</script>
+{% endblock %}

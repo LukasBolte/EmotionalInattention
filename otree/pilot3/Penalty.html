@@ -1,0 +1,91 @@
+{% load otree %}
+
+{{ if participant.valence == 'bonus' }}
+
+<p>
+    While you work on the bonus task, the computer will complete the <b>penalty task</b>. 
+</p>
+
+<p>
+    In the <b>penalty task</b>, the computer starts with a <b>tentative penalty</b> of ${{ C.END_VALUE }}. It will then open {{ C.NUM_FORCED_OPEN }} of the <span class='class_num_box'></span> boxes in random order. Each time it opens a box, it will wait {{ C.DELAY }} seconds to reveal the penalty inside. One of two things can happen to the computer's tentative penalty after it opens a box:
+
+    <ol>
+        <li>If the penalty inside the box is <b>larger</b> than its tentative penalty, <b>its tentative penalty will stay the same</b>.</li>
+        <li>If the penalty inside the box is <b>smaller</b> than its tentative penalty, <b>the penalty inside the box will become its new tentative penalty</b>.</li>
+    </ol>
+
+    After the computer opens all {{ C.NUM_FORCED_OPEN }} boxes, the computer's <b>final tentative penalty will be taken away from your payment</b> from Part 1.
+</p>
+
+{{ else }}
+
+<p>
+    In the <b>penalty task</b>, you start with a <b>tentative penalty</b> of ${{ C.END_VALUE }}. You will then open {{ C.NUM_FORCED_OPEN }} of the <span class='class_num_box'></span> boxes in random order. Each time you open a box, you will wait {{ C.DELAY }} seconds to reveal the penalty inside. One of two things can happen to your tentative penalty after you open a box:
+
+    <ol>
+        <li>If the penalty inside the box is <b>larger</b> than your tentative penalty, <b>your tentative penalty will stay the same</b>.</li>
+        <li>If the penalty inside the box is <b>smaller</b> than your tentative penalty, <b>the penalty inside the box will become your new tentative penalty</b>.</li>
+    </ol>
+
+    After you open all {{ C.NUM_FORCED_OPEN }} boxes, your <b>final tentative penalty will be taken away from your payment</b> from Part 1.
+</p>
+
+{{ endif }}
+
+<script>
+
+    function formatNumberWithCommas(number) {
+        // Convert the number to a string
+        var numString = number.toString();
+
+        // Split the string into an array of characters
+        var numArray = numString.split('');
+
+        // Initialize variables
+        var formattedNumber = '';
+        var count = 0;
+
+        // Iterate through the characters in reverse order
+        for (var i = numArray.length - 1; i >= 0; i--) {
+            // Add the current character to the formatted number
+            formattedNumber = numArray[i] + formattedNumber;
+
+            // Increment the count
+            count++;
+
+            // Add a comma after every three digits
+            if (count % 3 === 0 && i !== 0) {
+                formattedNumber = ',' + formattedNumber;
+            }
+        }
+
+        return formattedNumber;
+    }
+
+
+    // Select all span elements with the class "num_box"
+    var numBoxes = document.querySelectorAll('span.class_num_box');
+
+    // Iterate through the selected elements and set their innerHTML to the formatted number
+    numBoxes.forEach(function (numBox) {
+        var formattedNumber = formatNumberWithCommas({{ C.NUM_BOXES }});
+    numBox.innerHTML = formattedNumber;
+  });
+
+    // Reusable function to format number with commas
+    function formatNumberWithCommas(number) {
+        var numString = number.toString();
+        var numArray = numString.split('');
+        var formattedNumber = '';
+        var count = 0;
+        for (var i = numArray.length - 1; i >= 0; i--) {
+            formattedNumber = numArray[i] + formattedNumber;
+            count++;
+            if (count % 3 === 0 && i !== 0) {
+                formattedNumber = ',' + formattedNumber;
+            }
+        }
+        return formattedNumber;
+    }
+
+</script>
