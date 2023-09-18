@@ -118,6 +118,7 @@ class C(BaseConstants):
     AVERAGE_TIME = 15
      
     NUM_BOXES = 10000
+    NUM_BOXES_SEQUENCE = 1000
     DELAY = 10
     BALANCE = 8
     PARTICIPATION_FEE = 2.50
@@ -141,6 +142,7 @@ class C(BaseConstants):
     PENALTY = 'pilot3/Penalty.html'
     SUMMARY = 'pilot3/Summary.html'
     DEMAND_ELICIATION_INSTRUCTIONS = 'pilot3/DemandElicitationInstructions.html'
+    PART2_INSTRUCTIONS = 'pilot3/Part2Instructions.html'
 
     height_constant = 50000
 
@@ -213,12 +215,16 @@ def creating_session(subsession: Subsession):
                 B = C.BAR_HEIGHTS
 
                 new_list = [a for a, b in zip(A, B) for _ in range(b)]
-                participant.sequence = {'penalty':json.dumps(random.sample(new_list, C.NUM_FORCED_OPEN)),
-                                        'bonus':json.dumps(random.sample(new_list, C.NUM_FORCED_OPEN))}
+                participant.sequence = {'penalty':json.dumps(random.sample(new_list, C.NUM_BOXES_SEQUENCE)),
+                                        'bonus':json.dumps(random.sample(new_list, C.NUM_BOXES_SEQUENCE))}
 
                 new_list = [a for a, b in zip(A, B) for _ in range(b)]
                 participant.practice_sequence = {'penalty':json.dumps(random.sample(new_list, C.NUM_PRACTICE)),
                                         'bonus':json.dumps(random.sample(new_list, C.NUM_PRACTICE))}
+                
+                new_list = [a for a, b in zip(A, B) for _ in range(b)]
+                participant.part2_sequence = {'penalty':json.dumps(random.sample(new_list, C.NUM_FORCED_OPEN)),
+                                        'bonus':json.dumps(random.sample(new_list, C.NUM_FORCED_OPEN))}
 
                 
 class Group(BaseGroup):
@@ -627,6 +633,8 @@ class TransitionDemandElicitation0(Page):
         # own_payoff = float(max(json.loads(player.participant.practice_sequence[valence])[:C.NUM_PRACTICE]))
         # computer_payoff = float(max(json.loads(player.participant.practice_sequence[anti_valence])[:C.NUM_PRACTICE]))
 
+        own_payoff = player.participant.practice_payoff
+
         if valence == 'bonus':
             # computer_payoff = C.START_VALUE + C.END_VALUE - computer_payoff
             pass
@@ -635,9 +643,12 @@ class TransitionDemandElicitation0(Page):
             new_balance = C.START_VALUE_PENALTY - own_payoff
 
 
-        own_payoff = player.participant.practice_payoff
+        
         # computer_payoff = "{:.2f}".format(computer_payoff)
         
+        if type(own_payoff) != str:
+            own_payoff = str(own_payoff)
+        print(type(own_payoff),own_payoff) 
         if valence == 'bonus':
             text = "<p>In this practice round of the bonus task, <b>you found a tentative bonus of $" + own_payoff + " after opening " + str(C.NUM_PRACTICE) + " boxes</b>.</p> <p>Remember, Part 1 will be affect your balance of $0 for sure. Thus, your balance would have increased to $" + own_payoff +" if this was the real task. </p> <p>You will next do the real bonus task which will affect your balance. There, you can choose when to stop opening boxes.</p>"
         else:
@@ -683,6 +694,8 @@ class TransitionDemandElicitation(Page):
         # own_payoff = float(max(json.loads(player.participant.practice_sequence[valence])[:C.NUM_PRACTICE]))
         # computer_payoff = float(max(json.loads(player.participant.practice_sequence[anti_valence])[:C.NUM_PRACTICE]))
 
+        own_payoff = player.participant.actual_payoff
+        
         if valence == 'bonus':
             # computer_payoff = C.START_VALUE + C.END_VALUE - computer_payoff
             pass
@@ -691,7 +704,9 @@ class TransitionDemandElicitation(Page):
             new_balance = C.START_VALUE_PENALTY - own_payoff
 
 
-        own_payoff = player.participant.actual_payoff
+        
+        if type(own_payoff) != str:
+            own_payoff = str(own_payoff)
 
         if valence == 'bonus':
             text = "<p>Your final tentative bonus is $" + own_payoff + "</b>.</p> <p>This bonus is now added to your balance of $0. Thus, your balance is now $" + own_payoff +".</p>"
@@ -703,7 +718,19 @@ class TransitionDemandElicitation(Page):
 
 
 class TransitionDemandElicitation2(Page):
-    pass
+
+    @staticmethod
+    def vars_for_template(player):
+        myLabels = json.dumps(C.LAEBELS)
+        myHeights = json.dumps(C.BAR_HEIGHTS)
+        reversed_dividedBarHeights = json.dumps(C.BAR_HEIGHTS[::-1])
+
+        return {
+            'top_labels':myLabels,
+            'top_dividedBarHeights': myHeights,
+            'bottom_labels':myLabels,
+            'bottom_dividedBarHeights': reversed_dividedBarHeights,     
+            }
 
 
 class DemandElicitation(Page):
@@ -943,6 +970,7 @@ page_sequence = [
     TaskActual,
     TransitionDemandElicitation,
     TransitionDemandElicitation2,
+    TransitionDemandElicitation3,
     DemandElicitation,
     TransitionUnincentivized,
     UnincentivizedInstructions,
