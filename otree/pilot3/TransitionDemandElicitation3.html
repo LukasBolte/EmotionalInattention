@@ -2,7 +2,7 @@
 {% load otree %}
 
 {% block title %}
-You are done with Part 1!
+Instructions
 {% endblock %}
 
 {% block content %}
@@ -11,13 +11,10 @@ You are done with Part 1!
 <button class="btn btn-danger otree-btn-next" style="float: right;">Skip</button>
 {{ endif }}
 
-<p>
-    {{ text }}
-</p>
-
+{{ include C.DEMAND_ELICIATION_INSTRUCTIONS }}
 
 <p>
-    Click "Next" to continue.
+    When you are ready, click "Next" to continue.
 </p>
 
 <button style="float: right" class="btn btn-primary btn-large">Next</button>

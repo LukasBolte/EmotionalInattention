@@ -129,6 +129,7 @@ class C(BaseConstants):
     START_VALUE = 2
     END_VALUE = 10
     INCREMENT_VALUE = 0.01
+    BONUS_AMOUNTS = [0,2,3,4,5,6,7,8,9,10]
 
     START_VALUE_PENALTY = END_VALUE + START_VALUE
     MAX_PAY = BALANCE + END_VALUE - START_VALUE
@@ -143,6 +144,8 @@ class C(BaseConstants):
     SUMMARY = 'pilot3/Summary.html'
     DEMAND_ELICIATION_INSTRUCTIONS = 'pilot3/DemandElicitationInstructions.html'
     PART2_INSTRUCTIONS = 'pilot3/Part2Instructions.html'
+    SIMILAR_TO_PART1 = 'pilot3/SimilarToPart1.html'
+    PART2_CHOOSING = 'pilot3/Part2Choosing.html'
 
     height_constant = 50000
 
@@ -154,7 +157,7 @@ class C(BaseConstants):
     BAR_HEIGHTS = bar_heights(START_VALUE, END_VALUE, INCREMENT_VALUE, NUM_BOXES, lambda i: math.exp(-1.75 * i))
 
     LEFT_TEXT, RIGHT_TEXT, NUMERIC_WTP = create_DE_texts()
-
+    LEN_MPL = len(LEFT_TEXT)
     NUM_DEMAND_ELICITATION_QUESTIONS = len(LEFT_TEXT)
     CONTROL_QUESTIONS = {
         'CQ_tasks_bonus': {
@@ -171,7 +174,20 @@ class C(BaseConstants):
             'CQ_penalty_tentative_own': (2, 'Sorry, that is incorrect. Your tentative penalty can decrease (if the penalty inside the box is smaller than your current tentative penalty). Or it can stay the same (if the penalty inside the box is larger than your current tentative penalty).'),
             'CQ_penalty_tentative_other': (1, 'Sorry, that is incorrect. Its tentative bonus can increase (if the bonus inside the box is larger than its current tentative bonus). Or it can stay the same (if the bonus inside the box is smaller than its current tentative bonus).'),
         },
-
+        'Part2_CQ_tasks_bonus': {
+            'CQ_conditions_collaborative_job':(3,'Sorry, that is incorrect. You will complete the Job only if you decide to complete it, AND Part 1 is chosen for payment.'),
+            'CQ_bonus_collabarotive_job_consists': (1,'Sorry, that is incorrect. The Collaborative Job consists of a bonus task completed by you, AND a penalty task completed by a computer.'),
+            'CQ_bonus_collaboartive_job_payment': (3, 'Sorry, that is incorrect. If you complete the Collaborative Job, the bonus you earn in the bonus task will be added to your Part 1 payment, AND the penalty the computer earns in the penalty task will be taken away from this payment.'),
+            'CQ_bonus_tentative_own': (1, 'Sorry, that is incorrect. Your tentative bonus can increase (if the bonus inside the box is larger than your current tentative bonus). Or it can stay the same (if the bonus inside the box is smaller than your current tentative bonus).'),
+            'CQ_bonus_tentative_other': (2, 'Sorry, that is incorrect. Its tentative penalty can decrease (if the penalty inside the box is smaller than its current tentative penalty). Or it can stay the same (if the penalty inside the box is larger than its current tentative penalty).'),
+        },
+        'Part2_CQ_tasks_penalty': {
+            'CQ_conditions_collaborative_job':(3,'Sorry, that is incorrect. You will complete the Job only if you decide to complete it, AND Part 1 is chosen for payment.'),
+            'CQ_penalty_collabarotive_job_consists': (1,'Sorry, that is incorrect. The Collaborative Job consists of a penalty task completed by you, AND a bonus task completed by a computer.'),
+            'CQ_penalty_collaboartive_job_payment': (3, 'Sorry, that is incorrect. If you complete the Collaborative Job, the penalty you earn in the penalty task will be taken away from your Part 1 payment, AND the bonus the computer earns in the bonus task will be added to this payment.'),
+            'CQ_penalty_tentative_own': (2, 'Sorry, that is incorrect. Your tentative penalty can decrease (if the penalty inside the box is smaller than your current tentative penalty). Or it can stay the same (if the penalty inside the box is larger than your current tentative penalty).'),
+            'CQ_penalty_tentative_other': (1, 'Sorry, that is incorrect. Its tentative bonus can increase (if the bonus inside the box is larger than its current tentative bonus). Or it can stay the same (if the bonus inside the box is smaller than its current tentative bonus).'),
+        },
         'CQ_states': {
             'payment':(1,'myHint'),
             'demand_elicitation':(2,'myHint')
@@ -181,6 +197,7 @@ class C(BaseConstants):
             'demand_elicitation':(2,'myHint')
         }
     }
+
 
 
 class Subsession(BaseSubsession):
@@ -207,9 +224,9 @@ def creating_session(subsession: Subsession):
                 participant.anti_valence = [el for el in bonus_penalty if el != participant.valence][0]
                 participant.high_payoff = participant.treatment[2]
                 random_draw = random.random()
-                participant.part_payment = 'Part 2'
+                participant.part_payment = 'Part 3'
                 if C.PROBABILITY_PART_1 > random_draw:
-                    participant.part_payment = 'Part 1'
+                    participant.part_payment = 'Part 2'
 
                 A = C.LAEBELS
                 B = C.BAR_HEIGHTS
@@ -716,6 +733,68 @@ class TransitionDemandElicitation(Page):
             'text':  text
         }
 
+class InstructionsPart2(Page):
+    @staticmethod
+    def vars_for_template(player):
+        myLabels = json.dumps(C.LAEBELS)
+        myHeights = json.dumps(C.BAR_HEIGHTS)
+        reversed_dividedBarHeights = json.dumps(C.BAR_HEIGHTS[::-1])
+
+        return {
+            'top_labels':myLabels,
+            'top_dividedBarHeights': myHeights,
+            'bottom_labels':myLabels,
+            'bottom_dividedBarHeights': reversed_dividedBarHeights,     
+        }
+    
+
+
+class UnderstandingQuestionsPart2(Page):
+    form_model = 'player'
+
+    @staticmethod
+    def get_form_fields(player):
+        domain = player.participant.domain
+        valence = player.participant.valence
+        control_questions = C.CONTROL_QUESTIONS[f"Part2_CQ_{domain}_{valence}"]
+        questions = list(control_questions.keys())
+        
+        return questions
+
+    @staticmethod
+    def vars_for_template(player):
+        myLabels = json.dumps(C.LAEBELS)
+        myHeights = json.dumps(C.BAR_HEIGHTS)
+        reversed_dividedBarHeights = json.dumps(C.BAR_HEIGHTS[::-1])
+
+        return {
+            'top_labels':myLabels,
+            'top_dividedBarHeights': myHeights,
+            'bottom_labels':myLabels,
+            'bottom_dividedBarHeights': reversed_dividedBarHeights,     
+        }
+    
+    @staticmethod
+    def error_message(player, values):
+        if not player.session.config['dev_mode']:
+            domain = player.participant.domain
+            valence = player.participant.valence
+            control_questions = C.CONTROL_QUESTIONS[f"Part2_CQ_{domain}_{valence}"]
+            questions = list(control_questions.keys())
+            if 'mistakes' not in player.participant.vars.keys():
+                player.participant.mistakes = {question:0 for question in questions}
+            error_messages = {}
+            for field_name in questions:
+                question = field_name.split(f'CQ_{domain}_')[-1]
+                if values[field_name] is None:
+                    error_messages[field_name] = 'Please answer the question.'
+                elif int(values[field_name]) != control_questions[question][0]:
+                    error_messages[field_name] = control_questions[question][1]
+                    player.participant.mistakes[field_name]+=1  
+
+            return error_messages
+        
+
 
 class TransitionDemandElicitation2(Page):
 
@@ -732,6 +811,23 @@ class TransitionDemandElicitation2(Page):
             'bottom_dividedBarHeights': reversed_dividedBarHeights,     
             }
 
+
+class TransitionDemandElicitation3(Page):
+
+    @staticmethod
+    def vars_for_template(player):
+        pass 
+        # myLabels = json.dumps(C.LAEBELS)
+        # myHeights = json.dumps(C.BAR_HEIGHTS)
+        # reversed_dividedBarHeights = json.dumps(C.BAR_HEIGHTS[::-1])
+
+        # return {
+        #     'top_labels':myLabels,
+        #     'top_dividedBarHeights': myHeights,
+        #     'bottom_labels':myLabels,
+        #     'bottom_dividedBarHeights': reversed_dividedBarHeights,     
+        #     }
+    
 
 class DemandElicitation(Page):
     form_model = 'player'
@@ -766,30 +862,48 @@ class DemandElicitation(Page):
     @staticmethod
     def before_next_page(player, timeout_happened):
         wtp = json.loads(player.wtp)
-        cutoff = wtp['cutoff']
-        parts = cutoff.split(":")
-        side = parts[0]
-        row = int(parts[1])
+        print('hEREHEREHERajs;dflkajs;dfkljas;dfkjas;dflkajsd;fklajsdf;lkasjdf;alksdjf;alskjdf;alksdj')
+        # cutoff = wtp['cutoff']
+        # parts = cutoff.split(":")
+        # side = parts[0]
+        # row = int(parts[1])
 
-        if side == "right":
-            row = row +1
+        # if side == "right":
+        #     row = row +1
  
-        large_number = 1
-        if row <=0:
-            player.participant.wtp = C.NUMERIC_WTP[0] + large_number
-        elif row > len(C.NUMERIC_WTP) - 1:
-            player.participant.wtp = C.NUMERIC_WTP[-1] - large_number
-        else:
-            player.participant.wtp = (C.NUMERIC_WTP[row] + C.NUMERIC_WTP[row-1])/ 2
+        # large_number = 1
+        # if row <=0:
+        #     player.participant.wtp = C.NUMERIC_WTP[0] + large_number
+        # elif row > len(C.NUMERIC_WTP) - 1:
+        #     player.participant.wtp = C.NUMERIC_WTP[-1] - large_number
+        # else:
+        #     player.participant.wtp = (C.NUMERIC_WTP[row] + C.NUMERIC_WTP[row-1])/ 2
         
-        rows = [i for i in range(len(C.NUMERIC_WTP))]
-        player.participant.random_row = random.choice(rows)
-        player.participant.collaborative_job = (C.NUMERIC_WTP[player.participant.random_row] < player.participant.wtp) and (player.participant.part_payment == 'Part 1')
+        # rows = [i for i in range(len(C.NUMERIC_WTP))]
 
-        question = 'Do you prefer <b>complete the Collaborative Job</b> OR <b>'+C.RIGHT_TEXT[player.participant.random_row]+'</b>?'
-        player.participant.question = question
-        player.participant.right_option = C.RIGHT_TEXT[player.participant.random_row]
+        print(wtp)
+        random_question = random.choice(list(wtp.keys()))
 
+        player.participant.random_row = random_question
+
+        player.participant.collaborative_job = (wtp[random_question]=="task") and (player.participant.part_payment == 'Part 2')
+
+        if player.participant.valence == "bonus":
+            text = "Do you want to open "+str(C.NUM_FORCED_OPEN)+" boxes (bonus between $"+str(C.START_VALUE)+ " and $"+str(C.END_VALUE)+") or do you want a bonus of $" + str(random_question) + " for sure?"
+        else:
+             text = "Do you want to open "+str(C.NUM_FORCED_OPEN)+" boxes (penalty between $"+str(C.START_VALUE)+ " and $"+str(C.END_VALUE)+") or do you want a penalty of $" + str(C.START_VALUE + C.END_VALUE - random_question) + " for sure?"
+
+
+        
+        player.participant.question = text
+        
+        if player.participant.valence == "bonus":
+            text = "bonus of $" + str(random_question) + " for sure"
+        else: 
+            text = "penalty of $" + str(C.START_VALUE + C.END_VALUE - random_question) + " for sure"
+        player.participant.right_option = text 
+        print(player.participant.right_option,player.participant.question)
+        
 
 class TransitionUnincentivized(Page):
     form_model = 'player'
@@ -889,7 +1003,7 @@ class TaskRandomlyChosen(Page):
     def vars_for_template(player):
         valence = player.participant.valence
         return {
-            'sequence':  json.dumps(player.participant.sequence[valence])
+            'sequence':  json.dumps(player.participant.part2_sequence[valence])
         }
     
 
@@ -942,7 +1056,7 @@ class Finished(Page):
     def vars_for_template(player):
         
     
-        if player.participant.part_payment == 'Part 2': 
+        if player.participant.part_payment == 'Part 3': 
             player.participant.payoff = C.PARTICIPATION_FEE + float(C.PAYMENT_PART_2)
 
         player.participant.bonus_payment = player.participant.payoff - C.PARTICIPATION_FEE
@@ -969,7 +1083,8 @@ page_sequence = [
     TransitionDemandElicitation0,
     TaskActual,
     TransitionDemandElicitation,
-    TransitionDemandElicitation2,
+    InstructionsPart2,
+    UnderstandingQuestionsPart2,
     TransitionDemandElicitation3,
     DemandElicitation,
     TransitionUnincentivized,

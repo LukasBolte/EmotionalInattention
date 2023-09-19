@@ -1,0 +1,121 @@
+{% extends "global/Page.html" %}
+{% load otree %}
+
+{{ block title }}
+Instructions
+{{ endblock }}
+
+{{ block content }}
+
+{{ if session.config.dev_mode }}
+<button class="btn btn-danger otree-btn-next" style="float: right;">Skip</button>
+{{ endif }}
+
+{{ if participant.domain == 'tasks' }}
+
+<div class="page" id="page1">
+  
+  {{ include C.SIMILAR_TO_PART1 }}
+
+  <p>
+    When you are ready, click "Next" to begin.
+  </p>
+  
+  <button type="button" id="nextBtn1" class="btn btn-primary" style="float: right;">Next</button> 
+
+</div>
+
+<div class="page" id="page2">
+
+  {{ include C.PART2_INSTRUCTIONS }}
+
+  <button type="button" id="backBtn2" class="btn btn-primary" style="float: left;">Back</button>
+  <button type="button" id="nextBtn2" class="btn btn-primary" style="float: right;">Next</button>  
+
+</div>
+
+<div class="page" id="page3">
+
+  {{ include C.PART2_CHOOSING }}
+
+  <button type="button" id="backBtn3" class="btn btn-primary" style="float: left;">Back</button>
+  <button type="button" id="nextBtn3" class="btn btn-primary" style="float: right;">Next</button>  
+
+</div>
+
+<div class="page" id="page4">
+    
+  <p>
+    On the next page, we will ask you a few questions about the instructions to make sure everything is clear to you. If you need to review any part of the instructions, please return to that part before proceeding.
+  </p>
+
+  <p>
+    When you are ready to answer our understanding questions, click "Next."
+  </p>
+
+  <button type="button" id="backBtn4" class="btn btn-primary" style="float: left;">Back</button>
+  <button id="nextBtn4" class="btn btn-primary" style="float: right;">Next</button> 
+
+</div>
+
+
+
+{{ elif participant.domain == 'states' }}
+ 
+<p>
+    Instructions for states.
+</p>
+
+{{ elif participant.domain == 'time_periods' }}
+
+<p>
+    Instructions for time periods.
+</p>
+
+{{ endif }}
+
+{% endblock %}
+
+{% block styles %}
+
+{% endblock %}
+
+{% block scripts %}
+
+<script>
+  const pages = document.querySelectorAll('.page');
+  const nextBtns = document.querySelectorAll('[id^="nextBtn"]');
+  const backBtns = document.querySelectorAll('[id^="backBtn"]');
+  
+  let currentPageIndex = 0;
+  
+  function showPage(index) {
+    pages.forEach(page => page.style.display = 'none');
+    pages[index].style.display = 'block';
+  
+    if (index === 0) {
+      backBtns.forEach(btn => btn.style.display = 'none');
+    } else {
+      backBtns.forEach(btn => btn.style.display = 'inline-block');
+    }
+  }
+   
+  nextBtns.forEach((btn, index) => {
+    btn.addEventListener('click', () => {
+      currentPageIndex = Math.min(currentPageIndex + 1, pages.length - 1);
+      showPage(currentPageIndex);
+    });
+
+  });
+  
+  backBtns.forEach((btn, index) => {
+    btn.addEventListener('click', () => {
+      currentPageIndex = Math.max(currentPageIndex - 1, 0);
+      showPage(currentPageIndex);
+    });
+  });
+  
+  showPage(currentPageIndex);
+</script>
+
+{% endblock %}

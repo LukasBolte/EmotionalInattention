@@ -1,0 +1,64 @@
+{% extends "global/Page.html" %}
+{% load otree %}
+
+{% block title %}
+Checking your understanding
+{% endblock %}
+
+{% block content %}
+
+{{ if session.config.dev_mode }}
+<button class="btn btn-danger otree-btn-next" style="float: right;">Skip</button>
+{{ endif }}
+
+<p class="pb-0 mb-0">
+    It is important for our study that you understand the information from the previous page. We thus have a few simple questions that we would like you to answer before we proceed. You can always review the instructions by clicking the "Review Instructions" button below.
+</p>
+
+<div class="col-md-12 text-center ">
+  <button type="button" class="btn btn-secondary btn-sm" data-bs-toggle="modal" data-bs-target="#exampleModal">Review Instructions</button>
+</div>
+
+{{ formfields }}
+
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-xl">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Review Instructions</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        
+        {{ include C.SIMILAR_TO_PART1 }}
+
+        <hr>
+      
+        {{ include C.PART2_INSTRUCTIONS }}
+        <hr>
+      
+        {{ include C.PART2_CHOOSING }}
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<p>
+  After you finish all the questions, click "Next." If you make any mistakes, you will get an error message below each of your incorrect answers. Once you correct all answers, you can continue by clicking "Next" again.
+</p>
+
+<button style="float: right" class="otree-btn-next btn btn-primary">Next</button>
+
+{% endblock %}
+
+{% block styles %}
+
+{% endblock %}
+
+{% block scripts %}
+
+{% endblock %}

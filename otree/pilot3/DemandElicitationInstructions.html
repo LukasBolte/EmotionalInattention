@@ -1,11 +1,12 @@
 {% load otree %}
 
+
 <p>
-    You will next decide whether you want to complete the Collaborative Job if Part 1 is chosen for payment. 
+    You will next decide if you prefer to complete the 50-box {{ participant.valence }} task OR accept some sure {{ participant.valence }} instead.
 </p>
 
 <p>
-    On the next page, you will see a table like the one below. In the {{C.NUM_DEMAND_ELICITATION_QUESTIONS}} questions, you will decide whether you prefer (i) to complete the Collaborative Job, or (ii) to get/pay a sure amount of money and not complete the Job. 
+    Namely, we are interested in your answers to the questions in the table below. In the {{ C.LEN_MPL }} questions, you decide whether you prefer to (i) complete the {{ C.NUM_FORCED_OPEN }}-box {{ participant.valence }} task, or (ii) to accept a sure {{ participant.valence }} of the indicated amount.
 </p>
 
 <div class="container pb-3">
@@ -19,15 +20,11 @@
 </div>
 
 <p>
-    If Part 1 is chosen for payment, we will <b>randomly pick one of the questions and implement whatever you decided</b>, so choose wisely!
+    If Part 2 is chosen for payment, we will <b>randomly pick one of the questions and implement whatever you decided</b>, so choose wisely!
 </p>
 
 <p>
-    So that you don't have to click on every row separately, you <i>only need to choose the row in which you want to <b>switch from getting/paying a sure amount of money to completing the Collaborative Job</b></i>. This will tell us how much you like the Job.
-</p>
-
-<p>
-    Please, make your selection by dragging your mouse over the table and clicking on the corresponding row.
+    So that you don't have to fill out the table one line at a time, we will pre-fill the table based on a few simple questions. We will then ask you to confirm that the table is filled out correctly.
 </p>
 
 <style>
