@@ -118,6 +118,7 @@ class C(BaseConstants):
     AVERAGE_TIME = 15
      
     NUM_BOXES = 10000
+    NUM_BOXES_STRING = '10,000'
     NUM_BOXES_SEQUENCE = 1000
     DELAY = 10
     BALANCE = 8
@@ -161,32 +162,28 @@ class C(BaseConstants):
     NUM_DEMAND_ELICITATION_QUESTIONS = len(LEFT_TEXT)
     CONTROL_QUESTIONS = {
         'CQ_tasks_bonus': {
-            'CQ_conditions_collaborative_job':(3,'Sorry, that is incorrect. You will complete the Job only if you decide to complete it, AND Part 1 is chosen for payment.'),
-            'CQ_bonus_collabarotive_job_consists': (1,'Sorry, that is incorrect. The Collaborative Job consists of a bonus task completed by you, AND a penalty task completed by a computer.'),
-            'CQ_bonus_collaboartive_job_payment': (3, 'Sorry, that is incorrect. If you complete the Collaborative Job, the bonus you earn in the bonus task will be added to your Part 1 payment, AND the penalty the computer earns in the penalty task will be taken away from this payment.'),
-            'CQ_bonus_tentative_own': (1, 'Sorry, that is incorrect. Your tentative bonus can increase (if the bonus inside the box is larger than your current tentative bonus). Or it can stay the same (if the bonus inside the box is smaller than your current tentative bonus).'),
-            'CQ_bonus_tentative_other': (2, 'Sorry, that is incorrect. Its tentative penalty can decrease (if the penalty inside the box is smaller than its current tentative penalty). Or it can stay the same (if the penalty inside the box is larger than its current tentative penalty).'),
+            'CQ_bonus_box':(2, f'Sorry, that is incorrect. Each box contains a bonus amount between ${START_VALUE} and ${END_VALUE}.'),
+            'CQ_bonus_initial':(1, f'Sorry, that is incorrect. You start with a bonus of ${START_VALUE}.'),
+            'CQ_bonus_time':(3, f'Sorry, that is incorrect. You have to wait {DELAY} seconds after opening a box before the bonus inside is revealed.'),
+            'CQ_bonus_decide':(1, f'Sorry, that is incorrect. You decide whether to (i) keep your current tentative bonus OR (ii) replace your current tentative bonus with the bonus inside the box.'),
+            'CQ_bonus_num_boxes':(1, f'Sorry, that is incorrect. You can open as many of the {NUM_BOXES_STRING} boxes as you want---you can decide to end the task at any point.'),
+            'CQ_bonus_stop':(3, f'Sorry, that is incorrect. Your final tentative bonus is added to the balance you received at the beginning of the study.'),
+            'CQ_bonus_complete':(1, f'Sorry, that is incorrect. The larger your final tentative bonus, the more money you earn in the task.'),
         },
         'CQ_tasks_penalty': {
-            'CQ_conditions_collaborative_job':(3,'Sorry, that is incorrect. You will complete the Job only if you decide to complete it, AND Part 1 is chosen for payment.'),
-            'CQ_penalty_collabarotive_job_consists': (1,'Sorry, that is incorrect. The Collaborative Job consists of a penalty task completed by you, AND a bonus task completed by a computer.'),
-            'CQ_penalty_collaboartive_job_payment': (3, 'Sorry, that is incorrect. If you complete the Collaborative Job, the penalty you earn in the penalty task will be taken away from your Part 1 payment, AND the bonus the computer earns in the bonus task will be added to this payment.'),
-            'CQ_penalty_tentative_own': (2, 'Sorry, that is incorrect. Your tentative penalty can decrease (if the penalty inside the box is smaller than your current tentative penalty). Or it can stay the same (if the penalty inside the box is larger than your current tentative penalty).'),
-            'CQ_penalty_tentative_other': (1, 'Sorry, that is incorrect. Its tentative bonus can increase (if the bonus inside the box is larger than its current tentative bonus). Or it can stay the same (if the bonus inside the box is smaller than its current tentative bonus).'),
+            'CQ_penalty_box':(2, f'Sorry, that is incorrect. Each box contains a penalty amount between ${START_VALUE} and ${END_VALUE}.'),
+            'CQ_penalty_initial':(2, f'Sorry, that is incorrect. You start with a penalty of ${END_VALUE}.'),
+            'CQ_penalty_time':(3, f'Sorry, that is incorrect. You have to wait {DELAY} seconds after opening a box before the penalty inside is revealed.'),
+            'CQ_penalty_decide':(1, f'Sorry, that is incorrect. You decide whether to (i) keep your current tentative penalty OR (ii) replace your current tentative penalty with the penalty inside the box.'),
+            'CQ_penalty_num_boxes':(1, f'Sorry, that is incorrect. You can open as many of the {NUM_BOXES_STRING} boxes as you want---you can decide to end the task at any point.'),
+            'CQ_penalty_stop':(3, f'Sorry, that is incorrect. Your final tentative penalty is taken away from the balance you received at the beginning of the study.'),
+            'CQ_penalty_complete':(2, f'Sorry, that is incorrect. The larger your final tentative penalty, the less money you earn in the task.'),
         },
         'Part2_CQ_tasks_bonus': {
-            'CQ_conditions_collaborative_job':(3,'Sorry, that is incorrect. You will complete the Job only if you decide to complete it, AND Part 1 is chosen for payment.'),
-            'CQ_bonus_collabarotive_job_consists': (1,'Sorry, that is incorrect. The Collaborative Job consists of a bonus task completed by you, AND a penalty task completed by a computer.'),
-            'CQ_bonus_collaboartive_job_payment': (3, 'Sorry, that is incorrect. If you complete the Collaborative Job, the bonus you earn in the bonus task will be added to your Part 1 payment, AND the penalty the computer earns in the penalty task will be taken away from this payment.'),
-            'CQ_bonus_tentative_own': (1, 'Sorry, that is incorrect. Your tentative bonus can increase (if the bonus inside the box is larger than your current tentative bonus). Or it can stay the same (if the bonus inside the box is smaller than your current tentative bonus).'),
-            'CQ_bonus_tentative_other': (2, 'Sorry, that is incorrect. Its tentative penalty can decrease (if the penalty inside the box is smaller than its current tentative penalty). Or it can stay the same (if the penalty inside the box is larger than its current tentative penalty).'),
+            'CQ_bonus_forced_difference':(1,f'Sorry, that is incorrect. The {NUM_FORCED_OPEN}-box bonus task is identical to the bonus task you completed in Part 1 of the experiment, except for the number of boxes you open: In the {NUM_FORCED_OPEN}-box bonus task, you have to open exactly {NUM_FORCED_OPEN} boxes and cannot choose when to end the task.'),
         },
         'Part2_CQ_tasks_penalty': {
-            'CQ_conditions_collaborative_job':(3,'Sorry, that is incorrect. You will complete the Job only if you decide to complete it, AND Part 1 is chosen for payment.'),
-            'CQ_penalty_collabarotive_job_consists': (1,'Sorry, that is incorrect. The Collaborative Job consists of a penalty task completed by you, AND a bonus task completed by a computer.'),
-            'CQ_penalty_collaboartive_job_payment': (3, 'Sorry, that is incorrect. If you complete the Collaborative Job, the penalty you earn in the penalty task will be taken away from your Part 1 payment, AND the bonus the computer earns in the bonus task will be added to this payment.'),
-            'CQ_penalty_tentative_own': (2, 'Sorry, that is incorrect. Your tentative penalty can decrease (if the penalty inside the box is smaller than your current tentative penalty). Or it can stay the same (if the penalty inside the box is larger than your current tentative penalty).'),
-            'CQ_penalty_tentative_other': (1, 'Sorry, that is incorrect. Its tentative bonus can increase (if the bonus inside the box is larger than its current tentative bonus). Or it can stay the same (if the bonus inside the box is smaller than its current tentative bonus).'),
+            'CQ_penalty_forced_difference':(1,f'Sorry, that is incorrect. The {NUM_FORCED_OPEN}-box penalty task is identical to the penalty task you completed in Part 1 of the experiment, except for the number of boxes you open: In the {NUM_FORCED_OPEN}-box penalty task, you have to open exactly {NUM_FORCED_OPEN} boxes and cannot choose when to end the task.'),
         },
         'CQ_states': {
             'payment':(1,'myHint'),
@@ -260,6 +257,186 @@ class Player(BasePlayer):
         
     confused_text = models.LongStringField(blank=True)
      
+
+    CQ_bonus_box = models.IntegerField(
+        blank=True,
+        choices=[
+            [1, 'Nothing, the boxes are empty'],
+            [2, f'A bonus amount between ${C.START_VALUE} and ${C.END_VALUE}']
+        ],
+        widget=widgets.RadioSelect,
+        label='What does each box in the bonus task contain?'
+    )
+
+    CQ_penalty_box = models.IntegerField(
+        blank=True,
+        choices=[
+            [1, 'Nothing, the boxes are empty'],
+            [2, f'A penalty amount between ${C.START_VALUE} and ${C.END_VALUE}']
+        ],
+        widget=widgets.RadioSelect,
+        label='What does each box in the penalty task contain?'
+    )
+
+    
+    CQ_bonus_initial = models.IntegerField(
+        blank=True,
+        choices=[
+            [1, f'I start with a bonus of ${C.START_VALUE}'],
+            [2, f'I start with a bonus of ${C.END_VALUE}'],
+            [3, f'I start with an unkonwn bonus between ${C.START_VALUE} and ${C.END_VALUE}']
+        ],
+        widget=widgets.RadioSelect,
+        label='What is your tentative bonus before you open any boxes?'
+    )
+
+    CQ_penalty_initial = models.IntegerField(
+        blank=True,
+        choices=[
+            [1, f'I start with a penalty of ${C.START_VALUE}'],
+            [2, f'I start with a penalty of ${C.END_VALUE}'],
+            [3, f'I start with an unkonwn penalty between ${C.START_VALUE} and ${C.END_VALUE}']
+        ],
+        widget=widgets.RadioSelect,
+        label='What is your tentative penalty before you open any boxes?'
+    )
+
+    CQ_bonus_time = models.IntegerField(
+        blank=True,
+        choices=[
+            [1, 'The bonus is revealed immediately'],
+            [2, '5 seconds'],
+            [3, f'{C.DELAY} seconds']
+        ],
+        widget=widgets.RadioSelect,
+        label='How long do you have to wait after opening a box before the bonus inside is revealed?'
+    )
+
+    CQ_penalty_time = models.IntegerField(
+        blank=True,
+        choices=[
+            [1, 'The penalty is revealed immediately'],
+            [2, '5 seconds'],
+            [3, f'{C.DELAY} seconds']
+        ],
+        widget=widgets.RadioSelect,
+        label='How long do you have to wait after opening a box before the penalty inside is revealed?'
+    )
+
+    CQ_bonus_decide = models.IntegerField(
+        blank=True,
+        choices=[
+            [1, 'I decide whether to (i) keep my current tentative bonus OR (ii) replace my current tentative bonus with the bonus inside the box'],
+            [2, f'I decide whether to (i) wait {C.DELAY} seconds OR (ii) replace my current tentative bonus with the bonus inside the box'],
+            [3, f'I decide whether to (i) keep my current tentative bonus OR (ii) wait {C.DELAY} seconds'],
+            [4, 'I make no decision. After I open a box, my current tentative bonus is replaced by the bonus inside the box no matter what']
+        ],
+        widget=widgets.RadioSelect,
+        label='What decision do you have to make each time you open a new box and see the revealed bonus inside?'
+    )
+
+    CQ_penalty_decide = models.IntegerField(
+        blank=True, 
+        choices=[
+            [1, 'I decide whether to (i) keep my current tentative penalty OR (ii) replace my current tentative penalty with the penalty inside the box'],
+            [2, f'I decide whether to (i) wait {C.DELAY} seconds OR (ii) replace my current tentative penalty with the penalty inside the box'],
+            [3, f'I decide whether to (i) keep my current tentative penalty OR (ii) wait {C.DELAY} seconds'],
+            [4, 'I make no decision. After I open a box, my current tentative penalty is replaced by the penalty inside the box no matter what']
+        ],
+        widget=widgets.RadioSelect,
+        label='What decision do you have to make each time you open a new box and see the revealed penalty inside?'
+    )
+
+    CQ_bonus_num_boxes = models.IntegerField(
+        blank=True,
+        choices=[
+            [1, f'As many of the {C.NUM_BOXES_STRING} boxes as I want---I can decide to end the task at any point'],
+            [2, f'All {C.NUM_BOXES_STRING} boxes'],
+            [3, f'An unknown number of boxes between 0 and {C.NUM_BOXES_STRING} determined randomly']
+        ],
+        widget=widgets.RadioSelect,
+        label='How many boxes will you open as part of the bonus task?'
+    )
+
+    CQ_penalty_num_boxes = models.IntegerField(
+        blank=True,
+        choices=[
+            [1, f'As many of the {C.NUM_BOXES_STRING} boxes as I want---I can decide to end the task at any point'],
+            [2, f'All {C.NUM_BOXES_STRING} boxes'],
+            [3, f'An unknown number of boxes between 0 and {C.NUM_BOXES_STRING} determined randomly']
+        ],
+        widget=widgets.RadioSelect,
+        label='How many boxes will you open as part of the penalty task?'
+    )
+
+    CQ_bonus_stop = models.IntegerField(
+        blank=True,
+        choices=[
+            [1, f'${C.START_VALUE} will be added to the balance I receiverd at the beginning of the study'],
+            [2, f'${C.END_VALUE} will be added to the balance I receiverd at the beginning of the study'],
+            [3, 'My final tentative bonus at the time I end the task will be added to the balance I received at the beginning of the study']
+        ],
+        widget=widgets.RadioSelect,
+        label='When you decide to stop opening boxes and end the task, what happens to your payment?'
+    )
+
+    CQ_penalty_stop = models.IntegerField(
+        blank=True,
+        choices=[
+            [1, f'${C.START_VALUE} will be taken away from the balance I receiverd at the beginning of the study'],
+            [2, f'${C.END_VALUE} will be taken away from the balance I receiverd at the beginning of the study'],
+            [3, 'My final tentative penalty at the time I end the task will taken away from the balance I received at the beginning of the study']
+        ],
+        widget=widgets.RadioSelect,
+        label='When you decide to stop opening boxes and end the task, what happens to your payment?'
+    )
+
+    CQ_bonus_complete = models.IntegerField(
+        blank=True,
+        choices=[
+            [1, '...more money I earn in the task'],
+            [2, '...less money I earn in the task'],
+            [3, 'Neither: my final tentative bonus is irrelevant for my overall earnings from the task']
+        ],
+        widget=widgets.RadioSelect,
+        label='Complete the following sentence: The larger my final tentative bonus, the...'
+    )
+
+    CQ_penalty_complete = models.IntegerField(
+        blank=True,
+        choices=[
+            [1, '...more money I earn in the task'],
+            [2, '...less money I earn in the task'],
+            [3, 'Neither: my final tentative penalty is irrelevant for my overall earnings from the task']
+        ],
+        widget=widgets.RadioSelect,
+        label='Complete the following sentence: The larger my final tentative penalty, the...'
+    )
+
+    CQ_bonus_forced_difference = models.IntegerField(
+        blank=True,
+        choices=[
+            [1, f'The number of boxes I open: In the {C.NUM_FORCED_OPEN}-box bonus task, I have to open exactly {C.NUM_FORCED_OPEN} boxes and cannot choose when to end the task.'],
+            [2, f'The decision I make after revealing the bonus inside a box: In the {C.NUM_FORCED_OPEN}-box bonus task, I do NOT decide whether to keep my current tentative bonus, or replace it with the bonus inside the box.'],
+            [3, f'The number of boxes that contain each bonus amount: In the {C.NUM_FORCED_OPEN}-box bonus task, there is a DIFFERENT number of boxes that contain each bonus  amount compared to the bonus task in Part 1.'],
+            [4, f'The tentative bonus I start with before opening boxes: In the {C.NUM_FORCED_OPEN}-box bonus task, I do NOT start with a tentative bonus of ${C.START_VALUE}.']
+        ],
+        widget=widgets.RadioSelect,
+        label=f'Complete the statement: The {C.NUM_FORCED_OPEN}-box bonus task is identical to the bonus task I completed in Part 1 of the experiment, except for:'
+    )
+
+    CQ_penalty_forced_difference = models.IntegerField(
+        blank=True,
+        choices=[
+            [1, f'The number of boxes I open: In the {C.NUM_FORCED_OPEN}-box penalty task, I have to open exactly {C.NUM_FORCED_OPEN} boxes and cannot choose when to end the task.'],
+            [2, f'The decision I make after revealing the penalty inside a box: In the {C.NUM_FORCED_OPEN}-box penalty task, I do NOT decide whether to keep my current tentative penalty, or replace it with the penalty inside the box.'],
+            [3, f'The number of boxes that contain each penalty amount: In the {C.NUM_FORCED_OPEN}-box penalty task, there is a DIFFERENT number of boxes that contain each penalty amount compared to the penalty task in Part 1.'],
+            [4, f'The tentative penalty I start with before opening boxes: In the {C.NUM_FORCED_OPEN}-box penalty task, I do NOT start with a tentative penalty of ${C.END_VALUE}.']
+        ],
+        widget=widgets.RadioSelect,
+        label=f'Complete the statement: The {C.NUM_FORCED_OPEN}-box penalty task is identical to the penalty task I completed in Part 1 of the experiment, except for:'
+    )
+
     CQ_conditions_collaborative_job = models.IntegerField(
         blank=True,
         choices=[
@@ -434,6 +611,20 @@ class Player(BasePlayer):
 
     wtp = models.StringField(blank=True)
    
+    emotionsPart1_bonus = models.IntegerField(
+        label="How much did you enjoy opening the boxes and looking for the best bonus? Please answer on a scale of 1 to 10, with 10 being you enjoyed it the most.",
+        blank=True,
+        choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+        widget=widgets.RadioSelectHorizontal
+        )
+    
+    emotionsPart1_penalty = models.IntegerField(
+        label="How much did you enjoy opening the boxes and looking for the best penalty? Please answer on a scale of 1 to 10, with 10 being you enjoyed it the most.",
+        blank=True,
+        choices=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+        widget=widgets.RadioSelectHorizontal
+        )
+
     feedback = models.LongStringField(blank=True)
 
     feedbackDifficulty = models.IntegerField(
@@ -703,6 +894,27 @@ class TaskActual(Page):
 
 
 class TransitionDemandElicitation(Page):
+    form_model = 'player'  
+
+    @staticmethod
+    def get_form_fields(player):
+        valence = player.participant.valence
+        questions = [f'emotionsPart1_{valence}']
+        
+        return questions
+
+
+    @staticmethod
+    def error_message(player, values):
+        if not player.session.config['dev_mode']:
+            error_messages = {}
+            valence = player.participant.valence
+            question = f'emotionsPart1_{valence}'
+            if values[question] is None:
+                error_messages[question] = 'Please answer the question.'
+            return error_messages
+        
+
     @staticmethod
     def vars_for_template(player):
         valence = player.participant.valence
