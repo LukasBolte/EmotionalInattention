@@ -847,8 +847,8 @@ class TransitionDemandElicitation0(Page):
             # computer_payoff = C.START_VALUE + C.END_VALUE - computer_payoff
             pass
         else:
-            own_payoff = C.START_VALUE + C.END_VALUE - own_payoff   
-            new_balance = C.START_VALUE_PENALTY - own_payoff
+            own_payoff = C.START_VALUE + C.END_VALUE - float(own_payoff)
+            new_balance = C.START_VALUE_PENALTY - float(own_payoff)
 
 
         
