@@ -166,18 +166,18 @@ class C(BaseConstants):
             'CQ_bonus_initial':(1, f'Sorry, that is incorrect. You start with a bonus of ${START_VALUE}.'),
             'CQ_bonus_time':(3, f'Sorry, that is incorrect. You have to wait {DELAY} seconds after opening a box before the bonus inside is revealed.'),
             'CQ_bonus_decide':(1, f'Sorry, that is incorrect. You decide whether to (i) keep your current tentative bonus OR (ii) replace your current tentative bonus with the bonus inside the box.'),
-            'CQ_bonus_num_boxes':(1, f'Sorry, that is incorrect. You can open as many of the {NUM_BOXES_STRING} boxes as you want---you can decide to end the task at any point.'),
-            'CQ_bonus_stop':(3, f'Sorry, that is incorrect. Your final tentative bonus is added to the balance you received at the beginning of the study.'),
-            'CQ_bonus_complete':(1, f'Sorry, that is incorrect. The larger your final tentative bonus, the more money you earn in the task.'),
+            'CQ_bonus_num_boxes':(1, f'Sorry, that is incorrect. You can open as many of the {NUM_BOXES_STRING} boxes as you want--you can decide to end the task at any point.'),
+            'CQ_bonus_stop':(3, f'Sorry, that is incorrect. Your final bonus is added to the balance you received at the beginning of the study.'),
+            'CQ_bonus_complete':(1, f'Sorry, that is incorrect. The larger your final bonus, the more money you earn in the task.'),
         },
         'CQ_tasks_penalty': {
             'CQ_penalty_box':(2, f'Sorry, that is incorrect. Each box contains a penalty amount between ${START_VALUE} and ${END_VALUE}.'),
             'CQ_penalty_initial':(2, f'Sorry, that is incorrect. You start with a penalty of ${END_VALUE}.'),
             'CQ_penalty_time':(3, f'Sorry, that is incorrect. You have to wait {DELAY} seconds after opening a box before the penalty inside is revealed.'),
             'CQ_penalty_decide':(1, f'Sorry, that is incorrect. You decide whether to (i) keep your current tentative penalty OR (ii) replace your current tentative penalty with the penalty inside the box.'),
-            'CQ_penalty_num_boxes':(1, f'Sorry, that is incorrect. You can open as many of the {NUM_BOXES_STRING} boxes as you want---you can decide to end the task at any point.'),
-            'CQ_penalty_stop':(3, f'Sorry, that is incorrect. Your final tentative penalty is taken away from the balance you received at the beginning of the study.'),
-            'CQ_penalty_complete':(2, f'Sorry, that is incorrect. The larger your final tentative penalty, the less money you earn in the task.'),
+            'CQ_penalty_num_boxes':(1, f'Sorry, that is incorrect. You can open as many of the {NUM_BOXES_STRING} boxes as you want--you can decide to end the task at any point.'),
+            'CQ_penalty_stop':(3, f'Sorry, that is incorrect. Your final penalty is taken away from the balance you received at the beginning of the study.'),
+            'CQ_penalty_complete':(2, f'Sorry, that is incorrect. The larger your final penalty, the less money you earn in the task.'),
         },
         'Part2_CQ_tasks_bonus': {
             'CQ_bonus_forced_difference':(1,f'Sorry, that is incorrect. The {NUM_FORCED_OPEN}-box bonus task is identical to the bonus task you completed in Part 1 of the experiment, except for the number of boxes you open: In the {NUM_FORCED_OPEN}-box bonus task, you have to open exactly {NUM_FORCED_OPEN} boxes and cannot choose when to end the task.'),
@@ -350,7 +350,7 @@ class Player(BasePlayer):
     CQ_bonus_num_boxes = models.IntegerField(
         blank=True,
         choices=[
-            [1, f'As many of the {C.NUM_BOXES_STRING} boxes as I want---I can decide to end the task at any point'],
+            [1, f'As many of the {C.NUM_BOXES_STRING} boxes as I want--I can decide to end the task at any point'],
             [2, f'All {C.NUM_BOXES_STRING} boxes'],
             [3, f'An unknown number of boxes between 0 and {C.NUM_BOXES_STRING} determined randomly']
         ],
@@ -361,7 +361,7 @@ class Player(BasePlayer):
     CQ_penalty_num_boxes = models.IntegerField(
         blank=True,
         choices=[
-            [1, f'As many of the {C.NUM_BOXES_STRING} boxes as I want---I can decide to end the task at any point'],
+            [1, f'As many of the {C.NUM_BOXES_STRING} boxes as I want--I can decide to end the task at any point'],
             [2, f'All {C.NUM_BOXES_STRING} boxes'],
             [3, f'An unknown number of boxes between 0 and {C.NUM_BOXES_STRING} determined randomly']
         ],
@@ -372,9 +372,9 @@ class Player(BasePlayer):
     CQ_bonus_stop = models.IntegerField(
         blank=True,
         choices=[
-            [1, f'${C.START_VALUE} will be added to the balance I receiverd at the beginning of the study'],
-            [2, f'${C.END_VALUE} will be added to the balance I receiverd at the beginning of the study'],
-            [3, 'My final tentative bonus at the time I end the task will be added to the balance I received at the beginning of the study']
+            [1, f'${C.START_VALUE} will be added to the balance I received at the beginning of the study'],
+            [2, f'${C.END_VALUE} will be added to the balance I received at the beginning of the study'],
+            [3, 'My final bonus at the time I end the task will be added to the balance I received at the beginning of the study']
         ],
         widget=widgets.RadioSelect,
         label='When you decide to stop opening boxes and end the task, what happens to your payment?'
@@ -383,9 +383,9 @@ class Player(BasePlayer):
     CQ_penalty_stop = models.IntegerField(
         blank=True,
         choices=[
-            [1, f'${C.START_VALUE} will be taken away from the balance I receiverd at the beginning of the study'],
-            [2, f'${C.END_VALUE} will be taken away from the balance I receiverd at the beginning of the study'],
-            [3, 'My final tentative penalty at the time I end the task will taken away from the balance I received at the beginning of the study']
+            [1, f'${C.START_VALUE} will be taken away from the balance I received at the beginning of the study'],
+            [2, f'${C.END_VALUE} will be taken away from the balance I received at the beginning of the study'],
+            [3, 'My final penalty at the time I end the task will taken away from the balance I received at the beginning of the study']
         ],
         widget=widgets.RadioSelect,
         label='When you decide to stop opening boxes and end the task, what happens to your payment?'
@@ -396,10 +396,10 @@ class Player(BasePlayer):
         choices=[
             [1, '...more money I earn in the task'],
             [2, '...less money I earn in the task'],
-            [3, 'Neither: my final tentative bonus is irrelevant for my overall earnings from the task']
+            [3, 'Neither: my final bonus is irrelevant for my overall earnings from the task']
         ],
         widget=widgets.RadioSelect,
-        label='Complete the following sentence: The larger my final tentative bonus, the...'
+        label='Complete the following sentence: The larger my final bonus, the...'
     )
 
     CQ_penalty_complete = models.IntegerField(
@@ -407,10 +407,10 @@ class Player(BasePlayer):
         choices=[
             [1, '...more money I earn in the task'],
             [2, '...less money I earn in the task'],
-            [3, 'Neither: my final tentative penalty is irrelevant for my overall earnings from the task']
+            [3, 'Neither: my final penalty is irrelevant for my overall earnings from the task']
         ],
         widget=widgets.RadioSelect,
-        label='Complete the following sentence: The larger my final tentative penalty, the...'
+        label='Complete the following sentence: The larger my final penalty, the...'
     )
 
     CQ_bonus_forced_difference = models.IntegerField(
@@ -938,9 +938,9 @@ class TransitionDemandElicitation(Page):
             own_payoff = str(own_payoff)
 
         if valence == 'bonus':
-            text = "<p>Your final tentative bonus is $" + own_payoff + "</b>.</p> <p>This bonus is now added to your balance of $0. Thus, your balance is now $" + own_payoff +".</p>"
+            text = "<p>Your final bonus is $" + own_payoff + "</b>.</p> <p>This bonus is now added to your balance of $0. Thus, your balance is now $" + own_payoff +".</p>"
         else:
-            text = "<p>Your final tentative penalty is $" + own_payoff + "</b>.</p> <p>This penalty is now taken away from your balance of $"+str(C.START_VALUE_PENALTY)+". Thus, your balance is now $" + f'{new_balance:.2f}' +".</p>"
+            text = "<p>Your final penalty is $" + own_payoff + "</b>.</p> <p>This penalty is now taken away from your balance of $"+str(C.START_VALUE_PENALTY)+". Thus, your balance is now $" + f'{new_balance:.2f}' +".</p>"
         return {
             'text':  text
         }

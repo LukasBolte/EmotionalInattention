@@ -23,5 +23,5 @@
 </ol>
 </p>
 <p>
-  You can decide to <b>end the task</b> at any point. When you decide to <b>end the task</b>, we will record your <b>final tentative {{ participant.valence }}</b>. We will {{ if participant.valence == 'bonus' }}add{{ else}}take away{{ endif}} this final tentative {{ participant.valence }} {{ if participant.valence == 'bonus' }}to{{ else}}from{{ endif}} the balance your received at the beginning of the study.
+  You can decide to <b>end the task</b> at any point. When you decide to <b>end the task</b>, we will record your <b>final {{ participant.valence }}</b>. We will {{ if participant.valence == 'bonus' }}add{{ else}}take away{{ endif}} this final {{ participant.valence }} {{ if participant.valence == 'bonus' }}to{{ else}}from{{ endif}} the balance your received at the beginning of the study.
 </p>
