@@ -1,30 +1,15 @@
 {% load otree %}
 
-
 <p>
-    You will next decide if you prefer to complete the 50-box {{ participant.valence }} task OR accept some sure {{ participant.valence }} instead.
+    You will next decide if you prefer to complete the {{ C.NUM_FORCED_OPEN }}-box {{ participant.valence }} task OR accept some sure {{ participant.valence }} instead.
 </p>
 
 <p>
-    Namely, we are interested in your answers to the questions in the table below. In the {{ C.LEN_MPL }} questions, you decide whether you prefer to (i) complete the {{ C.NUM_FORCED_OPEN }}-box {{ participant.valence }} task, or (ii) to accept a sure {{ participant.valence }} of the indicated amount.
+    On the next page, you will be asked {{ C.LEN_BONUS_AMOUNTS }} questions. In each question, you will decide whether you prefer to (i) complete the {{ C.NUM_FORCED_OPEN }}-box {{ participant.valence }} task, or (ii) to accept a sure {{ participant.valence }} of the indicated amount.
 </p>
-
-<div class="container pb-3">
-    <div class="row justify-content-md-center">
-        <div class="col-md-8 col-sm-10 ">
-            <div class="img-container">
-                <img src="{% static 'img/mpl_screenshot.jpg' %}"  alt="Table with questions" class="img-fluid mpl_img">
-            </div>
-        </div>
-    </div>
-</div>
 
 <p>
     If Part 2 is chosen for payment, we will <b>randomly pick one of the questions and implement whatever you decided</b>, so choose wisely!
-</p>
-
-<p>
-    So that you don't have to fill out the table one line at a time, we will pre-fill the table based on a few simple questions. We will then ask you to confirm that the table is filled out correctly.
 </p>
 
 <style>

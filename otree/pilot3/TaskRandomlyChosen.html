@@ -2,7 +2,7 @@
 {% load otree %}
 
 {% block title %}
-Please complete the {{ participant.valence }} task of the Collaboarative Job
+Please complete the {{C.NUM_FORCED_OPEN}}-box {{ participant.valence }} task 
 {% endblock %}
 
 {% block content %}
@@ -34,7 +34,7 @@ Please complete the {{ participant.valence }} task of the Collaboarative Job
     var parameters={
         playerID : "{{participant.code}}" + "actual", //this is used for stored variables not to collide
         root: "task_root",
-        varname: "num_draws", //this is the name of the hidden field where output will be stored 
+        varname: "forced_data", //this is the name of the hidden field where output will be stored 
         min_pay: "{{ C.START_VALUE}}",
         max_pay: "{{ C.END_VALUE}}",
         treatment: "{{ participant.valence }}",

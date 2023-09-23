@@ -2,7 +2,7 @@
 
 function drawWTP(parameters){
 
-    this.valence=parameters.valence
+    this.treatment=parameters.treatment
     this.bonusAmounts = parameters.bonusAmounts
     this.minBonus = parameters.minBonus
     this.maxBonus = parameters.maxBonus
@@ -46,7 +46,7 @@ function drawWTP(parameters){
 
             var p = document.createElement("p");
             p.className = "text-center pb-2 mb-0";
-            if (this.valence == "bonus") {
+            if (this.treatment == "bonus") {
 
                 p.innerHTML = "Do you want to open "+this.numForcedBoxed+" boxes (bonus between $"+this.minBonus + " and $"+this.maxBonus+") or do you want a bonus of $" + this.bonusAmounts[i] + " for sure?";
             } else {
@@ -63,10 +63,10 @@ function drawWTP(parameters){
             taskButton.setAttribute("type","button");
             taskButton.setAttribute("id","taskButton_id_"+String(i));
             taskButton.className="btn btn-sm btn-secondary";
-            if (this.valence == "bonus") {
-                    taskButton.innerHTML="Open "+this.numForcedBoxed + " boxes and find best bonus";
+            if (this.treatment == "bonus") {
+                    taskButton.innerHTML="Open "+this.numForcedBoxed + " boxes and look for best bonus";
             }  else {
-                    taskButton.innerHTML="Open "+this.numForcedBoxed + " boxes and find best penalty";
+                    taskButton.innerHTML="Open "+this.numForcedBoxed + " boxes and look for best penalty";
             }
             taskButton.style.width = "300px";
 
@@ -90,7 +90,7 @@ function drawWTP(parameters){
             sureBonusButton.setAttribute("type","button");
             sureBonusButton.setAttribute("id","sureBonusButton_id_"+String(i));
             sureBonusButton.className="btn btn-sm btn-secondary";
-            if (this.valence == "bonus") {
+            if (this.treatment == "bonus") {
                 sureBonusButton.innerHTML="Get $"+this.bonusAmounts[i] + " bonus for sure";
             }  else {
                 sureBonusButton.innerHTML="Get $"+String(this.maxBonus + this.minBonus - this.bonusAmounts[i]) + " penalty for sure";

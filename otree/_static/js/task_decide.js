@@ -34,7 +34,8 @@ function task(parameters){
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                 <div class="modal-body">
-                    <p class="pb-0 mb-0">Are you sure you want to end the task? You will not be able to return and open more boxes.</p>
+                    <p>Are you sure you want to end the task? You will not be able to return and open more boxes.</p>
+                    <p class="pb-0 mb-0" id="end_text_id" >dummy text.</p>
                 </div>
                 <div class="modal-footer">
                     <button type="button" data-bs-dismiss="modal" class="btn btn-primary">Back to task</button>
@@ -163,10 +164,10 @@ function task(parameters){
 
         var amount
         if (this.treatment=="bonus"){
-            p.innerHTML="Your final tentative bonus if you end the task now:"
+            p.innerHTML="Your tentative bonus:"
             amount = bonus
         } else if (this.treatment=="penalty"){
-            p.innerHTML="Your final tentative penalty if you end the task now:"
+            p.innerHTML="Your tentative penalty:"
             amount = this.min_pay+this.max_pay-bonus
         }
 
@@ -230,6 +231,7 @@ function task(parameters){
         openBoxButton.setAttribute("id","openBoxButton_id")
         openBoxButton.className="btn btn-primary";
         openBoxButton.innerHTML="Open box ("+this.delay+"s)";
+        
         openBoxButton.addEventListener('click', () => {
             document.getElementById("openBoxButton_id").disabled = true;
             this.startOpening();
@@ -245,14 +247,37 @@ function task(parameters){
         var endTaskButton=document.createElement("button")
         endTaskButton.setAttribute("type","button");
         endTaskButton.className="btn btn-secondary";
-        endTaskButton.innerHTML="End task";
+        endTaskButton.style.height= '100%';
+        if (this.treatment=="bonus"){  
+            endTaskButton.innerHTML="End task";}
+        else {
+            endTaskButton.innerHTML="End task";
+        }
 
+        if (this.treatment=="bonus"){
+            document.getElementById("end_text_id").innerHTML="If you end the task now, your <b>tentatitve bonus of $"+ this.formatNumberOrString(bonus) +"</b>  will become your <b>final bonus</b>.";
+        } else if (this.treatment=="penalty"){
+            var penalty = this.min_pay+this.max_pay-bonus
+            document.getElementById("end_text_id").innerHTML="If you end the task now, your <b>tentatitve penalty of $"+ this.formatNumberOrString(penalty) +"</b>  will become your <b>final penalty</b>.";
+        }
+
+        
         endTaskButton.setAttribute("data-bs-toggle","modal");
         endTaskButton.setAttribute("data-bs-target","#confirmModal");
         
         
         td2.appendChild(endTaskButton);
 
+        var p = document.createElement("p");
+        // p.style.fontSize = '12px';
+        if (this.treatment=="bonus"){  
+            p.innerHTML="(tentative bonus becomes final)";}
+        else {
+            p.innerHTML="(tenatitve penalty becomes final)";
+        }
+
+
+        td2.appendChild(p);
         tr.appendChild(td2)  
     }
 

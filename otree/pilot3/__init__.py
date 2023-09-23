@@ -122,7 +122,7 @@ class C(BaseConstants):
     NUM_BOXES_SEQUENCE = 1000
     DELAY = 10
     BALANCE = 8
-    PARTICIPATION_FEE = 2.50
+    PARTICIPATION_FEE = 2
     NUM_PRACTICE = 5
     NUM_FORCED_OPEN = 50
     PAYMENT_PART_2 = "0.50"
@@ -131,6 +131,7 @@ class C(BaseConstants):
     END_VALUE = 10
     INCREMENT_VALUE = 0.01
     BONUS_AMOUNTS = [0,2,3,4,5,6,7,8,9,10]
+    LEN_BONUS_AMOUNTS = len(BONUS_AMOUNTS)
 
     START_VALUE_PENALTY = END_VALUE + START_VALUE
     MAX_PAY = BALANCE + END_VALUE - START_VALUE
@@ -608,6 +609,7 @@ class Player(BasePlayer):
 
     practice_data = models.StringField(blank=True)
     actual_data = models.StringField(blank=True)
+    forced_data = models.StringField(blank=True)
 
     wtp = models.StringField(blank=True)
    
@@ -833,38 +835,39 @@ class Task(Page):
 
 
 class TransitionDemandElicitation0(Page):
-    @staticmethod
-    def vars_for_template(player):
-        valence = player.participant.valence
-        anti_valence = player.participant.anti_valence
+    pass 
+    # @staticmethod
+    # def vars_for_template(player):
+    #     valence = player.participant.valence
+    #     anti_valence = player.participant.anti_valence
 
         # own_payoff = float(max(json.loads(player.participant.practice_sequence[valence])[:C.NUM_PRACTICE]))
         # computer_payoff = float(max(json.loads(player.participant.practice_sequence[anti_valence])[:C.NUM_PRACTICE]))
 
-        own_payoff = player.participant.practice_payoff
+        # own_payoff = player.participant.practice_payoff
 
-        if valence == 'bonus':
-            # computer_payoff = C.START_VALUE + C.END_VALUE - computer_payoff
-            pass
-        else:
-            own_payoff = C.START_VALUE + C.END_VALUE - float(own_payoff)
-            new_balance = C.START_VALUE_PENALTY - float(own_payoff)
+        # if valence == 'bonus':
+        #     # computer_payoff = C.START_VALUE + C.END_VALUE - computer_payoff
+        #     pass
+        # else:
+        #     own_payoff = C.START_VALUE + C.END_VALUE - float(own_payoff)
+        #     new_balance = C.START_VALUE_PENALTY - float(own_payoff)
 
 
         
-        # computer_payoff = "{:.2f}".format(computer_payoff)
+        # # computer_payoff = "{:.2f}".format(computer_payoff)
         
-        if type(own_payoff) != str:
-            own_payoff = str(own_payoff)
-        print(type(own_payoff),own_payoff) 
-        if valence == 'bonus':
-            text = "<p>In this practice round of the bonus task, <b>you found a tentative bonus of $" + own_payoff + " after opening " + str(C.NUM_PRACTICE) + " boxes</b>.</p> <p>Remember, Part 1 will be affect your balance of $0 for sure. Thus, your balance would have increased to $" + own_payoff +" if this was the real task. </p> <p>You will next do the real bonus task which will affect your balance. There, you can choose when to stop opening boxes.</p>"
-        else:
-            text = "<p>In this practice round of the penalty task, <b>you found a tentative penalty of $" + own_payoff + " after opening " + str(C.NUM_PRACTICE) + " boxes</b>.</p> <p>Remember, Part 1 will be affect your balance of $"+str(C.START_VALUE_PENALTY) + " for sure. Thus, your balance would have decreased to $" + f'{new_balance:.2f}' +" if this was the real task. Additionally, we will randomly choose whether Part 2 or Part 3 will affect your balance.</p> <p>You will next do the real penalty task which will affect your balance. There, you can choose when to stop opening boxes.</p>"
+        # if type(own_payoff) != str:
+        #     own_payoff = str(own_payoff)
+        # print(type(own_payoff),own_payoff) 
+        # if valence == 'bonus':
+        #     text = "<p>In this practice round of the bonus task, <b>you found a tentative bonus of $" + own_payoff + " after opening " + str(C.NUM_PRACTICE) + " boxes</b>.</p> <p>Remember, Part 1 will be affect your balance of $0 for sure. Thus, your balance would have increased to $" + own_payoff +" if this was the real task. </p> <p>You will next do the real bonus task which will affect your balance. There, you can choose when to stop opening boxes.</p>"
+        # else:
+        #     text = "<p>In this practice round of the penalty task, <b>you found a tentative penalty of $" + own_payoff + " after opening " + str(C.NUM_PRACTICE) + " boxes</b>.</p> <p>Remember, Part 1 will be affect your balance of $"+str(C.START_VALUE_PENALTY) + " for sure. Thus, your balance would have decreased to $" + f'{new_balance:.2f}' +" if this was the real task. Additionally, we will randomly choose whether Part 2 or Part 3 will affect your balance.</p> <p>You will next do the real penalty task which will affect your balance. There, you can choose when to stop opening boxes.</p>"
             
-        return {
-            'text':  text
-        }
+        # return {
+        #     'text':  text
+        # }
 
 
 class TaskActual(Page):
@@ -923,7 +926,7 @@ class TransitionDemandElicitation(Page):
         # own_payoff = float(max(json.loads(player.participant.practice_sequence[valence])[:C.NUM_PRACTICE]))
         # computer_payoff = float(max(json.loads(player.participant.practice_sequence[anti_valence])[:C.NUM_PRACTICE]))
 
-        own_payoff = player.participant.actual_payoff
+        own_payoff = float(player.participant.actual_payoff)
         
         if valence == 'bonus':
             # computer_payoff = C.START_VALUE + C.END_VALUE - computer_payoff
@@ -932,15 +935,15 @@ class TransitionDemandElicitation(Page):
             own_payoff = C.START_VALUE + C.END_VALUE - own_payoff   
             new_balance = C.START_VALUE_PENALTY - own_payoff
 
-
+        player.participant.payoff_after_part1 = own_payoff
         
         if type(own_payoff) != str:
-            own_payoff = str(own_payoff)
+            own_payoff = f"{own_payoff:.2f}"
 
         if valence == 'bonus':
-            text = "<p>Your final bonus is $" + own_payoff + "</b>.</p> <p>This bonus is now added to your balance of $0. Thus, your balance is now $" + own_payoff +".</p>"
+            text = "<b>Your final bonus is $" + own_payoff + "</b>.</p> <p>This bonus is now added to your balance of $0. Thus, your balance is now <b>$" + own_payoff +"</b>.</p>"
         else:
-            text = "<p>Your final penalty is $" + own_payoff + "</b>.</p> <p>This penalty is now taken away from your balance of $"+str(C.START_VALUE_PENALTY)+". Thus, your balance is now $" + f'{new_balance:.2f}' +".</p>"
+            text = "<b>Your final penalty is $" + own_payoff + "</b>.</p> <p>This penalty is now taken away from your balance of $"+str(C.START_VALUE_PENALTY)+". Thus, your balance is now <b>$" + f'{new_balance:.2f}' +"</b>.</p>"
         return {
             'text':  text
         }
@@ -1103,16 +1106,16 @@ class DemandElicitation(Page):
         if player.participant.valence == "bonus":
             text = "Do you want to open "+str(C.NUM_FORCED_OPEN)+" boxes (bonus between $"+str(C.START_VALUE)+ " and $"+str(C.END_VALUE)+") or do you want a bonus of $" + str(random_question) + " for sure?"
         else:
-             text = "Do you want to open "+str(C.NUM_FORCED_OPEN)+" boxes (penalty between $"+str(C.START_VALUE)+ " and $"+str(C.END_VALUE)+") or do you want a penalty of $" + str(C.START_VALUE + C.END_VALUE - random_question) + " for sure?"
+             text = "Do you want to open "+str(C.NUM_FORCED_OPEN)+" boxes (penalty between $"+str(C.START_VALUE)+ " and $"+str(C.END_VALUE)+") or do you want a penalty of $" + str(C.START_VALUE + C.END_VALUE - float(random_question)) + " for sure?"
 
 
         
         player.participant.question = text
         
         if player.participant.valence == "bonus":
-            text = "bonus of $" + str(random_question) + " for sure"
+            text = "a bonus of $" + str(random_question) + " is added to your balance"
         else: 
-            text = "penalty of $" + str(C.START_VALUE + C.END_VALUE - random_question) + " for sure"
+            text = "a penalty of $" + str(C.START_VALUE + C.END_VALUE - float(random_question)) + " is taken away from your"
         player.participant.right_option = text 
         print(player.participant.right_option,player.participant.question)
         
@@ -1210,6 +1213,7 @@ class Feedback(Page):
 
 class TaskRandomlyChosen(Page):
     form_model = 'player'  
+    form_fields = ['forced_data']
 
     @staticmethod
     def vars_for_template(player):
@@ -1232,28 +1236,33 @@ class AfterTaskRandomlyChosen(Page):
         valence = player.participant.valence
         anti_valence = player.participant.anti_valence
 
-        own_payoff = float(max(json.loads(player.participant.sequence[valence])[:C.NUM_FORCED_OPEN]))
-        computer_payoff = float(max(json.loads(player.participant.sequence[anti_valence])[:C.NUM_FORCED_OPEN]))
+        
+        own_payoff = float(json.loads(player.forced_data)['tentative_bonus'])
+        # player.participant.actual_payoff = actual_payoff
+
+
+        # own_payoff = float(max(json.loads(player.participant.sequence[valence])[:C.NUM_FORCED_OPEN]))
+        # computer_payoff = float(max(json.loads(player.participant.sequence[anti_valence])[:C.NUM_FORCED_OPEN]))
 
         if valence == 'bonus':
-            computer_payoff = C.START_VALUE + C.END_VALUE - computer_payoff
+            # computer_payoff = C.START_VALUE + C.END_VALUE - computer_payoff
+            pass
         else:
             own_payoff = C.START_VALUE + C.END_VALUE - own_payoff   
 
         own_payoff = "{:.2f}".format(own_payoff)
-        computer_payoff = "{:.2f}".format(computer_payoff)
+        # computer_payoff = "{:.2f}".format(computer_payoff)
 
         player.participant.payoff = float(C.PARTICIPATION_FEE) + float(C.BALANCE)
         if valence =='bonus':
-            player.participant.payoff += float(own_payoff) - float(computer_payoff)
+            player.participant.payoff = player.participant.payoff_after_part1 + float(own_payoff)
         else:
-            player.participant.payoff += float(computer_payoff) - float(own_payoff)
+            player.participant.payoff = player.participant.payoff_after_part1 + C.START_VALUE_PENALTY -  float(own_payoff)
 
         if valence == 'bonus':
-            text = "<p>You have completed the Collaborative Job. The bonus you earned is $" + own_payoff + ". In the meantime, the computer earned a penalty of $" + computer_payoff + ".</p> <p>Since Part 1 is chosen, you also get a balance of $" + str(C.BALANCE) + ". Including the participation fee of $" + str(C.PARTICIPATION_FEE) + ", your total payment for the study is thus <b>$" + str(player.participant.payoff) + "</b>.</p>"
+            text = "<p>You have completed the " + str(C.NUM_FORCED_OPEN) + "-box " + player.participant.valence + " task. Your final bonus was $" + own_payoff + ". Your balance after Part 1 was $" + "{:.2f}".format(player.participant.payoff_after_part1) + ". Thus, you total payment from the study is <b>$" + str(player.participant.payoff) + "</b>.</p>"
         else:
-            text = "<p>You have completed the Collaborative Job. The penalty you earned is $" + own_payoff + ". In the meantime, the computer earned a bonus of $" + computer_payoff + ".</p> <p>Since Part 1 is chosen, you also get a balance of $" + str(C.BALANCE) + ". Including the participation fee of $" + str(C.PARTICIPATION_FEE) + ", your total payment for the study is thus <b>$" +  str(player.participant.payoff) + "</b>.</p>"
-        
+            text = "<p>You have completed the " + str(C.NUM_FORCED_OPEN) + "-box " + player.participant.valence + " task. Your final penalty was $" + own_payoff + ". Your balance after Part 1 was $" + "{:.2f}".format(player.participant.payoff_after_part1) + ". Since Part 2 was chosen, your balance was increased by $"+C.START_VALUE_PENALTY + ". Thus, you total payment from the study is <b>$" + str(player.participant.payoff) + "</b>.</p>"
         return {
             'text':  text
         }
@@ -1269,7 +1278,7 @@ class Finished(Page):
         
     
         if player.participant.part_payment == 'Part 3': 
-            player.participant.payoff = C.PARTICIPATION_FEE + float(C.PAYMENT_PART_2)
+            player.participant.payoff = player.participant.payoff_after_part1 + float(C.PAYMENT_PART_2)
 
         player.participant.bonus_payment = player.participant.payoff - C.PARTICIPATION_FEE
         return {}
@@ -1290,8 +1299,8 @@ page_sequence = [
     Consent,
     Instructions,
     UnderstandingQuestions,
-    TransitionPractice,
-    Task,
+    # TransitionPractice,
+    # Task,
     TransitionDemandElicitation0,
     TaskActual,
     TransitionDemandElicitation,

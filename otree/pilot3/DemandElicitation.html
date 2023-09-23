@@ -129,7 +129,8 @@ parameters={
     bonusAmounts: {{ C.BONUS_AMOUNTS }},
     minBonus: {{ C.START_VALUE }},
     maxBonus: {{ C.END_VALUE }},
-    numForcedBoxed: {{ C.NUM_FORCED_OPEN }}
+    numForcedBoxed: {{ C.NUM_FORCED_OPEN }},
+    treatment: "{{ participant.valence }}"
   }
   wtp_1 =new drawWTP(parameters);
 </script>

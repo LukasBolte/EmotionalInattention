@@ -15,15 +15,19 @@ Which part was randomly chosen for payment?
     We have collected your answers and randomly chosen which part of the experiment will be used to determine your additional payment.
 </p>
 
+
+
+
+
 {{ if participant.part_payment == 'Part 2'}}
 
-    <p>
-        <b>Part 2 was randomly chosen for payment</b>. This means that you will get ${{C.BALANCE}} in addition to your participation fee of {{ C.PARTICIPATION_FEE|cu }}.
-    </p>
+<p>
+    After Part 1, your balance was {{ participant.payoff_after_part1|cu }}. <b>Part 2, and not Part 3, was randomly chosen to count</b>. This means that {{ if participant.valence == 'bonus'}}$0{{else}}${{C.START_VALUE_PENALTY}}{{endif}} is added to your current balance of {{ participant.payoff_after_part1|cu }}.
+</p>
 
     <p>
-        During Part 2, we asked you several questions where you had to choose between completing the Collaborative Job and getting/paying some money. The question randomly chosen is:
-    </p>
+        During Part 2, we asked you {{ C.LEN_BONUS_AMOUNTS }} questions, having you choose between completing the {{ C.NUM_FORCED_OPEN }}-box {{ participant.valence }} task OR accept some sure {{ participant.valence }} instead. The question randomly chosen: 
+        </p>
 
     <p class="text-center">
         <i>
@@ -33,12 +37,12 @@ Which part was randomly chosen for payment?
 
     {{ if participant.collaborative_job }}
         <p>
-            For this question, you chose <b>complete the Collaborative Job</b>. Thus you will next complete the Collaborative Job. Once you complete it, you will receive your participation fee of {{ C.PARTICIPATION_FEE|cu }}, your balance of ${{ C.BALANCE }}, and the bonus minus the penalty from the Collaborative Job.
+            For this question, you chose <b>open {{ C.NUM_FORCED_OPEN }} boxes</b>. Thus you will next complete the {{ C.NUM_FORCED_OPEN }}-box {{ participant.valence }} task. Once you complete it, your balance will be updated depending on the final {{ participant.valence }} from the {{ C.NUM_FORCED_OPEN }}-box {{ participant.valence }}.
         </p>
         
     {{ else }}
         <p>
-            For this question, you chose <b>{{ participant.right_option }}</b>. Thus, you will receive your partiicpation fee of {{ C.PARTICIPATION_FEE|cu }}, your balance of ${{ C.BALANCE }} and you will {{ payment_text}}.
+            For this question, you chose <b>{{ participant.right_option }}</b>. Thus, {{ payment_text}}.
         </p>
 
     {{ endif }}
@@ -46,7 +50,7 @@ Which part was randomly chosen for payment?
 {{ else }}
 
 <p>
-    <b>Part 3</b> was randomly chosen for payment. This means that you will not complete the Collaborative Job. But you will receive a payment of ${{C.PAYMENT_PART_2}} for completing Part 3 in addition to your participation fee of {{ C.PARTICIPATION_FEE|cu }}.
+    After Part 1, your balance was {{ participant.payoff_after_part1|cu }}. <b>Part 3, not Part 2, was randomly chosen to count</b>. This means that you will not complete the {{ C.NUM_FORCED_OPEN }}-box {{ participant.valence }} task. Instead, you will receive a payment of ${{C.PAYMENT_PART_2}} for completing Part 3 in addition to your current balance.
 </p>
 
 {{ endif }}
