@@ -10,14 +10,14 @@
 
 
 <p>
-  {{ if participant.valence == 'bonus' }}
-  
-  If Part 2 is chosen for payment, we will increase your balance by $0. In Part 2, you choose whether to open {{ C.NUM_FORCED_OPEN }} boxes and look for the highest bonus or accept some sure bonus and not open any boxes.
+    {{ if participant.valence == 'bonus' }}
+
+    If Part 2 is chosen for payment, we will increase your balance by $0. Additionally, you will soon choose whether to open {{ C.NUM_FORCED_OPEN }} boxes and look for the highest bonus or accept some sure bonus and not open any boxes. Your choice will be implemented if part 2 is chosen for payment.
 
 
-  {{ else}}
-  
-  If Part 2 is chosen for payment, we will increase your balance by ${{C.START_VALUE_PENALTY}}. In Part 2, you choose whether to open {{ C.NUM_FORCED_OPEN }} boxes and look for the lowest penalty or accept some sure penalty and not open any boxes.
+    {{ else}}
 
-   {{ endif }}
+    If Part 2 is chosen for payment, we will increase your balance by ${{C.START_VALUE_PENALTY}}. Additionally, you will soon choose whether to open {{ C.NUM_FORCED_OPEN }} boxes and look for the lowest penalty or accept some sure penalty and not open any boxes. Your choice will be implemented if part 2 is chosen for payment.
+
+    {{ endif }}
 </p>

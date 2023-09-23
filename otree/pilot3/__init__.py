@@ -333,7 +333,7 @@ class Player(BasePlayer):
             [4, 'I make no decision. After I open a box, my current tentative bonus is replaced by the bonus inside the box no matter what']
         ],
         widget=widgets.RadioSelect,
-        label='What decision do you have to make each time you open a new box and see the revealed bonus inside?'
+        label='What decision do you have to make each time you open a new box and see the bonus inside?'
     )
 
     CQ_penalty_decide = models.IntegerField(
@@ -345,7 +345,7 @@ class Player(BasePlayer):
             [4, 'I make no decision. After I open a box, my current tentative penalty is replaced by the penalty inside the box no matter what']
         ],
         widget=widgets.RadioSelect,
-        label='What decision do you have to make each time you open a new box and see the revealed penalty inside?'
+        label='What decision do you have to make each time you open a new box and see the penalty inside?'
     )
 
     CQ_bonus_num_boxes = models.IntegerField(
