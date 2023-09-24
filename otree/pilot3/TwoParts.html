@@ -1,11 +1,11 @@
  {% load otree %}
 
 <p>
-  You start the study with a balance of {{ if participant.valence == 'bonus' }}$0{{ else}}${{ C.START_VALUE_PENALTY}}{{ endif }}. The study consists of three parts, Part 1, Part 2, and Part 3. During these three parts, you can increase or decrease your balance. We will pay you your final balance in full at the end of the study.
+  You start the study with a <b>balance of {{ if participant.valence == 'bonus' }}$0{{ else}}${{ C.START_VALUE_PENALTY}}{{ endif }}</b>. The study consists of three parts&mdash;Part 1, Part 2, and Part 3. During these three parts, you can <b>increase or decrease</b> your balance. <b>We will pay you your final balance</b> in full at the end of the study.
 </p>
  
 <p>
-  Part 1 will affect your balance for sure. Additionally, we will randomly choose whether Part 2 or Part 3 will affect your balance.
+  Part 1 will affect your balance for sure. Additionally, we will <b>randomly choose whether Part 2 or Part 3 will affect your balance</b>.
 </p>
 
 <p>

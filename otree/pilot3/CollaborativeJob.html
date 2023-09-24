@@ -1,12 +1,13 @@
 {% load otree %}
 
 <p>
-    There are <span class='class_num_box'></span> in the <b>{{ participant.valence }} task</b>. Each box contains a <i>{{ participant.valence }} amount between ${{ C.START_VALUE }} and ${{ C.END_VALUE }}</i>. 
+    There are <span class='class_num_box'></span> boxes in the <b>{{ participant.valence }} task</b>. Each box contains a <b>{{ participant.valence }} amount between ${{ C.START_VALUE }} and ${{ C.END_VALUE }}</b>. 
 </p>
 
-<p>
-    Your payment from the task will be larger the closer you get to finding the {{ if participant.valence == 'bonus' }}largest bonus (${{ C.END_VALUE }}){{ else}}smallest penalty (${{ C.START_VALUE }}){{ endif }}.
-</p>
+<div class="alert alert-info" role="alert">
+  <b>Your task is it to look through some of these boxes and find a {{ if participant.valence == 'bonus' }}large bonus that will be added to your balance{{ else}}small penalty that will be taken away from your balance{{ endif }}.</b>
+</div>
+
 
 <p>
     The graph below shows the number of boxes that contain each {{ participant.valence }} amount.

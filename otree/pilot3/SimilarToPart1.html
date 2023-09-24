@@ -1,7 +1,7 @@
  {% load otree %}
 
 <p>
-  We will now proceed to Part 2 of the experiment.
+  We will <b>now proceed to Part 2</b> of the study.
 </p>
 
 <p>
@@ -9,15 +9,16 @@
 </p>
 
 
-<p>
+<div class="alert alert-info" role="alert">
     {{ if participant.valence == 'bonus' }}
 
-    If Part 2 is chosen for payment, we will increase your balance by $0. Additionally, you will soon choose whether to open {{ C.NUM_FORCED_OPEN }} boxes and look for the highest bonus or accept some sure bonus and not open any boxes. Your choice will be implemented if part 2 is chosen for payment.
+    If Part 2 is chosen for payment, we will <b>increase your balance by $0</b>. You will next choose whether to open {{ C.NUM_FORCED_OPEN }} boxes and look for the highest bonus or accept some sure bonus and not open any boxes. <b>Your choice will be implemented only if Part 2 is chosen for payment</b>.
 
 
     {{ else}}
 
-    If Part 2 is chosen for payment, we will increase your balance by ${{C.START_VALUE_PENALTY}}. Additionally, you will soon choose whether to open {{ C.NUM_FORCED_OPEN }} boxes and look for the lowest penalty or accept some sure penalty and not open any boxes. Your choice will be implemented if part 2 is chosen for payment.
+    If Part 2 is chosen for payment, we will <b>increase your balance by ${{C.START_VALUE_PENALTY}}</b>. You will next choose whether to open {{ C.NUM_FORCED_OPEN }} boxes and look for the lowest penalty or accept some sure penalty and not open any boxes. <b>Your choice will be implemented only if Part 2 is chosen for payment
+    </b>.
 
     {{ endif }}
-</p>
+</div>

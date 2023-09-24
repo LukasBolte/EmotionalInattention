@@ -1,32 +1,31 @@
  {% load otree %}
 
  <p>
-  As in Part 1, you will start with a tentative {{ participant.valence }} of {{ if participant.valence == 'bonus' }}${{ C.START_VALUE }}{{ else}}${{ C.END_VALUE}}{{ endif}}. 
+  As in Part 1, you will <b>start with a tentative {{ participant.valence }} of {{ if participant.valence == 'bonus' }}${{ C.START_VALUE }}{{ else}}${{ C.END_VALUE}}{{ endif}}</b>. 
 </p>
 
 <p>
-  Differently from part 1, you will then open exactly {{ C.NUM_FORCED_OPEN }} of the <span class='class_num_box'></span> boxes in random order without the option to end the task early.
+  Differently from part 1, <b>you will then open exactly {{ C.NUM_FORCED_OPEN }} of the <span class='class_num_box'></span> boxes in random order without the option to end the task early</b>.
 </p>
 <p>
-  Each time you open a box, you will wait {{ C.DELAY }} seconds to reveal the {{ participant.valence }} inside. 
+  Each time you open a box, you will have to wait {{ C.DELAY }} seconds for the {{ participant.valence }} inside to be revealed. 
 </p>
 
 <p>
-  Each time you reveal the {{ participant.valence }} inside a new box, you will decide whether you want to:
+  You then decide if you want to:
   <ol>
-    <li><b>Keep</b> your current tentative {{ participant.valence }}
-    <br>
-    <br>
+    <li><b>Keep</b> your current tentative {{ participant.valence }}.</li>
+    
+    
     <div class="text-center">
       <b>OR</b>
     </div>
-    <br>
-    </li>
-    <li><b>Replace</b> your current tentative {{ participant.valence }} with the {{ participant.valence }} inside the box</li>
+
+    <li><b>Replace</b> your current tentative {{ participant.valence }} with the {{ participant.valence }} inside the box.</li>
 </ol>
 </p>
 <p>
-  We will record your final {{ participant.valence }} after you open all {{ C.NUM_FORCED_OPEN }} boxes. If you complete the task, we will {{ if participant.valence == 'bonus' }}add{{ else}}take away{{ endif}} this final {{ participant.valence }} {{ if participant.valence == 'bonus' }}to{{ else}}from{{ endif}} your balance from this study.
+  We will record your final {{ participant.valence }} after you open all {{ C.NUM_FORCED_OPEN }} boxes. If Part 2 is chosen to count and you end up completing the {{ C.NUM_FORCED_OPEN }}-box {{ participant.valence }} task, we will {{ if participant.valence == 'bonus' }}add{{ else}}take away{{ endif}} this final {{ participant.valence }} {{ if participant.valence == 'bonus' }}to{{ else}}from{{ endif}} your balance from this study.
 </p>
 
 <script>

@@ -369,7 +369,7 @@ function task(parameters){
         var keepButton=document.createElement("button")
         keepButton.setAttribute("type","button");
         keepButton.setAttribute("id","keepButton_id")
-        keepButton.className="btn btn-secondary btn-sm";
+        keepButton.className="btn btn-info btn-sm";
         keepButton.innerHTML="Keep";
         keepButton.addEventListener('click', () => {
             document.getElementById("continueButton_id").style.visibility = "visible";
@@ -377,11 +377,11 @@ function task(parameters){
             if (element) {
                 element.style.visibility = "visible";
             };
-            document.getElementById("keepButton_id").classList.remove("btn-secondary");
+            document.getElementById("keepButton_id").classList.remove("btn-info");
             document.getElementById("keepButton_id").classList.add("btn-success");
 
             document.getElementById("replaceButton_id").classList.remove("btn-success");
-            document.getElementById("replaceButton_id").classList.add("btn-secondary");
+            document.getElementById("replaceButton_id").classList.add("btn-info");
 
         //  this.open_page="page1";
         //  this.save()
@@ -393,7 +393,7 @@ function task(parameters){
         var replaceButton=document.createElement("button")
         replaceButton.setAttribute("type","button");
         replaceButton.setAttribute("id","replaceButton_id")
-        replaceButton.className="btn btn-secondary btn-sm";
+        replaceButton.className="btn btn-info btn-sm";
         replaceButton.innerHTML="Replace";
         replaceButton.addEventListener('click', () => {
             document.getElementById("continueButton_id").style.visibility = "visible";
@@ -403,11 +403,11 @@ function task(parameters){
             };
             
 
-            document.getElementById("replaceButton_id").classList.remove("btn-secondary");
+            document.getElementById("replaceButton_id").classList.remove("btn-info");
             document.getElementById("replaceButton_id").classList.add("btn-success");
 
             document.getElementById("keepButton_id").classList.remove("btn-success");
-            document.getElementById("keepButton_id").classList.add("btn-secondary");
+            document.getElementById("keepButton_id").classList.add("btn-info");
 
             this.tentative_bonus=last_num;
         //  this.open_page="page1";

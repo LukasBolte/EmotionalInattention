@@ -1,27 +1,26 @@
 {% load otree %}
 
 <p>
-  You start with a <b>tentative {{ participant.valence }}</b> of {{ if participant.valence == 'bonus' }}${{ C.START_VALUE }}{{ else}}${{ C.END_VALUE}}{{ endif}}. You will then open as many boxes as you like.
+  You start with a <b>tentative {{ participant.valence }} of {{ if participant.valence == 'bonus' }}${{ C.START_VALUE }}{{ else}}${{ C.END_VALUE}}{{ endif}}</b>. You will then open as many boxes as you like.
 </p>
 
 <p>
-  Each time you open a box, you will wait {{ C.DELAY }} seconds to reveal the {{ participant.valence }} inside. 
+  Each time you open a box, you will have to wait {{ C.DELAY }} seconds for the {{ participant.valence }} inside to be revealed. 
 </p>
 
 <p>
-  Each time you reveal the {{ participant.valence }} inside a new box, you will decide whether you want to:
+  You then decide if you want to:
   <ol>
-    <li><b>Keep</b> your current tentative {{ participant.valence }}
-    <br>
-    <br>
+    <li><b>Keep</b> your current tentative {{ participant.valence }}.</li>
+    
+    
     <div class="text-center">
       <b>OR</b>
     </div>
-    <br>
-    </li>
-    <li><b>Replace</b> your current tentative {{ participant.valence }} with the {{ participant.valence }} inside the box</li>
+
+    <li><b>Replace</b> your current tentative {{ participant.valence }} with the {{ participant.valence }} inside the box.</li>
 </ol>
 </p>
 <p>
-  You can decide to <b>end the task</b> at any point. When you decide to <b>end the task</b>, we will record your <b>final {{ participant.valence }}</b>. We will {{ if participant.valence == 'bonus' }}add{{ else}}take away{{ endif}} this final {{ participant.valence }} {{ if participant.valence == 'bonus' }}to{{ else}}from{{ endif}} the balance your received at the beginning of the study.
+  You can <b>end the task</b> at any point. When you decide to end the task, we will record your <b>final {{ participant.valence }}</b>. We will {{ if participant.valence == 'bonus' }}add{{ else}}take away{{ endif}} this final {{ participant.valence }} {{ if participant.valence == 'bonus' }}to{{ else}}from{{ endif}} the balance your received at the beginning of the study.
 </p>

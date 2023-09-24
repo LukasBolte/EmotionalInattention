@@ -2,7 +2,7 @@
 {% load otree %}
 
 {% block title %}
-All your answers were correct!
+Your answer was correct!
 {% endblock %}
 
 {% block content %}
@@ -14,9 +14,13 @@ All your answers were correct!
 {{ include C.DEMAND_ELICIATION_INSTRUCTIONS }}
 
 <p>
-    When you are ready, click "Next" to continue.
-</p>
+    Click "Make choices for Part 2'' to continue.
+ </p>
+ 
+ <div class="d-flex justify-content-center align-items-center">
+     <button style="float: right" class="btn btn-success btn-large">Make choices for Part 2/button>
+ 
+ </div>
 
-<button style="float: right" class="btn btn-primary btn-large">Next</button>
 
 {% endblock %}

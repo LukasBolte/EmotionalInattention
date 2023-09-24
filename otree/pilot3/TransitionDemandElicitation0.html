@@ -12,10 +12,13 @@ All your answers were correct!
 {{ endif }}
 
 <p>
-   Click "Start the {{ participant.valence }} task.'' to begin with the {{ participant.valence }} task.
+   Click "Start the {{ participant.valence }} task'' to begin with the {{ participant.valence }} task.
 </p>
 
-<button style="float: right" class="btn btn-success btn-large">Start the {{ participant.valence }} task</button>
+<div class="d-flex justify-content-center align-items-center">
+    <button style="float: right" class="btn btn-success btn-large">Start the {{ participant.valence }} task</button>
+
+</div>
 
 {% endblock %}
 

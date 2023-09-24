@@ -1,22 +1,22 @@
 {% load otree %}
 
 <p>
-  The {{ C.NUM_FORCED_OPEN }}-box {{ participant.valence }} task is very similar to the task you just completed in Part 1 of the experiment.
+  The <b>{{ C.NUM_FORCED_OPEN }}-box {{ participant.valence }} task</b> is very similar to the task you just completed in Part 1 of the study.
 </p>
 
 <p>
-  Namely, there are <span class='class_num_box'></span> boxes in the {{ participant.valence }} task. Each box contains a {{ participant.valence }} amount between ${{ C.START_VALUE }} and ${{ C.END_VALUE }}.
+  Namely, there are again <span class='class_num_box'></span> boxes in the {{ participant.valence }} task. Each box contains a {{ participant.valence }} amount between ${{ C.START_VALUE }} and ${{ C.END_VALUE }}.
 </p>
 
 <p>
-  The graph below shows the number of boxes that contain each {{ participant.valence }} amount. Notice that the graph is identical to the graph in Part 1.
+  The graph below shows the number of boxes that contain each {{ participant.valence }} amount. Notice that <b>the graph is identical to the graph in Part 1</b>.
 </p>
 
 {{ if participant.valence == 'bonus' }}
 
   <div class="d-flex justify-content-center align-items-center">
     <div>
-      <p><b>Bonus task</b></p>
+      <p><b>{{ C.NUM_FORCED_OPEN }}-box {{ participant.valence }} task</b></p>
     </div>
   </div>
   <div class="chart-container">
@@ -32,7 +32,7 @@
 
   <div class="d-flex justify-content-center align-items-center">
     <div>
-      <p><b>Penalty task</b></p>
+      <p><b>{{ C.NUM_FORCED_OPEN }}-box {{ participant.valence }} task</b></p>
     </div>
   </div>
 

@@ -181,10 +181,10 @@ class C(BaseConstants):
             'CQ_penalty_complete':(2, f'Sorry, that is incorrect. The larger your final penalty, the less money you earn in the task.'),
         },
         'Part2_CQ_tasks_bonus': {
-            'CQ_bonus_forced_difference':(1,f'Sorry, that is incorrect. The {NUM_FORCED_OPEN}-box bonus task is identical to the bonus task you completed in Part 1 of the experiment, except for the number of boxes you open: In the {NUM_FORCED_OPEN}-box bonus task, you have to open exactly {NUM_FORCED_OPEN} boxes and cannot choose when to end the task.'),
+            'CQ_bonus_forced_difference':(1,f'Sorry, that is incorrect. The {NUM_FORCED_OPEN}-box bonus task is identical to the bonus task you completed in Part 1 of the study, except for the number of boxes you open: In the {NUM_FORCED_OPEN}-box bonus task, you have to open exactly {NUM_FORCED_OPEN} boxes and cannot choose when to end the task.'),
         },
         'Part2_CQ_tasks_penalty': {
-            'CQ_penalty_forced_difference':(1,f'Sorry, that is incorrect. The {NUM_FORCED_OPEN}-box penalty task is identical to the penalty task you completed in Part 1 of the experiment, except for the number of boxes you open: In the {NUM_FORCED_OPEN}-box penalty task, you have to open exactly {NUM_FORCED_OPEN} boxes and cannot choose when to end the task.'),
+            'CQ_penalty_forced_difference':(1,f'Sorry, that is incorrect. The {NUM_FORCED_OPEN}-box penalty task is identical to the penalty task you completed in Part 1 of the study, except for the number of boxes you open: In the {NUM_FORCED_OPEN}-box penalty task, you have to open exactly {NUM_FORCED_OPEN} boxes and cannot choose when to end the task.'),
         },
         'CQ_states': {
             'payment':(1,'myHint'),
@@ -928,6 +928,8 @@ class TransitionDemandElicitation(Page):
 
         own_payoff = float(player.participant.actual_payoff)
         
+        player.participant.payoff_after_part1 = own_payoff
+        
         if valence == 'bonus':
             # computer_payoff = C.START_VALUE + C.END_VALUE - computer_payoff
             pass
@@ -935,7 +937,7 @@ class TransitionDemandElicitation(Page):
             own_payoff = C.START_VALUE + C.END_VALUE - own_payoff   
             new_balance = C.START_VALUE_PENALTY - own_payoff
 
-        player.participant.payoff_after_part1 = own_payoff
+        
         
         if type(own_payoff) != str:
             own_payoff = f"{own_payoff:.2f}"
