@@ -159,7 +159,8 @@ function task(parameters){
         if (this.num_draws==0){
             bonus=this.min_pay;
         } else {
-            bonus=Math.max(...this.sequence.slice(0,this.num_draws))
+
+            bonus=this.tentative_bonus;
         }
 
         var amount
@@ -273,7 +274,7 @@ function task(parameters){
         if (this.treatment=="bonus"){  
             p.innerHTML="(tentative bonus becomes final)";}
         else {
-            p.innerHTML="(tenatitve penalty becomes final)";
+            p.innerHTML="(tentative penalty becomes final)";
         }
 
 
@@ -363,7 +364,7 @@ function task(parameters){
         if (this.treatment=="bonus"){
             p.innerHTML="Your current tentative bonus is <b>$"+ this.formatNumberOrString(this.tentative_bonus) + '</b>. Do you want to keep your tenatitve bonus or replace it with the bonus amount inside the box?'
         } else if (this.treatment=="penalty"){
-            var penalty = this.min_pay+this.max_pay-last_num
+            var penalty = this.min_pay+this.max_pay-this.tentative_bonus
             p.innerHTML="Your current tentative penalty is <b>$"+ this.formatNumberOrString(penalty) + '</b>. Do you want to keep your tenatitve penalty or replace it with the penalty amount inside the box?'
         };
 
@@ -479,7 +480,7 @@ function task(parameters){
         if (this.num_draws==0){
             bonus=this.min_pay;
         } else {
-            bonus=Math.max(...this.sequence.slice(0,this.num_draws))
+            bonus=this.tentative_bonus;
         }
 
        
