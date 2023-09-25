@@ -206,9 +206,10 @@ def creating_session(subsession: Subsession):
         if subsession.round_number == 1:
 
             # create a list of treatments
+            demand_elicitation_order = ['original','reversed']
             bonus_penalty = ['bonus','penalty']
             level_treatments = ['low'] # ['high','low']
-            task_treatments = [('tasks',item1, item2) for item1 in bonus_penalty for item2 in level_treatments]
+            task_treatments = [('tasks',item1, item2,item3) for item1 in bonus_penalty for item2 in level_treatments for item3 in demand_elicitation_order]
             states_treatments = [] # [('states',item1, 'NA') for item1 in bonus_penalty]
             time_treatments = [] # [('time_periods',item1, 'NA') for item1 in bonus_penalty]
             treatments = task_treatments + states_treatments + time_treatments
@@ -221,6 +222,12 @@ def creating_session(subsession: Subsession):
                 participant.valence = participant.treatment[1]
                 participant.anti_valence = [el for el in bonus_penalty if el != participant.valence][0]
                 participant.high_payoff = participant.treatment[2]
+                A = C.BONUS_AMOUNTS
+                if participant.treatment[3]=='original':
+                    participant.bonusAmounts = A.copy()
+                else:
+                    participant.bonusAmounts = A.copy()[::-1]
+       
                 random_draw = random.random()
                 participant.part_payment = 'Part 3'
                 if C.PROBABILITY_PART_1 > random_draw:
