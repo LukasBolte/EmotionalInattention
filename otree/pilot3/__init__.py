@@ -285,7 +285,7 @@ class Player(BasePlayer):
         choices=[
             [1, f'I start with a bonus of ${C.START_VALUE}'],
             [2, f'I start with a bonus of ${C.END_VALUE}'],
-            [3, f'I start with an unkonwn bonus between ${C.START_VALUE} and ${C.END_VALUE}']
+            [3, f'I start with an unknown bonus between ${C.START_VALUE} and ${C.END_VALUE}']
         ],
         widget=widgets.RadioSelect,
         label='What is your tentative bonus before you open any boxes?'
@@ -296,7 +296,7 @@ class Player(BasePlayer):
         choices=[
             [1, f'I start with a penalty of ${C.START_VALUE}'],
             [2, f'I start with a penalty of ${C.END_VALUE}'],
-            [3, f'I start with an unkonwn penalty between ${C.START_VALUE} and ${C.END_VALUE}']
+            [3, f'I start with an unknown penalty between ${C.START_VALUE} and ${C.END_VALUE}']
         ],
         widget=widgets.RadioSelect,
         label='What is your tentative penalty before you open any boxes?'
@@ -402,8 +402,8 @@ class Player(BasePlayer):
         widget=widgets.RadioSelect,
         label='Complete the following sentence: The larger my final bonus, the...'
     )
-
     CQ_penalty_complete = models.IntegerField(
+
         blank=True,
         choices=[
             [1, '...more money I earn in the task'],
