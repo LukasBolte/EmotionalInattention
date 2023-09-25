@@ -178,9 +178,11 @@ function task(parameters){
         td1.appendChild(p);
 
 
+
         var p=document.createElement('p');
         p.className="h3 mt-5";
-        p.innerHTML="$"+ amount.toFixed(2);
+        console.log('my amount', amount)
+        p.innerHTML="$"+ this.formatNumberOrString(amount);
 
         td1.appendChild(p);
         tr.appendChild(td1)
@@ -418,6 +420,7 @@ function task(parameters){
             document.getElementById("keepButton_id").classList.add("btn-info");
 
             this.tentative_bonus=last_num;
+            console.log('here', this.tentative_bonus)
         //  this.open_page="page1";
         //  this.save()
         //  this.draw1();

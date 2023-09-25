@@ -168,7 +168,7 @@ function task(parameters){
 
         var p=document.createElement('p');
         p.className="h3 mt-5";
-        p.innerHTML="$"+ amount.toFixed(2);
+        p.innerHTML="$"+ this.formatNumberOrString(amount);
 
         td1.appendChild(p);
         tr.appendChild(td1)
