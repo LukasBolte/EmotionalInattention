@@ -5,20 +5,19 @@
 </p>
 
 <p>
-  Recall that either Part 2 or Part 3 will be randomly chosen for payment. 
+  Recall that either Part 2 or Part 3 will be randomly chosen to affect your balance. 
 </p>
 
 
 <div class="alert alert-info" role="alert">
     {{ if participant.valence == 'bonus' }}
 
-    If Part 2 is chosen for payment, we will <b>increase your balance by $0</b>. You will next choose whether to open {{ C.NUM_FORCED_OPEN }} boxes and look for the highest bonus or accept some sure bonus and not open any boxes. <b>Your choice will be implemented only if Part 2 is chosen for payment</b>.
+    If Part 2 is chosen to count, we will <b>increase your balance by $0</b>. You will next choose whether to open {{ C.NUM_FORCED_OPEN }} boxes and look for the highest bonus or accept some sure bonus and not open any boxes. <b>Your choice will be implemented only if Part 2 is chosen to count</b>.
 
 
     {{ else}}
 
-    If Part 2 is chosen for payment, we will <b>increase your balance by ${{C.START_VALUE_PENALTY}}</b>. You will next choose whether to open {{ C.NUM_FORCED_OPEN }} boxes and look for the lowest penalty or accept some sure penalty and not open any boxes. <b>Your choice will be implemented only if Part 2 is chosen for payment
-    </b>.
+    If Part 2 is chosen to count, we will <b>increase your balance by ${{C.START_VALUE_PENALTY}}</b>. You will next choose whether to open {{ C.NUM_FORCED_OPEN }} boxes and look for the lowest penalty or accept some sure penalty and not open any boxes. <b>Your choice will be implemented only if Part 2 is chosen to count.</b>.
 
     {{ endif }}
 </div>
