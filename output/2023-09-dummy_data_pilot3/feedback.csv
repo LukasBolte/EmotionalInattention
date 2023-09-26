@@ -1,0 +1,5 @@
+label,feedback,feedbackDifficulty,feedbackUnderstanding,feedbackSatisfied,feedbackPay,treatment,payoff,study_duration_minutes
+,,10.0,9.0,10.0,9.0,"('tasks', 'bonus', 'low', 'original')",3.11,5.7
+,,9.0,9.0,9.0,9.0,"('tasks', 'bonus', 'low', 'reversed')",2.53,2.2
+,,1.0,2.0,3.0,4.0,"('tasks', 'penalty', 'low', 'original')",3.12,12.2
+,,7.0,8.0,9.0,10.0,"('tasks', 'penalty', 'low', 'reversed')",2.5,1.6

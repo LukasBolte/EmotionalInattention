@@ -842,7 +842,11 @@ class Task(Page):
 
 
 class TransitionDemandElicitation0(Page):
-    pass 
+    @staticmethod
+    def before_next_page(player, timeout_happened):
+        player.participant.times['time_task_started'] = time.time()
+
+
     # @staticmethod
     # def vars_for_template(player):
     #     valence = player.participant.valence
@@ -900,6 +904,9 @@ class TaskActual(Page):
     def before_next_page(player, timeout_happened):
         actual_payoff = json.loads(player.actual_data)['tentative_bonus']
         player.participant.actual_payoff = actual_payoff
+        player.participant.times['time_task_finished'] = time.time()
+
+
         
 
 
@@ -1005,8 +1012,9 @@ class UnderstandingQuestionsPart2(Page):
             valence = player.participant.valence
             control_questions = C.CONTROL_QUESTIONS[f"Part2_CQ_{domain}_{valence}"]
             questions = list(control_questions.keys())
-            if 'mistakes' not in player.participant.vars.keys():
-                player.participant.mistakes = {question:0 for question in questions}
+            for question in questions:
+                if question not in player.participant.mistakes.keys():
+                    player.participant.mistakes[question] = 0
             error_messages = {}
             for field_name in questions:
                 question = field_name.split(f'CQ_{domain}_')[-1]
