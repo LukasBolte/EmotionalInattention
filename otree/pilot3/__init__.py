@@ -134,7 +134,7 @@ class C(BaseConstants):
     LEN_BONUS_AMOUNTS = len(BONUS_AMOUNTS)
 
     START_VALUE_PENALTY = END_VALUE + START_VALUE
-    MAX_PAY = BALANCE + END_VALUE - START_VALUE
+    MAX_PAY =  2*END_VALUE-PARTICIPATION_FEE
     
     READ_ALL = 'pilot3/ReadAll.html'
     TWO_PARTS = 'pilot3/TwoParts.html'
