@@ -344,10 +344,10 @@ function task(parameters){
         var p=document.createElement('p');
         
         if (this.treatment=="bonus"){
-            p.innerHTML="Your current tentative bonus is <b>$"+ this.formatNumberOrString(this.tentative_bonus) + '</b>. Do you want to keep your tenatitve bonus or replace it with the bonus amount inside the box?'
+            p.innerHTML="Your current tentative bonus is <b>$"+ this.formatNumberOrString(this.tentative_bonus) + '</b>. <br><br>Do you want to <b>keep your tenatitve bonus</b> or <b>replace it with the bonus amount inside the box</b>?'
         } else if (this.treatment=="penalty"){
-            var penalty = this.min_pay+this.max_pay-last_num
-            p.innerHTML="Your current tentative penalty is <b>$"+ this.formatNumberOrString(penalty) + '</b>. Do you want to keep your tenatitve penalty or replace it with the penalty amount inside the box?'
+            var penalty = this.min_pay+this.max_pay-this.tentative_bonus
+            p.innerHTML="Your current tentative penalty is <b>$"+ this.formatNumberOrString(penalty) + '</b>. <br><br></b>Do you want to <b>keep your tenatitve penalty</b> or <b>replace it with the penalty amount inside the box</b>?'
         };
 
 
