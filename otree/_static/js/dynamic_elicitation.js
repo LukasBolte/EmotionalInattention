@@ -12,6 +12,7 @@ function drawWTP(parameters){
     this.playerID=parameters.playerID
     this.numForcedBoxed=parameters.numForcedBoxed
     this.answers = {}
+    this.answers_list = []
     
 
     var modal_div=document.createElement("div");
@@ -79,8 +80,7 @@ function drawWTP(parameters){
                 this.answers[this.bonusAmounts[i]] = "task";
                 if (Object.keys(this.answers).length == this.bonusAmounts.length) {
                     document.getElementById("next_button_id_de").style.display = "";   
-                    document.getElementById(this.varname).value=JSON.stringify(this.answers);
-
+                    
                 }
             });
             div2.appendChild(taskButton);
@@ -103,7 +103,10 @@ function drawWTP(parameters){
                 this.answers[this.bonusAmounts[i]] = "sure";
                 if (Object.keys(this.answers).length == this.bonusAmounts.length) {
                     document.getElementById("next_button_id_de").style.display = "";   
-                    document.getElementById(this.varname).value=JSON.stringify(this.answers);
+                    
+
+
+                    
 
                 }
                 
@@ -114,12 +117,54 @@ function drawWTP(parameters){
 
             var hr = document.createElement("hr");
             div.appendChild(hr);
+        };
+
+        document.getElementById('next_button_id_de').addEventListener('click', () => {
+            console.log("helloooo")
+            document.getElementById("confirm_modal_text_id").innerHTML = "<p class='pb-0 mb-0'>Are you sure about your answers?</p>";
+            this.answers_list.push(this.answers)
+            document.getElementById(this.varname).value=JSON.stringify(this.answers_list);
+            let highestTaskKey = -Infinity;
+            let lowestSureKey = Infinity;
+            
+            for (const key in this.answers) {
+                if (this.answers[key] === "task" && Number(key) > highestTaskKey) {
+                    highestTaskKey = Number(key);
+                }
+                
+                if (this.answers[key] === "sure" && Number(key) < lowestSureKey) {
+                    lowestSureKey = Number(key);
+                }
+            };
+            
+            if (highestTaskKey !== -Infinity && lowestSureKey !== Infinity && highestTaskKey > lowestSureKey) {
+                console.log("Highest key with 'task' value:", highestTaskKey);
+                console.log("Lowest key with 'sure' value:", lowestSureKey);
+                var text;
+                if (this.treatment == "bonus") {
+                    text = 'We noticed that you chose <b>"Open '+this.numForcedBoxed+' boxes and look for best bonus"</b> over <b>"Get $'+highestTaskKey+' bonus for sure."</b> However, when the sure bonus was <b>only $'+lowestSureKey+'</b>, you chose <b>"Get $'+lowestSureKey+' bonus for sure"</b> over <b>"Open '+this.numForcedBoxed+' boxes and look for best bonus."</b><br><br>Do you want to change your answers?';
+                } else {
+                    text = 'We noticed that you chose <b>"Open '+this.numForcedBoxed+' boxes and look for best penalty"</b> over <b>"Get $'+String(this.maxBonus + this.minBonus - highestTaskKey)+' penalty for sure.</b>" However, when the sure penalty was <b>increased to $'+String(this.maxBonus + this.minBonus - lowestSureKey)+'</b>, you chose <b>"Get $'+String(this.maxBonus + this.minBonus - lowestSureKey)+' penalty for sure"</b> over <b>"Open '+this.numForcedBoxed+' boxes and look for best penalty.</b>"<br><br>Do you want to change your answers?';
+                };
+                document.getElementById("confirm_modal_text_id").innerHTML = text;
+            } else {
+                console.log("No valid 'task' and 'sure' values found, or highest task key is not higher than lowest sure key.");
+            }
+
+    
+        });
+
  
 
 
 
-          }
-        
+
+        // var nextButton=document.createElement("button");
+        // nextButton.setAttribute("type","button");
+        // nextButton.setAttribute("id","next_button_id_de");
+        // nextButton.className="btn btn-primary btn-large";
+
+        // <button type="button" id='next_button_id_de' class="btn btn-primary otree-btn-next" data-bs-toggle="modal" data-bs-target="#confirmModal" style="display:none; float: right;">Next</button>
 
     }
 

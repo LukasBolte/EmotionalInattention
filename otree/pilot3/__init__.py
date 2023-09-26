@@ -1085,8 +1085,10 @@ class DemandElicitation(Page):
 
     @staticmethod
     def before_next_page(player, timeout_happened):
-        wtp = json.loads(player.wtp)
+        wtp = json.loads(player.wtp)[-1]
         print('hEREHEREHERajs;dflkajs;dfkljas;dfkjas;dflkajsd;fklajsdf;lkasjdf;alksdjf;alskjdf;alksdj')
+        print(wtp)
+       
         # cutoff = wtp['cutoff']
         # parts = cutoff.split(":")
         # side = parts[0]
