@@ -224,9 +224,9 @@ function task(parameters){
         tbody.append(tr);
         var td0=document.createElement("td")
         td0.style.width="50%";
-        tr.appendChild(td0)
+        // tr.appendChild(td0)
         var td1=document.createElement("td");
-        td1.style.width="25%";
+        td1.style.width="50%";
         td1.className="no-padding";
 
         var openBoxButton=document.createElement("button")
@@ -244,7 +244,7 @@ function task(parameters){
         tr.appendChild(td1)
 
         var td2=document.createElement("td");
-        td2.style.width="25%";
+        td2.style.width="50%";
         td2.className="no-padding";
 
         var endTaskButton=document.createElement("button")
