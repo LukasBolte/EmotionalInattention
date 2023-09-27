@@ -1094,8 +1094,7 @@ class DemandElicitation(Page):
     @staticmethod
     def before_next_page(player, timeout_happened):
         wtp = json.loads(player.wtp)[-1]
-        print('hEREHEREHERajs;dflkajs;dfkljas;dfkjas;dflkajsd;fklajsdf;lkasjdf;alksdjf;alskjdf;alksdj')
-        print(wtp)
+
        
         # cutoff = wtp['cutoff']
         # parts = cutoff.split(":")
@@ -1127,17 +1126,24 @@ class DemandElicitation(Page):
         else:
              text = "Do you want to open "+str(C.NUM_FORCED_OPEN)+" boxes (penalty between $"+str(C.START_VALUE)+ " and $"+str(C.END_VALUE)+") or do you want a penalty of $" + str(C.START_VALUE + C.END_VALUE - float(random_question)) + " for sure?"
 
-
-        
         player.participant.question = text
         
+
         if player.participant.valence == "bonus":
             text = "a bonus of $" + str(random_question) + " is added to your balance"
         else: 
-            text = "a penalty of $" + str(C.START_VALUE + C.END_VALUE - float(random_question)) + " is taken away from your"
-        player.participant.right_option = text 
-        print(player.participant.right_option,player.participant.question)
-        
+            text = "a penalty of $" + str(C.START_VALUE + C.END_VALUE - float(random_question)) + " is taken away from your balance"
+
+        player.participant.payment_text = text 
+
+
+        if player.participant.valence == "bonus":
+            text = "a bonus of $" + str(random_question) + " for sure"
+        else: 
+            text = "a penalty of $" + str(C.START_VALUE + C.END_VALUE - float(random_question)) + " for sure"
+
+        player.participant.right_option = text
+
 
 class TransitionUnincentivized(Page):
     form_model = 'player'
