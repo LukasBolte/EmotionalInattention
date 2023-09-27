@@ -5,11 +5,11 @@
 </p>
 
 <div class="alert alert-info" role="alert">
-  <b>Your task is it to open some of these boxes to determine a {{ if participant.valence == 'bonus' }} that will be added to your balance{{ else}} penalty that will be taken away from your balance{{ endif }}.</b>
+  <b>Your task is it to open some of these boxes to determine a {{ if participant.valence == 'bonus' }} bonus that will be added to your balance{{ else}} penalty that will be taken away from your balance{{ endif }}.</b>
 </div>
 
 <p>
-    The closer you get to finding the {{ if participant.valence == 'bonus' }} largest bonus {{ else}} smallest penalty {{ endif }}, the larger your balance will be after completing the {{ participant.valence }} task.
+    The closer you get to finding the {{ if participant.valence == 'bonus' }} largest bonus,{{ else}} smallest penalty,{{ endif }} the larger your balance will be after completing the {{ participant.valence }} task.
 </p>
 
 <p>
