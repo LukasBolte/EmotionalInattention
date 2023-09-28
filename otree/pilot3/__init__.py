@@ -1287,7 +1287,7 @@ class AfterTaskRandomlyChosen(Page):
         if valence == 'bonus':
             text = "<p>You have completed the " + str(C.NUM_FORCED_OPEN) + "-box " + player.participant.valence + " task. Your final bonus was $" + own_payoff + ". Your balance after Part 1 was $" + "{:.2f}".format(player.participant.payoff_after_part1) + ". Thus, you total payment from the study is <b>$" + str(player.participant.payoff) + "</b>.</p>"
         else:
-            text = "<p>You have completed the " + str(C.NUM_FORCED_OPEN) + "-box " + player.participant.valence + " task. Your final penalty was $" + own_payoff + ". Your balance after Part 1 was $" + "{:.2f}".format(player.participant.payoff_after_part1) + ". Since Part 2 was chosen, your balance was increased by $"+C.START_VALUE_PENALTY + ". Thus, you total payment from the study is <b>$" + str(player.participant.payoff) + "</b>.</p>"
+            text = "<p>You have completed the " + str(C.NUM_FORCED_OPEN) + "-box " + player.participant.valence + " task. Your final penalty was $" + own_payoff + ". Your balance after Part 1 was $" + "{:.2f}".format(player.participant.payoff_after_part1) + ". Since Part 2 was chosen, your balance was increased by $"+str(C.START_VALUE_PENALTY) + ". Thus, you total payment from the study is <b>$" + str(player.participant.payoff) + "</b>.</p>"
         return {
             'text':  text
         }
