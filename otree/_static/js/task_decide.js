@@ -17,6 +17,7 @@ function task(parameters){
     this.delay=parameters.delay;
     this.open_box_src=parameters.open_box_src;
     this.closed_box_src=parameters.closed_box_src;
+    this.replace=false;
 
     console.log(parameters, 'my parameters')
     this.draw=function(){
@@ -352,10 +353,10 @@ function task(parameters){
         console.log(typeof(last_num), 'last number type')
         var p=document.createElement('p');
         if (this.treatment=="bonus"){
-            p.innerHTML="The box contains a bonus amount of <b>$"+this.formatNumberOrString(last_num)+"</b>"
+            p.innerHTML="The <b>box contains</b> a bonus amount of <b>$"+this.formatNumberOrString(last_num)+"</b>"
         } else if (this.treatment=="penalty"){
             var penalty = this.min_pay+this.max_pay-last_num
-            p.innerHTML="The box contains a penalty amount of <b>$"+this.formatNumberOrString(penalty)+"</b>"
+            p.innerHTML="The <b>box contains</b> a penalty amount of <b>$"+this.formatNumberOrString(penalty)+"</b>"
         }
 
         
@@ -364,10 +365,10 @@ function task(parameters){
         var p=document.createElement('p');
         
         if (this.treatment=="bonus"){
-            p.innerHTML="Your current tentative bonus is <b>$"+ this.formatNumberOrString(this.tentative_bonus) + '</b>. <br><br>Do you want to <b>keep your tenatitve bonus</b> or <b>replace it with the bonus amount inside the box</b>?'
+            p.innerHTML="Your <b>current tentative</b> bonus is <b>$"+ this.formatNumberOrString(this.tentative_bonus) + '</b>. <br><br>Do you want to <b>keep your tenatitve bonus</b> or <b>replace it with the bonus amount inside the box</b>?'
         } else if (this.treatment=="penalty"){
             var penalty = this.min_pay+this.max_pay-this.tentative_bonus
-            p.innerHTML="Your current tentative penalty is <b>$"+ this.formatNumberOrString(penalty) + '</b>. <br><br></b>Do you want to <b>keep your tenatitve penalty</b> or <b>replace it with the penalty amount inside the box</b>?'
+            p.innerHTML="Your <b>current tentative</b> penalty is <b>$"+ this.formatNumberOrString(penalty) + '</b>. <br><br></b>Do you want to <b>keep your tenatitve penalty</b> or <b>replace it with the penalty amount inside the box</b>?'
         };
 
         td.appendChild(p);
@@ -392,7 +393,7 @@ function task(parameters){
 
             document.getElementById("replaceButton_id").classList.remove("btn-success");
             document.getElementById("replaceButton_id").classList.add("btn-info");
-
+            this.replace=false;
         //  this.open_page="page1";
         //  this.save()
         //  this.draw1();
@@ -418,9 +419,8 @@ function task(parameters){
 
             document.getElementById("keepButton_id").classList.remove("btn-success");
             document.getElementById("keepButton_id").classList.add("btn-info");
-
-            this.tentative_bonus=last_num;
-            console.log('here', this.tentative_bonus)
+            this.replace=true;
+            
         //  this.open_page="page1";
         //  this.save()
         //  this.draw1();
@@ -441,6 +441,9 @@ function task(parameters){
         continueButton.style="visibility: hidden;"
         continueButton.innerHTML="Continue";
         continueButton.addEventListener('click', () => {
+            if (this.replace){
+                this.tentative_bonus=last_num;
+            }
             this.open_page="page1";
             this.tentative_bonus_sequence.push(this.tentative_bonus);
             this.save()

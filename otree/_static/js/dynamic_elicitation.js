@@ -49,9 +49,9 @@ function drawWTP(parameters){
             p.className = "text-center pb-2 mb-0";
             if (this.treatment == "bonus") {
 
-                p.innerHTML = "Do you want to open "+this.numForcedBoxed+" boxes (bonus between $"+this.minBonus + " and $"+this.maxBonus+") or do you want a bonus of $" + this.bonusAmounts[i] + " for sure?";
+                p.innerHTML = "Do you want to open "+this.numForcedBoxed+" boxes (bonus between $"+this.minBonus + " and $"+this.maxBonus+") or do you want a <b>bonus of $" + this.bonusAmounts[i] + "</b> for sure?";
             } else {
-                p.innerHTML = "Do you want to open "+this.numForcedBoxed+" boxes (penalty between $"+this.minBonus + " and $"+this.maxBonus+") or do you want a penalty of $" + String(this.maxBonus + this.minBonus - this.bonusAmounts[i]) + " for sure?";
+                p.innerHTML = "Do you want to open "+this.numForcedBoxed+" boxes (penalty between $"+this.minBonus + " and $"+this.maxBonus+") or do you want a <b>penalty of $" + String(this.maxBonus + this.minBonus - this.bonusAmounts[i]) + "</b> for sure?";
             };
             div.appendChild(p);
             
