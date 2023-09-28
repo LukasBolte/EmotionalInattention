@@ -13,13 +13,13 @@ How much do you think opening boxes helps?
 
 {% if participant.treatment == "bonus" %}
 <p>
-    Recall that you started the task with a payment of ${{ C.START_VALUE }} before opening any boxes. What would you expect your payment to be if you opened 10 boxes?
+    Recall that you started the bonus task with a tentative bonus of ${{ C.START_VALUE }} before opening any boxes. What would you expect your bonus to be if you opened 10 boxes?
 </p>
 
 <table class="table w-auto  table-no-borders mb-0">
     <tbody>
       <tr>
-        <td>I would expect expect a payment of around: $</td>
+        <td>I would expect a bonus of around: $</td>
         <td>{{ form.expected_bonus }}</td>
       </tr>
     </tbody>
@@ -30,7 +30,7 @@ How much do you think opening boxes helps?
 {{ else }}
 
 <p>
-    Recall that you started the task with a penalty of ${{ C.END_VALUE }} before opening any boxes. What would you expect your penalty to be if you opened 10 boxes?
+    Recall that you started the penalty task with a tentative penalty of ${{ C.END_VALUE }} before opening any boxes. What would you expect your penalty to be if you opened 10 boxes?
 </p>
 
 <table class="table w-auto  table-no-borders mb-0">

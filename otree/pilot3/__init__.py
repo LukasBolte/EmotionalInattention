@@ -130,7 +130,7 @@ class C(BaseConstants):
     START_VALUE = 2
     END_VALUE = 10
     INCREMENT_VALUE = 0.01
-    BONUS_AMOUNTS = [0,2,3,4,5,6,7,8,9,10]
+    BONUS_AMOUNTS = [0,2,2.5,3,3.5,4,4.5,5,5.5,6,8,10] #[0,2,3,4,5,6,7,8,9,10]
     LEN_BONUS_AMOUNTS = len(BONUS_AMOUNTS)
 
     START_VALUE_PENALTY = END_VALUE + START_VALUE
@@ -206,15 +206,40 @@ def creating_session(subsession: Subsession):
         if subsession.round_number == 1:
 
             # create a list of treatments
+
+            A = C.LAEBELS
+            B = C.BAR_HEIGHTS
+
+            new_list = [a for a, b in zip(A, B) for _ in range(b)]
+        
+
+            def is_normal(samples):
+                sample1 = samples[0]
+                sample1 = [float(x) for x in sample1]
+                sample2 = samples[1]
+                sample2 = [float(x) for x in sample2]
+                samples = [sample1,sample2]
+                return max(samples[0][::40])<6 and max(samples[1][::40])<6
+            
+            two_sequences = None
+            condition_satisfied = False
+
+            while not condition_satisfied:
+                two_sequences = [random.sample(new_list, C.NUM_BOXES_SEQUENCE),random.sample(new_list, C.NUM_BOXES_SEQUENCE)]
+                condition_satisfied = is_normal(two_sequences)
+            
+
+            which_sequence = [0,1]
             demand_elicitation_order = ['original','reversed']
             bonus_penalty = ['bonus','penalty']
             level_treatments = ['low'] # ['high','low']
-            task_treatments = [('tasks',item1, item2,item3) for item1 in bonus_penalty for item2 in level_treatments for item3 in demand_elicitation_order]
+            task_treatments = [('tasks',item1, item2,item3,item4) for item1 in bonus_penalty for item2 in level_treatments for item3 in demand_elicitation_order for item4 in which_sequence]
             states_treatments = [] # [('states',item1, 'NA') for item1 in bonus_penalty]
             time_treatments = [] # [('time_periods',item1, 'NA') for item1 in bonus_penalty]
             treatments = task_treatments + states_treatments + time_treatments
             random.shuffle(task_treatments)
             treatments = itertools.cycle(treatments)
+
             for player in subsession.get_players():
                 participant = player.participant
                 participant.treatment = next(treatments)
@@ -233,12 +258,12 @@ def creating_session(subsession: Subsession):
                 if C.PROBABILITY_PART_1 > random_draw:
                     participant.part_payment = 'Part 2'
 
-                A = C.LAEBELS
-                B = C.BAR_HEIGHTS
+                
 
-                new_list = [a for a, b in zip(A, B) for _ in range(b)]
-                participant.sequence = {'penalty':json.dumps(random.sample(new_list, C.NUM_BOXES_SEQUENCE)),
-                                        'bonus':json.dumps(random.sample(new_list, C.NUM_BOXES_SEQUENCE))}
+                
+    
+                participant.sequence = {'penalty':json.dumps(two_sequences[int(participant.treatment[4])]),
+                                        'bonus':json.dumps(two_sequences[int(participant.treatment[4])])}
 
                 new_list = [a for a, b in zip(A, B) for _ in range(b)]
                 participant.practice_sequence = {'penalty':json.dumps(random.sample(new_list, C.NUM_PRACTICE)),
@@ -253,6 +278,12 @@ class Group(BaseGroup):
     pass
 
 class Player(BasePlayer):
+
+    expected_bonus = models.StringField(
+        blank=True
+    )
+
+    
     confused_binary = models.StringField(
         blank=True,
         choices=[
@@ -964,6 +995,48 @@ class TransitionDemandElicitation(Page):
             'text':  text
         }
 
+
+
+class Diagnostic(Page):
+    form_model = 'player'
+    form_fields = ['expected_bonus']
+
+
+    @staticmethod
+    def error_message(player, values):
+        if not player.session.config['dev_mode']:
+        
+            def is_valid_number_range(string, x, y):
+                try:
+                    number = float(string)
+                    if x <= number <= y:
+                        decimal_count = len(string.split('.')[-1])
+                        return decimal_count <= 2
+                except ValueError:
+                    return False
+
+                return False
+
+   
+            if values['expected_bonus'] is None:
+                return {'expected_bonus':'Please answer the question.'}
+            else:
+                if is_valid_number_range(values['expected_bonus'], C.START_VALUE, C.END_VALUE):
+                    return {}
+                else:
+                    return {'expected_bonus':f'Please enter a dollar amount  between ${C.START_VALUE} and ${C.END_VALUE} with at most two decimals points.'}
+    
+    @staticmethod
+    def before_next_page(player, timeout_happened):
+        normalized_bonus = player.expected_bonus
+        if player.participant.treatment == 'penalty':
+            normalized_bonus = C.START_VALUE + C.END_VALUE - float(player.expected_bonus)
+        player.participant.expected_bonus = normalized_bonus    
+        pass
+
+
+
+
 class InstructionsPart2(Page):
     @staticmethod
     def vars_for_template(player):
@@ -1329,6 +1402,7 @@ page_sequence = [
     TransitionDemandElicitation0,
     TaskActual,
     TransitionDemandElicitation,
+    Diagnostic,
     InstructionsPart2,
     UnderstandingQuestionsPart2,
     TransitionDemandElicitation3,
