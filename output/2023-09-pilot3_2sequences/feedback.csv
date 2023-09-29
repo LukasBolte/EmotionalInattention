@@ -1,0 +1,25 @@
+label,feedback,feedbackDifficulty,feedbackUnderstanding,feedbackSatisfied,feedbackPay,treatment,payoff,study_duration_minutes
+5ac5300f9534ba0001c7446b,,8.0,8.0,9.0,10.0,"('tasks', 'bonus', 'low', 'original', 0)",3.75,15.2
+54247a37fdf99b691fb3846c,,10.0,10.0,10.0,10.0,"('tasks', 'bonus', 'low', 'original', 1)",3.98,40.0
+6431b44f10493845f0904891,,10.0,8.0,8.0,8.0,"('tasks', 'bonus', 'low', 'reversed', 0)",4.88,57.0
+5ae74788d5ec5e000175ea08,I do wish that the print was bigger and the buttons larger and easier to click. ,8.0,9.0,8.0,9.0,"('tasks', 'bonus', 'low', 'reversed', 1)",5.07,18.1
+5dd3eb4bc0823f3d043b96fb,,10.0,10.0,10.0,10.0,"('tasks', 'penalty', 'low', 'original', 0)",4.13,13.3
+62a39ad98ce3882e11e54d8f,,10.0,10.0,8.0,6.0,"('tasks', 'penalty', 'low', 'original', 1)",3.62,57.6
+614e3f7def73ee04e730819e,Instructions were clear and task was not difficult,9.0,9.0,10.0,9.0,"('tasks', 'penalty', 'low', 'reversed', 0)",4.88,27.9
+6008f3fa7177ca059d268e0b,I felt comfortable during the study. Nothing in the study was confusing.,10.0,10.0,10.0,10.0,"('tasks', 'penalty', 'low', 'reversed', 1)",5.07,18.8
+60ddc7abdf6661b9c294691f,no,6.0,7.0,6.0,6.0,"('tasks', 'bonus', 'low', 'original', 0)",2.5,32.0
+55a2f828fdf99b073bb8c3e8,,10.0,10.0,8.0,9.0,"('tasks', 'bonus', 'low', 'original', 1)",5.07,9.7
+62c41fe598ab94de4d4f021e,,9.0,9.0,9.0,9.0,"('tasks', 'bonus', 'low', 'reversed', 0)",6.2,44.9
+641360128819aafb7156e25e,The repeated attention checks and instructions made the tasks appear to be confusing but they were quite simple to complete,7.0,9.0,5.0,8.0,"('tasks', 'bonus', 'low', 'reversed', 1)",5.07,12.4
+61549a2caa92d84f392000e9,no,7.0,6.0,8.0,8.0,"('tasks', 'penalty', 'low', 'original', 0)",2.5,30.9
+6038743a95e000257b4fefdd,,10.0,10.0,10.0,10.0,"('tasks', 'penalty', 'low', 'original', 1)",5.07,7.7
+58472149000f1000010ebc53,"I messed up in task 1 and missed a lower penalty.  When I realized my mistake it was too late so I just kept going to see if I could get it again but I didn't, so I just gave up after a few tries. ",10.0,10.0,7.0,10.0,"('tasks', 'penalty', 'low', 'reversed', 0)",4.88,54.2
+63b37db51662f3a9e9a48c42,"The second question on part one asks about a ""penalty"" rather than a bonus.  This was very confusing, I didn't know how to answer the question but eventually assumed it was from a different version of the study where the game resulted in deductions rather than additions but still didn't know how to answer it in the context of this version.",8.0,9.0,9.0,10.0,"('tasks', 'bonus', 'low', 'original', 0)",0.0,20.2
+6348e29c02ebee2f7dddac34,,5.0,7.0,7.0,9.0,"('tasks', 'bonus', 'low', 'original', 1)",5.07,9.8
+5c97d5bb41502a0017b3aadf,,10.0,10.0,9.0,10.0,"('tasks', 'bonus', 'low', 'reversed', 0)",4.13,11.0
+5bc934c69427200001dd4ef2,Thanks I had a lot of fun and made a little money too!,10.0,10.0,10.0,7.0,"('tasks', 'bonus', 'low', 'reversed', 1)",3.96,53.5
+57e7bb4e73e67300012b8e2a,The study was clear and I felt fair.  Thank you. ,10.0,10.0,10.0,10.0,"('tasks', 'penalty', 'low', 'original', 0)",4.88,39.6
+63b0888e6716ff9bc2cda151,,9.0,9.0,10.0,10.0,"('tasks', 'penalty', 'low', 'original', 1)",3.98,28.3
+5c50ccae2423780001085cb9,"No issues understanding anything, no tech glitches, interesting study.  thanks  :)",10.0,10.0,10.0,10.0,"('tasks', 'penalty', 'low', 'reversed', 0)",6.2,38.0
+55aeaeb3fdf99b5c769f1f7c,No issues with procedures or instructions.,10.0,10.0,9.0,10.0,"('tasks', 'penalty', 'low', 'reversed', 1)",14.57,27.6
+63103bd06b5135122e25d6c6,Thanks for such an interesting study,10.0,10.0,10.0,10.0,"('tasks', 'bonus', 'low', 'original', 0)",4.88,47.5

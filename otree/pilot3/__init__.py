@@ -1374,6 +1374,11 @@ class Finished(Page):
     
         if player.participant.part_payment == 'Part 3': 
             player.participant.payoff = player.participant.payoff_after_part1 + float(C.PAYMENT_PART_2)
+        
+        elif player.participant.part_payment == 'Part 2' and not player.participant.collaborative_job:
+            player.participant.payoff = player.participant.payoff_after_part1 + float(player.participant.random_row)
+
+          
 
         player.participant.bonus_payment = player.participant.payoff - C.PARTICIPATION_FEE
         return {}
