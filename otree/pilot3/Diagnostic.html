@@ -13,7 +13,7 @@ How much do you think opening boxes helps?
 
 {% if participant.treatment == "bonus" %}
 <p>
-    Recall that you started the bonus task with a tentative bonus of ${{ C.START_VALUE }} before opening any boxes. What would you expect your bonus to be if you opened 10 boxes?
+    For the second question, recall that you started the bonus task with a tentative bonus of ${{ C.START_VALUE }} before opening any boxes. What would you expect your bonus to be if you opened 10 boxes?
 </p>
 
 <table class="table w-auto  table-no-borders mb-0">
@@ -30,7 +30,7 @@ How much do you think opening boxes helps?
 {{ else }}
 
 <p>
-    Recall that you started the penalty task with a tentative penalty of ${{ C.END_VALUE }} before opening any boxes. What would you expect your penalty to be if you opened 10 boxes?
+  For the second question, recall that you started the penalty task with a tentative penalty of ${{ C.END_VALUE }} before opening any boxes. What would you expect your penalty to be if you opened 10 boxes?
 </p>
 
 <table class="table w-auto  table-no-borders mb-0">
@@ -47,7 +47,7 @@ How much do you think opening boxes helps?
 {{ endif }}
 
 <p class="mt-3">
-    After you finished giving your guess, click "Next."
+    After you finished giving your guess, click "Next" to start Part 2.
 </p>
 
 <button style="float: right" class="btn btn-primary btn-large">Next</button>

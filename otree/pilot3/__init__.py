@@ -283,7 +283,7 @@ class Player(BasePlayer):
         blank=True
     )
 
-    
+
     confused_binary = models.StringField(
         blank=True,
         choices=[
@@ -936,9 +936,6 @@ class TaskActual(Page):
         actual_payoff = json.loads(player.actual_data)['tentative_bonus']
         player.participant.actual_payoff = actual_payoff
         player.participant.times['time_task_finished'] = time.time()
-
-
-        
 
 
 class TransitionDemandElicitation(Page):
